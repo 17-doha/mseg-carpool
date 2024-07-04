@@ -1,19 +1,42 @@
 import "./App.css";
 
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from "@azure/msal-react";
+import { DefaultButton } from "@fluentui/react";
+import { useEffect } from "react";
 
 function App() {
-  return (
-    <div className="App">
-      <Navbar />
-      <div className="content">
-        <Outlet />
-        <Footer />
-      </div>
-    </div>
-  );
+    const { instance } = useMsal();
+
+    // set active account
+    useEffect(() => {
+        const accounts = instance.getAllAccounts();
+        if (accounts.length > 0) {
+            instance.setActiveAccount(accounts[0]);
+        }
+    }, [instance]);
+
+    return (
+        <>
+            <div className="App">
+                <AuthenticatedTemplate>
+                    <Navbar />
+                    <div className="content">
+                        <Outlet />
+                        <Footer />
+                    </div>
+                </AuthenticatedTemplate>
+
+                <UnauthenticatedTemplate>
+                    <Navigate to="/" replace />
+                    <h1>Welcome to MSEG Carpool</h1>
+                    <DefaultButton onClick={() => instance.loginRedirect()} primary>Login</DefaultButton>
+                </UnauthenticatedTemplate>
+            </div>
+        </>
+    );
 }
 
 export default App;
