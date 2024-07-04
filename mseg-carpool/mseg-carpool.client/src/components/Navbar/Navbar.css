@@ -1,0 +1,67 @@
+.Navbar {
+  background-color: white;
+  overflow: hidden;
+  width: 100%;
+  height: 54px;
+  padding-left: 5%;
+  padding-right: 5%;
+  flex-shrink: 0;
+  border-bottom: 1px solid #0002;
+}
+
+.Navbar .stack-item {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.Navbar .logo-container {
+  width: 137px;
+  padding: 0;
+}
+
+.Navbar .logo-container img {
+  width: 108px;
+  margin: auto;
+}
+
+.Navbar .menu-container {
+  position: relative;
+}
+
+.Navbar .menu-container::before {
+  border-left: 2px solid #000;
+  height: 24px;
+  content: " ";
+  margin-left: 7px;
+  position: absolute;
+  top: 15px;
+  left: -10px;
+}
+
+.Navbar .menu-container .menu {
+  height: 100%;
+}
+
+.Navbar .menu-container .menu .open::before {
+  background-color: rgb(0, 120, 212);
+  bottom: 0px;
+  content: "";
+  height: 2px;
+  left: 8px;
+  position: absolute;
+  right: 8px;
+  transition: left 0.267s cubic-bezier(0.1, 0.25, 0.75, 0.9) 0s,
+    right 0.267s cubic-bezier(0.1, 0.25, 0.75, 0.9) 0s;
+}
+
+.Navbar .menu-container .menu .open:hover::before {
+  left: 0;
+  right: 0;
+}
+
+.Navbar .user-container .user-button {
+  height: 100%;
+}

@@ -1,0 +1,6 @@
+@mseg_carpool.Server_HostAddress = http://localhost:5062
+
+GET {{mseg_carpool.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
