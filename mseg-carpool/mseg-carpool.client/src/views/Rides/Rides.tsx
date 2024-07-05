@@ -1,19 +1,35 @@
+import { useState } from 'react';
 import Page from "../../components/Page";
-import RideRow from "../../views/Rides/RideRow";
+import RideRow from "./RideRow";
+import { useNavigate } from "react-router-dom";
 import './Rides.css';
 import './RideRow.css';
-import { useNavigate } from "react-router-dom";
-function Rides() {
+
+
+const Rides = () => {
     const navigate = useNavigate();
-    const handleCreateRide = () => {
-        navigate('/Dashboard');
+    const [rides, setRides] = useState([
+        { id: 1, driver: 'Ahmed', from: 'October', destination: 'Zamalek', pickuptime: '10:00 AM 2024/07/05', count: 3, status: 'Pending', own: false },
+        { id: 2, driver: 'Doha', from: 'Giza', destination: 'Smart Village', pickuptime: '11:00 AM 2024/07/05', count: 2, status: 'Confirmed', own: true },
+        
+    ]);
+    
+
+    const handleDelete = (id: number) => {
+        setRides(rides.filter(ride => ride.id !== id));
     };
+
+
+    const handleCreateRide = () => {
+         navigate('/Dashboard');
+    };
+
     return (
         <Page>
-                <div className="container">
-                <button className="button" onClick={handleCreateRide}> + Create New Ride</button>
+            <div className="container">
+                <button className="button" onClick={handleCreateRide}>+ Create New Ride</button>
             </div>
-            
+
             <div>
                 <table>
                     <thead>
@@ -26,12 +42,13 @@ function Rides() {
                             <th>Status</th>
                         </tr>
                     </thead>
-
+                    <tbody>
+                        {rides.map(ride => (
+                            <RideRow key={ride.id} {...ride} onDelete={handleDelete} />
+                        ))}
+                    </tbody>
                 </table>
-                <RideRow driver="Ahmed" from="October" destination="Zamalek" pickuptime="10:00 AM 2024/07/05" count={3} status="Pending" />
-                <RideRow driver="Ahmed" from="October" destination="Zamalek" pickuptime="10:00 AM 2024/07/05" count={3} status="Pending" />
             </div>
-
         </Page>
     );
 }

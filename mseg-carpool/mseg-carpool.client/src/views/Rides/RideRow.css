@@ -13,3 +13,14 @@ th, td {
 th {
     background-color: #f2f2f2;
 }
+
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+    button:focus {
+        outline: none;
+    }
