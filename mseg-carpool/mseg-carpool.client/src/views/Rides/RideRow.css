@@ -24,3 +24,75 @@ button {
     button:focus {
         outline: none;
     }
+
+.count {
+    font-weight: bold;
+    color: black;
+}
+
+.passenger-icon {
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.status-box {
+    display: inline-block;
+    background-color: lightgrey;
+    color: black;
+    padding: 5px 10px;
+    border-radius: 10px;
+}
+.status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+    .status.pending {
+        background-color: #FFB900;
+        color: white;
+    }
+
+    .status.approved {
+        background-color: #7FBA00;
+        color: white;
+    }
+
+/* Styling for input boxes in editing mode */
+input[type="text"].editing {
+    border: 2px solid #00A4EF; /* Border color when in editing mode */
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+    input[type="text"].editing:focus {
+        outline: none; /* Remove default focus outline */
+        box-shadow: 0 0 5px #00A4EF; /* Add a subtle box shadow when in focus */
+    }
+
+    input[type="text"].editing::placeholder {
+        color: #999; /* Placeholder text color */
+    }
+
+    input[type="text"].editing:hover {
+        background-color: #f5f5f5; /* Background color when hovering over the input box */
+    }
+
+/* Styling for save and cancel buttons */
+button.save-btn, button.cancel-btn {
+    background-color: #00A4EF; /* Background color for save and cancel buttons */
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+    button.save-btn:hover, button.cancel-btn:hover {
+        background-color: whitesmoke; /* Background color when hovering over save and cancel buttons */
+    }
