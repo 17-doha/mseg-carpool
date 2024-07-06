@@ -3,6 +3,7 @@ import Page from "../../components/Page";
 import RideRow from "./RideRow";
 import Pagination from "./Pagination";
 import { useNavigate } from "react-router-dom";
+import SidebarChart from "./SideBarChart"
 import './Rides.css';
 import './RideRow.css';
 
@@ -12,7 +13,7 @@ const Rides = () => {
         { id: 1, driver: 'Ahmed', from: 'October', destination: 'Zamalek', pickuptime: '10:00 AM 2024/07/05', count: 3, status: 'Pending', own: false },
         { id: 3, driver: 'Magdy', from: 'Giza', destination: 'Smart Village', pickuptime: '11:00 AM 2024/07/05', count: 2, status: 'Approved', own: false },
         { id: 2, driver: 'Doha', from: 'Giza', destination: 'Smart Village', pickuptime: '11:00 AM 2024/07/05', count: 2, status: 'Confirmed', own: true },
-
+        { id: 4, driver: 'Doha', from: 'October', destination: 'Smart Village', pickuptime: '11:00 AM 2024/07/05', count: 2, status: 'Confirmed', own: true },
         // Add more rides as needed for testing pagination
     ]);
 
@@ -67,6 +68,9 @@ const Rides = () => {
                     totalPages={Math.ceil(rides.length / ridesPerPage)}
                     onPageChange={handlePageChange}
                 />
+            </div>
+            <div>
+            <SidebarChart />
             </div>
         </Page>
     );
