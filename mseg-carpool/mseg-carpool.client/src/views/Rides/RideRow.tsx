@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUsers } from '@fortawesome/free-solid-svg-icons';
-import { faEdit, faTrashAlt, faSave } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faEdit, faTrashAlt, faSave, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import './RideRow.css';
 
 interface RideRowProps {
@@ -35,9 +34,6 @@ const RideRow: React.FC<RideRowProps> = ({
 
     const handleEditClick = () => {
         if (isEditing) {
-            // Save changes
-            // Perform any necessary actions to save the edited data
-            // For simplicity, just update the state here
             setDriver(editedDriver);
             setFrom(editedFrom);
             setDestination(editedDestination);
@@ -50,6 +46,11 @@ const RideRow: React.FC<RideRowProps> = ({
         if (window.confirm(`Are you sure you want to delete the ride for ${driver}?`)) {
             onDelete(id);
         }
+    };
+
+    const handleMapClick = () => {
+        const url = `https://www.google.com/maps/dir/${encodeURIComponent(from)}/${encodeURIComponent(destination)}`;
+        window.open(url, '_blank');
     };
 
     const setDriver = (value: string) => {
@@ -79,7 +80,7 @@ const RideRow: React.FC<RideRowProps> = ({
                         onChange={(e) => setDriver(e.target.value)}
                     />
                 ) : (
-                        editedDriver
+                    editedDriver
                 )}
             </td>
             <td>
@@ -91,7 +92,7 @@ const RideRow: React.FC<RideRowProps> = ({
                         onChange={(e) => setFrom(e.target.value)}
                     />
                 ) : (
-                        editedFrom
+                    editedFrom
                 )}
             </td>
             <td>
@@ -103,7 +104,7 @@ const RideRow: React.FC<RideRowProps> = ({
                         onChange={(e) => setDestination(e.target.value)}
                     />
                 ) : (
-                        editedDestination
+                    editedDestination
                 )}
             </td>
             <td>
@@ -115,7 +116,7 @@ const RideRow: React.FC<RideRowProps> = ({
                         onChange={(e) => setPickuptime(e.target.value)}
                     />
                 ) : (
-                        editedPickuptime
+                    editedPickuptime
                 )}
             </td>
             <td>
@@ -138,6 +139,9 @@ const RideRow: React.FC<RideRowProps> = ({
                         )}
                         <button className="delete-btn" onClick={handleDeleteClick}>
                             <FontAwesomeIcon icon={faTrashAlt} /> Delete
+                        </button>
+                        <button className="map-btn" onClick={handleMapClick}>
+                            <FontAwesomeIcon icon={faMapMarkerAlt} /> Map
                         </button>
                     </>
                 ) : (

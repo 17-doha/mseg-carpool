@@ -42,6 +42,7 @@ button {
     padding: 5px 10px;
     border-radius: 10px;
 }
+
 .status {
     display: inline-block;
     padding: 5px 10px;
@@ -96,3 +97,16 @@ button.save-btn, button.cancel-btn {
     button.save-btn:hover, button.cancel-btn:hover {
         background-color: whitesmoke; /* Background color when hovering over save and cancel buttons */
     }
+
+button.map-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+    color: #00A4EF;
+}
+
+    button.map-btn:hover {
+        color: #0078D4; /* Darker shade of blue */
+    }
+            
