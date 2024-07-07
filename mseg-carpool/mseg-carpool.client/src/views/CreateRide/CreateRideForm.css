@@ -1,0 +1,116 @@
+/* General styling */
+body {
+    font-family: 'Arial', sans-serif; /* Ensure you add the required font */
+    background-color: #F4F4F4;
+    color: #333;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .container {
+    width: 100%;
+    padding: 20px;
+  }
+  
+  .header {
+    background-color: #E0E0E0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #CCC;
+    margin-bottom: 20px;
+  }
+  
+  .header h1 {
+    font-size: 2.5rem;
+    color: #000;
+  }
+  
+  .header .profile {
+    display: flex;
+    align-items: center;
+  }
+  
+  .header .profile span {
+    margin-right: 10px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .header .profile-icon {
+    background-color: #FF6B6B;
+    color: white;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+  }
+  
+  .radio-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .radio-group label {
+    display: flex;
+    align-items: center;
+  }
+  
+  .radio-group input {
+    margin-right: 10px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #CCC;
+    border-radius: 4px;
+  }
+  
+  .create-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #0066FF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .create-button:hover {
+    background-color: #0056CC;
+  }
+  
+  .create-button:focus,
+  .create-button:focus-visible {
+    outline: 4px auto -webkit-focus-ring-color;
+  }
+  

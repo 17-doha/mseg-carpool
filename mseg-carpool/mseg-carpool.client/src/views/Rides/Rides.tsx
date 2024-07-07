@@ -24,7 +24,7 @@ const Rides = () => {
     };
 
     const handleCreateRide = () => {
-        navigate('/Dashboard');
+        navigate('/CreateRide');
     };
 
     const handlePageChange = (page: number) => {
