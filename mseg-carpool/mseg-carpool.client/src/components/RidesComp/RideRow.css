@@ -109,4 +109,15 @@ button.map-btn {
     button.map-btn:hover {
         color: #0078D4; /* Darker shade of blue */
     }
-            
+
+.info-btn {
+    margin-left: 10px;
+}
+
+.driver-info .card {
+    background-color: #f9f9f9;
+    padding: 20px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}

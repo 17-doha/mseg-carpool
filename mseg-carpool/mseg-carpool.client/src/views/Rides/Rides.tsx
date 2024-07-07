@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import Page from "../../components/Page";
-import RideRow from "./RideRow";
-import Pagination from "./Pagination";
+import RideRow from "../../components/RidesComp/RideRow";
+import Pagination from "../../components/RidesComp/Pagination";
 import { useNavigate } from "react-router-dom";
-import SidebarChart from "./SideBarChart"
 import './Rides.css';
-import './RideRow.css';
+import '../../components/RidesComp/RideRow.css';
 
 const Rides = () => {
     const navigate = useNavigate();
@@ -13,8 +12,8 @@ const Rides = () => {
         { id: 1, driver: 'Ahmed', from: 'October', destination: 'Zamalek', pickuptime: '10:00 AM 2024/07/05', count: 3, status: 'Pending', own: false },
         { id: 3, driver: 'Magdy', from: 'Giza', destination: 'Smart Village', pickuptime: '11:00 AM 2024/07/05', count: 2, status: 'Approved', own: false },
         { id: 2, driver: 'Doha', from: 'Giza', destination: 'Smart Village', pickuptime: '11:00 AM 2024/07/05', count: 2, status: 'Confirmed', own: true },
-        { id: 4, driver: 'Doha', from: 'October', destination: 'Smart Village', pickuptime: '11:00 AM 2024/07/05', count: 2, status: 'Confirmed', own: true },
-        // Add more rides as needed for testing pagination
+        { id: 4, driver: 'Doha', from: 'October', destination: 'Smart Village', pickuptime: '11:00 AM 2024/07/05', count: 2, status: 'Confirmed', own: true }
+        
     ]);
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -32,7 +31,6 @@ const Rides = () => {
         setCurrentPage(page);
     };
 
-    // Calculate current rides
     const indexOfLastRide = currentPage * ridesPerPage;
     const indexOfFirstRide = indexOfLastRide - ridesPerPage;
     const currentRides = rides.slice(indexOfFirstRide, indexOfLastRide);
@@ -69,9 +67,9 @@ const Rides = () => {
                     onPageChange={handlePageChange}
                 />
             </div>
-            <div>
-            <SidebarChart />
-            </div>
+            {/*<div>*/}
+            {/*<BasicPie />*/}
+            {/*</div>*/}
         </Page>
     );
 };
