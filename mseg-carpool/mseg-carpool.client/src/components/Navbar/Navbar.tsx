@@ -67,6 +67,18 @@ function Navbar() {
                             },
                             onClick: () => navigate("/dashboard"),
                         },
+                        {
+                            key: "search",
+                            text: "Search",
+                            className: matchPath("/search", pathname) ? "open" : "",
+                            buttonStyles: {
+                                root: {
+                                    paddingLeft: 10,
+                                    paddingRight: 10,
+                                },
+                            },
+                            onClick: () => navigate("/search"),
+                        },
                     ]}
                 />
             </Stack.Item>
