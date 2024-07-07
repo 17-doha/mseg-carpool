@@ -56,6 +56,18 @@ function Navbar() {
                             onClick: () => navigate("/rides"),
                         },
                         {
+                            key: "requests",
+                            text: "Requests",
+                            className: matchPath("/requests", pathname) ? "open" : "",
+                            buttonStyles: {
+                                root: {
+                                    paddingLeft: 10,
+                                    paddingRight: 10,
+                                },
+                            },
+                            onClick: () => navigate("/requests"),
+                        },
+                        {
                             key: "dashboard",
                             text: "Dashboard",
                             className: matchPath("/dashboard", pathname) ? "open" : "",

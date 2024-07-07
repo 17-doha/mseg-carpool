@@ -3,6 +3,7 @@ import App from "./App";
 import Rides from "./views/Rides";
 import Dashboard from "./views/Dashboard";
 import Search from "./views/Search/Search"
+import Requests from "./views/Requests/Requests";
 
 const router = createBrowserRouter([
     {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
             {
                 path: "/rides",
                 element: <Rides />,
+            },
+            {
+                path: "/requests",
+                element: <Requests />,
             },
             {
                 path: "/dashboard",
