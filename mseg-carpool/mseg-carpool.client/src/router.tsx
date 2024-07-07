@@ -4,6 +4,7 @@ import Rides from "./views/Rides";
 import Dashboard from "./views/Dashboard";
 import Search from "./views/Search/Search"
 import Requests from "./views/Requests/Requests";
+import CreateRideForm from "./views/CreateRide/CreateRideForm";
 
 const router = createBrowserRouter([
     {
@@ -33,7 +34,12 @@ const router = createBrowserRouter([
             {
                 path: "*",
                 element: <Navigate to="/" replace />,
+            },
+            {
+                path: "/CreateRide",
+                element: <CreateRideForm />,
             }
+
         ],
     }
 ]);
