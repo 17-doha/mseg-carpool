@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 
 interface Ride {
     id: number;
@@ -8,8 +9,7 @@ interface Ride {
     pickuptime: string;
     count: number;
     status: string;
-  }
-  
+} 
 // RideCard component
 const RideCard = ({ ride }: { ride: Ride }) => {
     const [dropoffLocation, setDropoffLocation] = useState('');
