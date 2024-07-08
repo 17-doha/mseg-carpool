@@ -5,11 +5,11 @@ import './RideRow.css';
 
 interface RideRowProps {
     id: number;
-    driver: string;
-    from: string;
+    name: string;
+    origin: string;
     destination: string;
-    pickuptime: string;
-    ridesLeft: string;
+    departureTime: string;
+    availableSeats: string;
     status: string;
     own: boolean;
     email: string;
@@ -23,11 +23,11 @@ interface RideRowProps {
 
 const RideRow: React.FC<RideRowProps> = ({
     id,
-    driver,
-    from,
+    name,
+    origin,
     destination,
-    pickuptime,
-    ridesLeft,
+    departureTime,
+    availableSeats,
     status,
     own,
     email,
@@ -40,10 +40,10 @@ const RideRow: React.FC<RideRowProps> = ({
 }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [isInfoVisible, setIsInfoVisible] = useState(false);
-    const [editedDriver, setEditedDriver] = useState(driver);
-    const [editedFrom, setEditedFrom] = useState(from);
+    const [editedDriver, setEditedDriver] = useState(name);
+    const [editedFrom, setEditedFrom] = useState(origin);
     const [editedDestination, setEditedDestination] = useState(destination);
-    const [editedPickuptime, setEditedPickuptime] = useState(pickuptime);
+    const [editedPickuptime, setEditedPickuptime] = useState(departureTime);
 
     const handleEditClick = () => {
         if (isEditing) {
@@ -56,13 +56,13 @@ const RideRow: React.FC<RideRowProps> = ({
     };
 
     const handleDeleteClick = () => {
-        if (window.confirm(`Are you sure you want to delete the ride for ${driver}?`)) {
+        if (window.confirm(`Are you sure you want to delete the ride for ${name}?`)) {
             onDelete(id);
         }
     };
 
     const handleMapClick = () => {
-        const url = `https://www.google.com/maps/dir/${encodeURIComponent(from)}/${encodeURIComponent(destination)}`;
+        const url = `https://www.google.com/maps/dir/${encodeURIComponent(departureTime)}/${encodeURIComponent(destination)}`;
         window.open(url, '_blank');
     };
 
@@ -141,31 +141,31 @@ const RideRow: React.FC<RideRowProps> = ({
                     <span className="passenger-icon">
                         <FontAwesomeIcon icon={faUsers} />
                     </span>
-                    <span className="count">{ridesLeft}</span>
+                    <span className="count">{"0/" + availableSeats}</span>
                 </td>
                 <td>
                     {own ? (
                         <>
                             {isEditing ? (
-                                <button className="save-btn" onClick={handleEditClick}>
+                                <button className="button-class save-btn" onClick={handleEditClick}>
                                     <FontAwesomeIcon icon={faSave} /> Save
                                 </button>
                             ) : (
-                                <button className="edit-btn" onClick={handleEditClick}>
+                                    <button className="button-class edit-btn" onClick={handleEditClick}>
                                     <FontAwesomeIcon icon={faEdit} /> Edit
                                 </button>
                             )}
-                            <button className="delete-btn" onClick={handleDeleteClick}>
+                            <button className="button-class delete-btn" onClick={handleDeleteClick}>
                                 <FontAwesomeIcon icon={faTrashAlt} /> Delete
                             </button>
-                            <button className="map-btn" onClick={handleMapClick}>
+                            <button className="button-class map-btn" onClick={handleMapClick}>
                                 <FontAwesomeIcon icon={faMapMarkerAlt} /> Map
                             </button>
                         </>
                     ) : (
                         <span className={`status ${status.toLowerCase()}`}>{status}</span>
                     )}
-                    <button className="info-btn" onClick={handleInfoClick}>
+                    <button className="button-class info-btn" onClick={handleInfoClick}>
                         <FontAwesomeIcon icon={faInfoCircle} /> Info
                     </button>
                 </td>

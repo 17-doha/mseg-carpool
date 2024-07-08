@@ -60,8 +60,9 @@ const CreateRideForm = () => {
     // Add your form submission logic here
   };
 
-  return (
-    <div className="container">
+    return (
+
+    <div className="container body-create">
       <header className="header">
         <h1>Create New Ride</h1>
         <div className="profile">

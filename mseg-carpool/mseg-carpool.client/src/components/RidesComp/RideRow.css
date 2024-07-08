@@ -14,14 +14,14 @@ th {
     background-color: #f2f2f2;
 }
 
-button {
+.button-class {
     background: none;
     border: none;
     cursor: pointer;
     margin-right: 5px;
 }
 
-    button:focus {
+    .button-class:focus {
         outline: none;
     }
 
@@ -83,7 +83,7 @@ input[type="text"].editing {
     }
 
 /* Styling for save and cancel buttons */
-button.save-btn, button.cancel-btn {
+.button-class.save-btn, .button-class.cancel-btn {
     background-color: #00A4EF; /* Background color for save and cancel buttons */
     color: white;
     padding: 8px 12px;
@@ -94,11 +94,11 @@ button.save-btn, button.cancel-btn {
     margin-top: 10px;
 }
 
-    button.save-btn:hover, button.cancel-btn:hover {
+    .button-class.save-btn:hover, .button-class.cancel-btn:hover {
         background-color: whitesmoke; /* Background color when hovering over save and cancel buttons */
     }
 
-button.map-btn {
+.button-class.map-btn {
     background: none;
     border: none;
     cursor: pointer;
@@ -106,7 +106,7 @@ button.map-btn {
     color: #00A4EF;
 }
 
-    button.map-btn:hover {
+    .button-class.map-btn:hover {
         color: #0078D4; /* Darker shade of blue */
     }
 

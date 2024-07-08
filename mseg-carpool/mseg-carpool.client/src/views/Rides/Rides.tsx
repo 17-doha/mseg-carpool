@@ -1,23 +1,22 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Page from "../../components/Page";
 import RideRow from "../../components/RidesComp/RideRow";
 import Pagination from "../../components/RidesComp/Pagination";
 import { useNavigate } from "react-router-dom";
 import './Rides.css';
 import '../../components/RidesComp/RideRow.css';
+import RideData from './datatry.json'; // Assuming datatry.json is in the same directory
 
 const Rides = () => {
     const navigate = useNavigate();
-    const [rides, setRides] = useState([
-        { id: 1, driver: 'Ahmed', from: 'October', destination: 'Zamalek', pickuptime: '10:00 AM 2024/07/05', count: 3, status: 'Pending', own: false },
-        { id: 3, driver: 'Magdy', from: 'Giza', destination: 'Smart Village', pickuptime: '11:00 AM 2024/07/05', count: 2, status: 'Approved', own: false },
-        { id: 2, driver: 'Doha', from: 'Giza', destination: 'Smart Village', pickuptime: '11:00 AM 2024/07/05', count: 2, status: 'Confirmed', own: true },
-        { id: 4, driver: 'Doha', from: 'October', destination: 'Smart Village', pickuptime: '11:00 AM 2024/07/05', count: 2, status: 'Confirmed', own: true }
-        
-    ]);
-
+    const [rides, setRides] = useState<Ride[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const ridesPerPage = 3;
+
+    useEffect(() => {
+        setRides(RideData); // Set rides from imported JSON
+        console.log(RideData);
+    }, []);
 
     const handleDelete = (id: number) => {
         setRides(rides.filter(ride => ride.id !== id));
@@ -56,6 +55,7 @@ const Rides = () => {
                     <tbody>
                         {currentRides.map(ride => (
                             <RideRow key={ride.id} {...ride} onDelete={handleDelete} />
+                            
                         ))}
                     </tbody>
                 </table>
@@ -67,9 +67,6 @@ const Rides = () => {
                     onPageChange={handlePageChange}
                 />
             </div>
-            {/*<div>*/}
-            {/*<BasicPie />*/}
-            {/*</div>*/}
         </Page>
     );
 };
