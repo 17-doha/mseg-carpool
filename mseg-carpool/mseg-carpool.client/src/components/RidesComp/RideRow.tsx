@@ -56,7 +56,7 @@ const RideRow: React.FC<RideRowProps> = ({
     };
 
     const handleDeleteClick = () => {
-        if (window.confirm(`Are you sure you want to delete the ride for ${name}?`)) {
+        if (window.confirm(`Are you sure you want to delete the ride oof ${name}?`)) {
             onDelete(id);
         }
     };
