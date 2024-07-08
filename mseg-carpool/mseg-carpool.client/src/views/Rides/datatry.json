@@ -8,11 +8,11 @@
             "azureID": "drv123",
             "name": "John Doe",
             "email": "john.doe@example.com",
-            "mobileNumber": "555-1234",
+            "mobileNumber": " ",
             "location": "Downtown",
-            "driverCar": "Toyota Prius",
-            "driverCarPlate": "XYZ 1234",
-            "driverCarColor": "Blue"
+            "driverCar": " ",
+            "driverCarPlate": " ",
+            "driverCarColor": " "
         },
         "riders": [
             {
@@ -24,7 +24,8 @@
             }
         ],
         "departureTime": "2024-07-07T19:21:39.610Z",
-        "status": "Pending"
+        "status": "Pending",
+        "own": "0"
     },
     {
         "id": 2,
@@ -35,11 +36,11 @@
             "azureID": "drv789",
             "name": "Alice Johnson",
             "email": "alice.johnson@example.com",
-            "mobileNumber": "555-8765",
+            "mobileNumber": " ",
             "location": "City Center",
-            "driverCar": "Honda Accord",
-            "driverCarPlate": "ABC 5678",
-            "driverCarColor": "Red"
+            "driverCar": " ",
+            "driverCarPlate": " ",
+            "driverCarColor": " "
         },
         "riders": [
             {
@@ -51,7 +52,8 @@
             }
         ],
         "departureTime": "2024-07-08T09:00:00.000Z",
-        "status": "Approved"
+        "status": "Approved",
+        "own": "0"
     },
     {
         "id": 3,
@@ -62,11 +64,11 @@
             "azureID": "drv234",
             "name": "Charlie Williams",
             "email": "charlie.williams@example.com",
-            "mobileNumber": "555-9876",
+            "mobileNumber": " ",
             "location": "Old Town",
-            "driverCar": "Ford Focus",
-            "driverCarPlate": "LMN 9101",
-            "driverCarColor": "Green"
+            "driverCar": " ",
+            "driverCarPlate": " ",
+            "driverCarColor": " "
         },
         "riders": [
             {
@@ -78,7 +80,8 @@
             }
         ],
         "departureTime": "2024-07-09T15:30:00.000Z",
-        "status": "Approved"
+        "status": "Approved",
+        "own": "0"
     },
     {
         "id": 4,
@@ -89,11 +92,11 @@
             "azureID": "drv678",
             "name": "Emily Davis",
             "email": "emily.davis@example.com",
-            "mobileNumber": "555-3210",
+            "mobileNumber": " ",
             "location": "Suburb",
-            "driverCar": "Chevrolet Malibu",
-            "driverCarPlate": "DEF 3456",
-            "driverCarColor": "Black"
+            "driverCar": " ",
+            "driverCarPlate": " ",
+            "driverCarColor": " "
         },
         "riders": [
             {
@@ -105,7 +108,8 @@
             }
         ],
         "departureTime": "2024-07-10T08:45:00.000Z",
-        "status": "Pending"
+        "status": "Pending",
+        "own": "1"
     },
     {
         "id": 5,
@@ -116,11 +120,11 @@
             "azureID": "drv345",
             "name": "George Martin",
             "email": "george.martin@example.com",
-            "mobileNumber": "555-6789",
+            "mobileNumber": " ",
             "location": "Main Street",
-            "driverCar": "BMW 3 Series",
-            "driverCarPlate": "GHI 7890",
-            "driverCarColor": "White"
+            "driverCar": " ",
+            "driverCarPlate": " ",
+            "driverCarColor": " "
         },
         "riders": [
             {
@@ -132,6 +136,7 @@
             }
         ],
         "departureTime": "2024-07-11T12:00:00.000Z",
-        "status": "Approved"
+        "status": "Approved",
+        "own": "1"
     }
 ]
