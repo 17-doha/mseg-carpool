@@ -1,5 +1,11 @@
+<<<<<<< HEAD:mseg-carpool/mseg-carpool.client/src/components/CreateRide/CreateRideForm.jsx
 import React, { useState, useEffect } from 'react';
 import './CreateRideForm.css'
+=======
+import { useState, useEffect } from 'react';
+import './CreateRideForm.css';
+
+>>>>>>> 9dc57cdbc8ed3f64a185407b71c7ad90e3c0c5fe:mseg-carpool/mseg-carpool.client/src/views/CreateRide/CreateRideForm.tsx
 const CreateRideForm = () => {
     const [rideType, setRideType] = useState('toOffice');
     const [pickUpPoint, setPickUpPoint] = useState('');
@@ -18,10 +24,49 @@ const CreateRideForm = () => {
         }
     }, []);
 
+<<<<<<< HEAD:mseg-carpool/mseg-carpool.client/src/components/CreateRide/CreateRideForm.jsx
     const handleRideTypeChange = (event) => {
         setRideType(event.target.value);
+=======
+    if (savedRideType) setRideType(savedRideType);
+    if (savedPickUpPoint) setPickUpPoint(savedPickUpPoint);
+    if (savedOffice) setOffice(savedOffice);
+    if (savedDateTime) setDateTime(savedDateTime);
+    if (savedSeats) setSeats(savedSeats);
+  }, []);
+
+  const handleRideTypeChange = (event: any) => {
+    setRideType(event.target.value);
+  };
+
+  const handlePickUpPointChange = (event: any) => {
+    setPickUpPoint(event.target.value);
+  };
+
+  const handleOfficeChange = (event: any) => {
+    setOffice(event.target.value);
+  };
+
+  const handleDateTimeChange = (event: any) => {
+    setDateTime(event.target.value);
+  };
+
+  const handleSeatsChange = (event: any) => {
+    setSeats(event.target.value);
+  };
+
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+    const formData = {
+      rideType,
+      pickUpPoint,
+      office,
+      dateTime,
+      seats
+>>>>>>> 9dc57cdbc8ed3f64a185407b71c7ad90e3c0c5fe:mseg-carpool/mseg-carpool.client/src/views/CreateRide/CreateRideForm.tsx
     };
 
+<<<<<<< HEAD:mseg-carpool/mseg-carpool.client/src/components/CreateRide/CreateRideForm.jsx
     const handlePickUpPointChange = (event) => {
         setPickUpPoint(event.target.value);
     };
@@ -163,6 +208,49 @@ const CreateRideForm = () => {
                     </div>
                     <button className="create-button" type="submit">Create</button>
                 </form>
+=======
+    return (
+
+    <div className="container body-create">
+      <header className="header">
+        <h1>Create New Ride</h1>
+        <div className="profile">
+          <span>Commute Commanders</span>
+          <div className="profile-icon">CC</div>
+        </div>
+      </header>
+      <form className="form" onSubmit={handleSubmit}>
+        <div className="radio-group">
+          <label>
+            <input
+              type="radio"
+              value="toOffice"
+              checked={rideType === 'toOffice'}
+              onChange={handleRideTypeChange}
+            />
+            To Office
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="fromOffice"
+              checked={rideType === 'fromOffice'}
+              onChange={handleRideTypeChange}
+            />
+            From Office
+          </label>
+        </div>
+        {rideType === 'toOffice' && (
+          <div className="toOffice-group">
+            <div className="form-group">
+              <label>Pick Up Point</label>
+              <input
+                type="text"
+                placeholder="Pick Up Point"
+                value={pickUpPoint}
+                onChange={handlePickUpPointChange}
+              />
+>>>>>>> 9dc57cdbc8ed3f64a185407b71c7ad90e3c0c5fe:mseg-carpool/mseg-carpool.client/src/views/CreateRide/CreateRideForm.tsx
             </div>
             <div className="map-container">
                 <div className="map-placeholder">
