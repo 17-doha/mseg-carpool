@@ -1,11 +1,20 @@
 <<<<<<< HEAD:mseg-carpool/mseg-carpool.client/src/components/CreateRide/CreateRideForm.jsx
 import React, { useState, useEffect } from 'react';
 import './CreateRideForm.css'
+<<<<<<< HEAD:mseg-carpool/mseg-carpool.client/src/views/CreateRide/CreateRideForm.tsx
+=======
+<<<<<<< Updated upstream:mseg-carpool/mseg-carpool.client/src/components/CreateRide/CreateRideForm.jsx
+=======
+>>>>>>> Youssef2:mseg-carpool/mseg-carpool.client/src/components/CreateRide/CreateRideForm.jsx
 =======
 import { useState, useEffect } from 'react';
 import './CreateRideForm.css';
 
+<<<<<<< HEAD:mseg-carpool/mseg-carpool.client/src/views/CreateRide/CreateRideForm.tsx
 >>>>>>> 9dc57cdbc8ed3f64a185407b71c7ad90e3c0c5fe:mseg-carpool/mseg-carpool.client/src/views/CreateRide/CreateRideForm.tsx
+=======
+>>>>>>> Stashed changes:mseg-carpool/mseg-carpool.client/src/views/CreateRide/CreateRideForm.tsx
+>>>>>>> Youssef2:mseg-carpool/mseg-carpool.client/src/components/CreateRide/CreateRideForm.jsx
 const CreateRideForm = () => {
     const [rideType, setRideType] = useState('toOffice');
     const [pickUpPoint, setPickUpPoint] = useState('');
@@ -23,6 +32,7 @@ const CreateRideForm = () => {
             setSeats(savedFormData.seats);
         }
     }, []);
+<<<<<<< Updated upstream:mseg-carpool/mseg-carpool.client/src/components/CreateRide/CreateRideForm.jsx
 
 <<<<<<< HEAD:mseg-carpool/mseg-carpool.client/src/components/CreateRide/CreateRideForm.jsx
     const handleRideTypeChange = (event) => {
@@ -66,7 +76,51 @@ const CreateRideForm = () => {
 >>>>>>> 9dc57cdbc8ed3f64a185407b71c7ad90e3c0c5fe:mseg-carpool/mseg-carpool.client/src/views/CreateRide/CreateRideForm.tsx
     };
 
+<<<<<<< HEAD:mseg-carpool/mseg-carpool.client/src/views/CreateRide/CreateRideForm.tsx
 <<<<<<< HEAD:mseg-carpool/mseg-carpool.client/src/components/CreateRide/CreateRideForm.jsx
+=======
+=======
+    
+    const handleRideTypeChange = (event) => {
+        setRideType(event.target.value);
+    if (savedRideType) setRideType(savedRideType);
+    if (savedPickUpPoint) setPickUpPoint(savedPickUpPoint);
+    if (savedOffice) setOffice(savedOffice);
+    if (savedDateTime) setDateTime(savedDateTime);
+    if (savedSeats) setSeats(savedSeats);
+  }, []);
+
+  const handleRideTypeChange = (event: any) => {
+    setRideType(event.target.value);
+  };
+
+  const handlePickUpPointChange = (event: any) => {
+    setPickUpPoint(event.target.value);
+  };
+
+  const handleOfficeChange = (event: any) => {
+    setOffice(event.target.value);
+  };
+
+  const handleDateTimeChange = (event: any) => {
+    setDateTime(event.target.value);
+  };
+
+  const handleSeatsChange = (event: any) => {
+    setSeats(event.target.value);
+  };
+
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+    const formData = {
+      rideType,
+      pickUpPoint,
+      office,
+      dateTime,
+      seats
+    };
+>>>>>>> Stashed changes:mseg-carpool/mseg-carpool.client/src/views/CreateRide/CreateRideForm.tsx
+>>>>>>> Youssef2:mseg-carpool/mseg-carpool.client/src/components/CreateRide/CreateRideForm.jsx
     const handlePickUpPointChange = (event) => {
         setPickUpPoint(event.target.value);
     };
