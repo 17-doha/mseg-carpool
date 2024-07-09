@@ -11,4 +11,7 @@
   <ItemGroup>
     <Folder Include="src\views\Requests\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include=".vscode\launch.json" />
+  </ItemGroup>
 </Project>
