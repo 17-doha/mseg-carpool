@@ -1,0 +1,142 @@
+[
+    {
+        "id": 1,
+        "origin": "Downtown",
+        "destination": "Airport",
+        "availableSeats": 3,
+        "rideDriver": {
+            "azureID": "drv123",
+            "name": "John Doe",
+            "email": "john.doe@example.com",
+            "mobileNumber": " ",
+            "location": "Downtown",
+            "driverCar": " ",
+            "driverCarPlate": " ",
+            "driverCarColor": " "
+        },
+        "riders": [
+            {
+                "azureID": "rdr456",
+                "name": "Jane Smith",
+                "email": "jane.smith@example.com",
+                "mobileNumber": "555-5678",
+                "location": "Suburb"
+            }
+        ],
+        "departureTime": "2024-07-07T19:21:39.610Z",
+        "status": "Pending",
+        "own": "0"
+    },
+    {
+        "id": 2,
+        "origin": "City Center",
+        "destination": "Beach",
+        "availableSeats": 2,
+        "rideDriver": {
+            "azureID": "drv789",
+            "name": "Alice Johnson",
+            "email": "alice.johnson@example.com",
+            "mobileNumber": " ",
+            "location": "City Center",
+            "driverCar": " ",
+            "driverCarPlate": " ",
+            "driverCarColor": " "
+        },
+        "riders": [
+            {
+                "azureID": "rdr012",
+                "name": "Bob Brown",
+                "email": "bob.brown@example.com",
+                "mobileNumber": "555-4321",
+                "location": "Uptown"
+            }
+        ],
+        "departureTime": "2024-07-08T09:00:00.000Z",
+        "status": "Approved",
+        "own": "0"
+    },
+    {
+        "id": 3,
+        "origin": "Old Town",
+        "destination": "New City",
+        "availableSeats": 4,
+        "rideDriver": {
+            "azureID": "drv234",
+            "name": "Charlie Williams",
+            "email": "charlie.williams@example.com",
+            "mobileNumber": " ",
+            "location": "Old Town",
+            "driverCar": " ",
+            "driverCarPlate": " ",
+            "driverCarColor": " "
+        },
+        "riders": [
+            {
+                "azureID": "rdr345",
+                "name": "Diana Evans",
+                "email": "diana.evans@example.com",
+                "mobileNumber": "555-6543",
+                "location": "Midtown"
+            }
+        ],
+        "departureTime": "2024-07-09T15:30:00.000Z",
+        "status": "Approved",
+        "own": "0"
+    },
+    {
+        "id": 4,
+        "origin": "Suburb",
+        "destination": "Downtown",
+        "availableSeats": 1,
+        "rideDriver": {
+            "azureID": "drv678",
+            "name": "Emily Davis",
+            "email": "emily.davis@example.com",
+            "mobileNumber": " ",
+            "location": "Suburb",
+            "driverCar": " ",
+            "driverCarPlate": " ",
+            "driverCarColor": " "
+        },
+        "riders": [
+            {
+                "azureID": "rdr789",
+                "name": "Frank Harris",
+                "email": "frank.harris@example.com",
+                "mobileNumber": "555-7890",
+                "location": "Old Town"
+            }
+        ],
+        "departureTime": "2024-07-10T08:45:00.000Z",
+        "status": "Pending",
+        "own": "1"
+    },
+    {
+        "id": 5,
+        "origin": "Main Street",
+        "destination": "Business Park",
+        "availableSeats": 5,
+        "rideDriver": {
+            "azureID": "drv345",
+            "name": "George Martin",
+            "email": "george.martin@example.com",
+            "mobileNumber": " ",
+            "location": "Main Street",
+            "driverCar": " ",
+            "driverCarPlate": " ",
+            "driverCarColor": " "
+        },
+        "riders": [
+            {
+                "azureID": "rdr012",
+                "name": "Helen Clark",
+                "email": "helen.clark@example.com",
+                "mobileNumber": "555-2345",
+                "location": "City Center"
+            }
+        ],
+        "departureTime": "2024-07-11T12:00:00.000Z",
+        "status": "Approved",
+        "own": "1"
+    }
+]
