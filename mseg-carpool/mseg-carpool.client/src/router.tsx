@@ -5,7 +5,11 @@ import Dashboard from "./views/Dashboard";
 import Search from "./views/Search/Search"
 import Requests from "./views/Requests/Requests";
 import CreateRideForm from "./views/CreateRide/CreateRideForm";
+import DriverForm from "./views/Rides/formExtra";
 
+const handleFormSubmit = (data: { driverCar: string; driverCarPlate: string; driverCarColor: string; mobileNumber: string; }) => {
+    console.log("Form Data:", data);
+};
 const router = createBrowserRouter([
     {
         path: "/",
@@ -38,6 +42,10 @@ const router = createBrowserRouter([
             {
                 path: "/CreateRide",
                 element: <CreateRideForm />,
+            },
+            {
+                path: "/formExtra",
+                element: <DriverForm onSubmit={handleFormSubmit} />,
             }
 
         ],

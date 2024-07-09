@@ -6,8 +6,6 @@ import { useNavigate } from "react-router-dom";
 import './Rides.css';
 import '../../components/RidesComp/RideRow.css';
 import RideData from './datatry.json';
-
-// Assuming Calendar component is imported here
 import Calendar from '../../components/RidesComp/Calender'; // Adjust the path as per your actual component location
 
 interface RideDriver {
@@ -19,8 +17,6 @@ interface RideDriver {
     driverCar: string;
     driverCarPlate: string;
     driverCarColor: string;
-    
-
 }
 
 interface Ride {
@@ -39,7 +35,6 @@ interface Ride {
         mobileNumber: string;
         location: string;
     }>;
-    
 }
 
 const Rides = () => {
@@ -47,6 +42,7 @@ const Rides = () => {
     const [rides, setRides] = useState<Ride[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const ridesPerPage = 10;
+    const [hasClickedCreateRide, setHasClickedCreateRide] = useState(false);
 
     useEffect(() => {
         setRides(RideData);
@@ -55,10 +51,20 @@ const Rides = () => {
     const handleDelete = (id: number) => {
         setRides(rides.filter(ride => ride.id !== id));
     };
-
     const handleCreateRide = () => {
-        navigate('/CreateRide');
+        if (!hasClickedCreateRide) {
+            // Update hasClickedCreateRide in local storage
+            localStorage.setItem('hasClickedCreateRide', JSON.stringify(true));
+            console.log(hasClickedCreateRide);
+            // Navigate to formExtra for the first time
+            navigate('/CreateRide');
+        } else {
+            // Navigate to CreateRideForm subsequently
+            navigate('/CreateRide');
+        }
     };
+
+
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
@@ -121,7 +127,6 @@ const Rides = () => {
                 <div className="calendar-container">
                     <Calendar rides={rides} />
                 </div>
-
             </div>
         </Page>
     );

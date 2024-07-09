@@ -10,14 +10,14 @@ interface PaginationProps {
 const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
     return (
         <div>
-            <button onClick={() => onPageChange(currentPage - 1)}>
+            <button className="button-class" onClick={() => onPageChange(currentPage - 1)}>
                 <ChevronLeft />
             </button>
             <span>{currentPage} of {totalPages}</span>
-            <button onClick={() => onPageChange(currentPage + 1)}>
+            <button className="button-class"  onClick={() => onPageChange(currentPage + 1)}>
                 <ChevronRight />
             </button>
-            <button>
+            <button className="button-class">
                 <MoreHorizontal />
             </button>
         </div>
