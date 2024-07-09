@@ -75,13 +75,7 @@ const CreateRideForm: React.FC = () => {
 
     return (
         <div className="container body-create">
-            <header className="header">
-                <h1>Create New Ride</h1>
-                <div className="profile">
-                    <span>Commute Commanders</span>
-                    <div className="profile-icon">CC</div>
-                </div>
-            </header>
+       
             <form className="form" onSubmit={handleSubmit}>
                 <div className="radio-group">
                     <label>

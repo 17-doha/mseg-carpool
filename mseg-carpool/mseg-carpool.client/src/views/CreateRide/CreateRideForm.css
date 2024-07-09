@@ -1,13 +1,5 @@
-<<<<<<< HEAD:mseg-carpool/mseg-carpool.client/src/components/CreateRide/CreateRideForm.css
 /* Reset some basic styles */
 * {
-=======
-/* General styling */
-.body-create {
-    font-family: 'Arial', sans-serif; /* Ensure you add the required font */
-    background-color: #F4F4F4;
-    color: #333;
->>>>>>> 9dc57cdbc8ed3f64a185407b71c7ad90e3c0c5fe:mseg-carpool/mseg-carpool.client/src/views/CreateRide/CreateRideForm.css
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -20,33 +12,22 @@ html, body {
 }
 
 /* Set the body to flexbox and center content vertically and horizontally */
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-<<<<<<< HEAD:mseg-carpool/mseg-carpool.client/src/components/CreateRide/CreateRideForm.css
-    background-color: #F4F4F4;
-    margin: 0;
-    overflow: hidden; /* Ensure no overflow */
+/* body {
+  justify-content: center;
+  align-items: center;
+  background-color: #F4F4F4;
+  margin: 0;
+  
+ /* overflow: hidden; Ensure no overflow */
 }
 
+*/
 /* Ensure the container takes up most of the available space */
 .container {
-=======
-  }
-  
-  .container {
-    width: 100%;
-    padding: 20px;
-  }
-  
-  .header {
-    background-color: #E0E0E0;
->>>>>>> 9dc57cdbc8ed3f64a185407b71c7ad90e3c0c5fe:mseg-carpool/mseg-carpool.client/src/views/CreateRide/CreateRideForm.css
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    width: 140%; /* Adjusted to leave some margin */
+    width: 90%; /* Adjusted to leave some margin */
     max-width: 1200px;
     padding: 20px;
     height: 50vh; /* Ensure the container takes full height */
@@ -54,14 +35,14 @@ body {
 
 /* Ensure the form container takes up a fixed width */
 .form-container {
-    flex: 3; /* Adjusted to control the width */
+    flex: 5; /* Adjusted to control the width, increasing to widen form */
     margin-right: 20px;
     height: 100%;
 }
 
 /* Ensure the map container takes up the remaining space */
 .map-container {
-    flex: 4; /* Adjusted to control the width */
+    flex: 3; /* Adjusted to control the width, decreasing to shrink map placeholder */
     height: 100%;
 }
 
