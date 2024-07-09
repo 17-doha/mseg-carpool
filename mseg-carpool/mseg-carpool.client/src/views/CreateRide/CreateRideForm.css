@@ -11,17 +11,6 @@ html, body {
     font-family: 'Arial', sans-serif;
 }
 
-/* Set the body to flexbox and center content vertically and horizontally */
-/* body {
-  justify-content: center;
-  align-items: center;
-  background-color: #F4F4F4;
-  margin: 0;
-  
- /* overflow: hidden; Ensure no overflow */
-}
-
-*/
 /* Ensure the container takes up most of the available space */
 .container {
     display: flex;
@@ -36,13 +25,13 @@ html, body {
 /* Ensure the form container takes up a fixed width */
 .form-container {
     flex: 5; /* Adjusted to control the width, increasing to widen form */
-    margin-right: 20px;
+    margin-right: 10px;
     height: 100%;
 }
 
 /* Ensure the map container takes up the remaining space */
 .map-container {
-    flex: 3; /* Adjusted to control the width, decreasing to shrink map placeholder */
+    flex: 2; /* Adjusted to control the width, decreasing to shrink map placeholder */
     height: 100%;
 }
 
