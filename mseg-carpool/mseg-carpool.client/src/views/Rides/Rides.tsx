@@ -42,8 +42,7 @@ const Rides = () => {
     const [rides, setRides] = useState<Ride[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const ridesPerPage = 10;
-    const [hasClickedCreateRide, setHasClickedCreateRide] = useState(false);
-
+    
     useEffect(() => {
         setRides(RideData);
     }, []);
@@ -52,16 +51,7 @@ const Rides = () => {
         setRides(rides.filter(ride => ride.id !== id));
     };
     const handleCreateRide = () => {
-        if (!hasClickedCreateRide) {
-            // Update hasClickedCreateRide in local storage
-            localStorage.setItem('hasClickedCreateRide', JSON.stringify(true));
-            console.log(hasClickedCreateRide);
-            // Navigate to formExtra for the first time
-            navigate('/CreateRide');
-        } else {
-            // Navigate to CreateRideForm subsequently
-            navigate('/CreateRide');
-        }
+        navigate('/CreateRide');
     };
 
 
