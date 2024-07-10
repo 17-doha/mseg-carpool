@@ -42,29 +42,19 @@ const Rides = () => {
     const [rides, setRides] = useState<Ride[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const ridesPerPage = 10;
-    const [hasClickedCreateRide, setHasClickedCreateRide] = useState(false);
-
+    
     useEffect(() => {
         setRides(RideData);
-        const savedHasClickedCreateRide = localStorage.getItem('hasClickedCreateRide');
-        if (savedHasClickedCreateRide) {
-            setHasClickedCreateRide(JSON.parse(savedHasClickedCreateRide));
-        }
     }, []);
 
     const handleDelete = (id: number) => {
         setRides(rides.filter(ride => ride.id !== id));
     };
-
     const handleCreateRide = () => {
-        const driverFormData = localStorage.getItem('driverFormData');
-        if (driverFormData) {
-            // Navigate to CreateRideForm if data exists
-            navigate('/CreateRide');
-        } else {
-            navigate('/formExtra');
-        }
+        navigate('/CreateRide');
     };
+
+
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
@@ -76,7 +66,10 @@ const Rides = () => {
 
     return (
         <Page>
-            <div className="container">
+          
+
+            <div className="container-ride">
+
                 <button className="button" onClick={handleCreateRide}>+ Create New Ride</button>
             </div>
 

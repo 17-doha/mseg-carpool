@@ -12,7 +12,7 @@ html, body {
 }
 
 /* Set the body to flexbox and center content vertically and horizontally */
-/* body {
+ body {
   justify-content: center;
   align-items: center;
   background-color: #F4F4F4;
@@ -21,16 +21,16 @@ html, body {
  /* overflow: hidden; Ensure no overflow */
 }
 
-*/
+
 /* Ensure the container takes up most of the available space */
-.container {
+.container-create {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     width: 90%; /* Adjusted to leave some margin */
     max-width: 1200px;
     padding: 20px;
-    height: 50vh; /* Ensure the container takes full height */
+    height: 100vh; /* Ensure the container takes full height */
 }
 
 /* Ensure the form container takes up a fixed width */
@@ -44,6 +44,7 @@ html, body {
 .map-container {
     flex: 3; /* Adjusted to control the width, decreasing to shrink map placeholder */
     height: 100%;
+    width: 100%;
 }
 
 .form {
@@ -103,6 +104,7 @@ html, body {
 .map-placeholder {
     background-color: #eaeaea;
     height: 100%;
+    width: 100%;
     border-radius: 8px;
     display: flex;
     align-items: center;
