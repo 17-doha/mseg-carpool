@@ -12,7 +12,7 @@ html, body {
 }
 
 /* Set the body to flexbox and center content vertically and horizontally */
-/* body {
+ body {
   justify-content: center;
   align-items: center;
   background-color: #F4F4F4;
@@ -21,7 +21,7 @@ html, body {
  /* overflow: hidden; Ensure no overflow */
 }
 
-*/
+
 /* Ensure the container takes up most of the available space */
 .container {
     display: flex;
