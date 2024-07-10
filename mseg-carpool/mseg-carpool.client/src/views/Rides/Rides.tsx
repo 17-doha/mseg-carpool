@@ -66,7 +66,11 @@ const Rides = () => {
 
     return (
         <Page>
+<<<<<<< HEAD
             <div >
+=======
+            <div className="container-ride">
+>>>>>>> youssef-new
                 <button className="button" onClick={handleCreateRide}>+ Create New Ride</button>
             </div>
 
