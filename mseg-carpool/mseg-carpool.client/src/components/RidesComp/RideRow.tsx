@@ -149,25 +149,25 @@ const RideRow: React.FC<RideRowProps> = ({
                         <>
                             {isEditing ? (
                                 <button className="button-class save-btn" onClick={handleEditClick}>
-                                    <FontAwesomeIcon icon={faSave} /> Save
+                                    <FontAwesomeIcon icon={faSave} />
                                 </button>
                             ) : (
                                     <button className="button-class edit-btn" onClick={handleEditClick}>
-                                    <FontAwesomeIcon icon={faEdit} /> Edit
+                                    <FontAwesomeIcon icon={faEdit} />
                                 </button>
                             )}
                             <button className="button-class delete-btn" onClick={handleDeleteClick}>
-                                <FontAwesomeIcon icon={faTrashAlt} /> Delete
+                                <FontAwesomeIcon icon={faTrashAlt} />
                             </button>
                             <button className="button-class map-btn" onClick={handleMapClick}>
-                                <FontAwesomeIcon icon={faMapMarkerAlt} /> Map
+                                <FontAwesomeIcon icon={faMapMarkerAlt} />
                             </button>
                         </>
                     ) : (
                         <span className={`status ${status.toLowerCase()}`}>{status}</span>
                     )}
                     <button className="button-class info-btn" onClick={handleInfoClick}>
-                        <FontAwesomeIcon icon={faInfoCircle} /> Info
+                        <FontAwesomeIcon icon={faInfoCircle} />
                     </button>
                 </td>
             </tr>

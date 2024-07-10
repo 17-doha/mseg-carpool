@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import Page from "../../components/Page";
 import RideRow from "../../components/RidesComp/RideRow";
-import Pagination from "../../components/RidesComp/Pagination";
 import { useNavigate } from "react-router-dom";
 import './Rides.css';
 import '../../components/RidesComp/RideRow.css';
@@ -40,7 +39,7 @@ interface Ride {
 const Rides = () => {
     const navigate = useNavigate();
     const [rides, setRides] = useState<Ride[]>([]);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage] = useState(1);
     const ridesPerPage = 10;
     
     useEffect(() => {
@@ -56,9 +55,7 @@ const Rides = () => {
 
 
 
-    const handlePageChange = (page: number) => {
-        setCurrentPage(page);
-    };
+   
 
     const indexOfLastRide = currentPage * ridesPerPage;
     const indexOfFirstRide = indexOfLastRide - ridesPerPage;
@@ -70,7 +67,7 @@ const Rides = () => {
 
             <div className="container-ride">
 
-                <button className="button" onClick={handleCreateRide}>+ Create New Ride</button>
+                <button className="button-ride" onClick={handleCreateRide}>+ Create New Ride</button>
             </div>
 
             <div className="rides-calendar-container">
@@ -110,11 +107,7 @@ const Rides = () => {
                             ))}
                         </tbody>
                     </table>
-                    <Pagination
-                        currentPage={currentPage}
-                        totalPages={Math.ceil(rides.length / ridesPerPage)}
-                        onPageChange={handlePageChange}
-                    />
+                   
                 </div>
 
                 <div className="calendar-container">
