@@ -46,25 +46,25 @@ const Rides = () => {
 
     useEffect(() => {
         setRides(RideData);
+        const savedHasClickedCreateRide = localStorage.getItem('hasClickedCreateRide');
+        if (savedHasClickedCreateRide) {
+            setHasClickedCreateRide(JSON.parse(savedHasClickedCreateRide));
+        }
     }, []);
 
     const handleDelete = (id: number) => {
         setRides(rides.filter(ride => ride.id !== id));
     };
+
     const handleCreateRide = () => {
-        if (!hasClickedCreateRide) {
-            // Update hasClickedCreateRide in local storage
-            localStorage.setItem('hasClickedCreateRide', JSON.stringify(true));
-            console.log(hasClickedCreateRide);
-            // Navigate to formExtra for the first time
+        const driverFormData = localStorage.getItem('driverFormData');
+        if (driverFormData) {
+            // Navigate to CreateRideForm if data exists
             navigate('/CreateRide');
         } else {
-            // Navigate to CreateRideForm subsequently
-            navigate('/CreateRide');
+            navigate('/formExtra');
         }
     };
-
-
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
