@@ -1,0 +1,25 @@
+.points-display {
+    display: inline-block;
+    margin-left: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #FFD700; /* Gold color for points */
+    animation: sparkle 1.5s ;
+}
+
+.points-badge {
+    background-color: white; 
+    padding: 8px 15px;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes sparkle {
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+}

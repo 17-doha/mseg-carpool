@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\mseg-carpool"
+    "\\mseg-carpool",
+    "\\mseg-carpool\\mseg-carpool.client"
   ],
   "SelectedNode": "\\mseg-carpool\\mseg-carpool.sln",
   "PreviewInSolutionExplorer": false

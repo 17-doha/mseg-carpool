@@ -1,24 +1,14 @@
-.container-ride {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
+
+
 
 .rideText {
     margin-bottom: 20px;
 }
 
-.button {
-    background-color: #007bff; /* Blue background */
-    color: white; /* White text */
-    border: none; /* No border */
-    padding: 10px 20px; /* Padding around the text */
-    text-align: center; /* Center the text */
-    text-decoration: none; /* No underline */
-    display: inline-block; /* Align items inline */
-    font-size: 16px; /* Text size */
-    margin: 4px 2px; /* Margin around the button */
-    transition: background-color 0.3s, transform 0.2s; /* Smooth transition for background color and transform */
-    cursor: pointer; /* Pointer cursor on hover */
-    border-radius: 5px; /* Rounded corners */
+/* Rides.css */
+.highlight {
+    background: #ffcc00 !important;
+    color: white !important;
+    border-radius: 100%;
 }
+

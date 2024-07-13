@@ -12,13 +12,11 @@ html, body {
 }
 
 /* Set the body to flexbox and center content vertically and horizontally */
- body {
-  justify-content: center;
-  align-items: center;
-  background-color: #F4F4F4;
-  margin: 0;
-  
- /* overflow: hidden; Ensure no overflow */
+body {
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    /* overflow: hidden; Ensure no overflow */
 }
 
 

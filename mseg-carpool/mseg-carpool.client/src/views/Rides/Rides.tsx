@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import Page from "../../components/Page";
 import RideRow from "../../components/RidesComp/RideRow";
 import { useNavigate } from "react-router-dom";
-import './Rides.css';
-import '../../components/RidesComp/RideRow.css';
 import RideData from './datatry.json';
-import Calendar from '../../components/RidesComp/Calender'; // Adjust the path as per your actual component location
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import PointsDisplay from '../../components/RidesComp/PointsDisplay';
+import './Rides.css';
 
 interface RideDriver {
     azureID: string;
@@ -41,7 +42,11 @@ const Rides = () => {
     const [rides, setRides] = useState<Ride[]>([]);
     const [currentPage] = useState(1);
     const ridesPerPage = 10;
-    
+    type ValuePiece = Date | null;
+
+    type Value = ValuePiece | [ValuePiece, ValuePiece];
+
+    const [points, setPoints] = useState(120);
     useEffect(() => {
         setRides(RideData);
     }, []);
@@ -49,29 +54,41 @@ const Rides = () => {
     const handleDelete = (id: number) => {
         setRides(rides.filter(ride => ride.id !== id));
     };
+
     const handleCreateRide = () => {
         navigate('/CreateRide');
     };
 
-
-
-   
+    const [value, onChange] = useState<Value>(new Date());
 
     const indexOfLastRide = currentPage * ridesPerPage;
     const indexOfFirstRide = indexOfLastRide - ridesPerPage;
     const currentRides = rides.slice(indexOfFirstRide, indexOfLastRide);
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        return date.toISOString().split('T')[0];
+    };
 
+    const tileClassName = ({ date, view }: { date: Date, view: string }) => {
+        if (view === 'month') {
+            const dateString = date.toISOString().split('T')[0];
+            const rideDates = rides.map(ride => formatDate(ride.departureTime));
+            if (rideDates.includes(dateString)) {
+                return 'highlight';
+            }
+        }
+        return '';
+    };
     return (
         <Page>
-          
-
-            <div className="container-ride">
-
-                <button className="button-ride" onClick={handleCreateRide}>+ Create New Ride</button>
+            <div className="header-container">
+                <button className="button-search" onClick={handleCreateRide}>+ Create New Ride</button>
+                <PointsDisplay points={points} />
+                
             </div>
 
-            <div className="rides-calendar-container">
-                <div className="rides-table-container">
+            <div className="container-ride"> 
+                <div className="table-container">
                     <table>
                         <thead>
                             <tr>
@@ -79,7 +96,7 @@ const Rides = () => {
                                 <th>From</th>
                                 <th>Destination</th>
                                 <th>Pickup Time</th>
-                                <th>Rides Left</th>
+                                <th>Seats</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -107,13 +124,15 @@ const Rides = () => {
                             ))}
                         </tbody>
                     </table>
-                   
                 </div>
-
-                <div className="calendar-container">
-                    <Calendar rides={rides} />
+                    <div className="calendar-container">
+                        <Calendar onChange={onChange} showWeekNumbers value={value} tileClassName={tileClassName}  />
                 </div>
+                
             </div>
+            
+                
+            
         </Page>
     );
 };

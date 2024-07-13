@@ -15,8 +15,8 @@ th {
 }
 
 .button-class {
-    background-color: #007bff; /* Blue background */
-    color: white; /* White text */
+    background-color: white; /* Blue background */
+    color: #007bff; /* White text */
     border: none; /* No border */
     padding: 10px 20px; /* Padding around the text */
     text-align: center; /* Center the text */
@@ -29,15 +29,7 @@ th {
     border-radius: 5px; /* Rounded corners */
 }
 
-.button-class :hover {
-    background-color: #0056b3; /* Darker blue on hover */
-    transform: scale(1.05); /* Slightly increase size on hover */
-}
 
-.button-class :active {
-    background-color: #004085; /* Even darker blue when active */
-    transform: scale(0.95); /* Slightly decrease size when clicked */
-}
 
 
 .count {
@@ -98,40 +90,16 @@ input[type="text"].editing {
     }
 
 /* Styling for save and cancel buttons */
-.button-class.save-btn, .button-class.cancel-btn {
-    background-color: #007bff; /* Blue background */
-    color: white; /* White text */
-    border: none; /* No border */
-    padding: 10px 20px; /* Padding around the text */
-    text-align: center; /* Center the text */
-    text-decoration: none; /* No underline */
-    display: inline-block; /* Align items inline */
-    font-size: 16px; /* Text size */
-    margin: 4px 2px; /* Margin around the button */
-    transition: background-color 0.3s, transform 0.2s; /* Smooth transition for background color and transform */
-    cursor: pointer; /* Pointer cursor on hover */
-    border-radius: 5px; /* Rounded corners */
-}
-
-    .button-class:hover {
-        background-color: whitesmoke; /* Background color when hovering over save and cancel buttons */
-    }
-
-.button-class.map-btn {
+.button-class.save-btn, .button-class.cancel-btn, .button-class.map-btn, .button-class.delete-btn, .button-class.edit-btn, .button-class.info-btn {
     background: none;
     border: none;
     cursor: pointer;
     font-size: 1.2em;
-    color: #00A4EF;
+    color: #007bff
 }
 
-    .button-class.map-btn:hover {
-        color: #0078D4; /* Darker shade of blue */
-    }
 
-.info-btn {
-    margin-left: 10px;
-}
+    
 
 .driver-info .card {
     background-color: #f9f9f9;
