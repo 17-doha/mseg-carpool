@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import Page from "../../components/Page";
 import RideRow from "../../components/RidesComp/RideRow";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,8 @@ import RideData from './datatry.json';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import PointsDisplay from '../../components/RidesComp/PointsDisplay';
+import SlidingPanel, { PanelType } from 'react-sliding-side-panel';
+import 'react-sliding-side-panel/lib/index.css';
 import './Rides.css';
 
 interface RideDriver {
@@ -79,15 +81,48 @@ const Rides = () => {
         }
         return '';
     };
+
+    const [openPanel, setOpenPanel] = useState<boolean>(false);
+    const [panelType] = useState<PanelType>('left');
+    const [panelSize] = useState<number>(30);
+
     return (
         <Page>
+
             <div className="header-container">
                 <button className="button-search" onClick={handleCreateRide}>+ Create New Ride</button>
-                <PointsDisplay points={points} />
+                
                 
             </div>
+            <button
+                type="button"
+                onClick={() => setOpenPanel(true)}
+                className="button-search"
+            >
+               Calendar
 
-            <div className="container-ride"> 
+            </button>
+            <PointsDisplay points={points} />
+
+            <SlidingPanel
+                type={panelType}
+                isOpen={openPanel}
+                backdropClicked={() => setOpenPanel(false)}
+                size={panelSize}
+                panelClassName="additional-class"
+                panelContainerClassName=""
+            >
+                <div className="panel-container">
+                    <div className="calendar-container">
+                        <Calendar onChange={onChange} showWeekNumbers value={value} tileClassName={tileClassName} />
+                    </div>
+                    <button type="button" className="button-search" onClick={() => setOpenPanel(false)}>
+                        close
+                    </button>
+                </div>
+            </SlidingPanel>
+
+            <div className="container-ride">
                 <div className="table-container">
                     <table>
                         <thead>
@@ -125,14 +160,8 @@ const Rides = () => {
                         </tbody>
                     </table>
                 </div>
-                    <div className="calendar-container">
-                        <Calendar onChange={onChange} showWeekNumbers value={value} tileClassName={tileClassName}  />
-                </div>
                 
             </div>
-            
-                
-            
         </Page>
     );
 };
