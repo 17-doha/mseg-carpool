@@ -145,30 +145,32 @@ const RideRow: React.FC<RideRowProps> = ({
                     <span className="count">{"0/" + availableSeats}</span>
                 </td>
                 <td>
-                    {own=="1" ? (
+                    {own === "1" ? (
                         <>
                             {isEditing ? (
                                 <button className="button-class save-btn" onClick={handleEditClick}>
-                                    <FontAwesomeIcon icon={faSave} /> Save
+                                    <FontAwesomeIcon icon={faSave} />
                                 </button>
                             ) : (
-                                    <button className="button-class edit-btn" onClick={handleEditClick}>
-                                    <FontAwesomeIcon icon={faEdit} /> Edit
+                                <button className="button-class edit-btn" onClick={handleEditClick}>
+                                    <FontAwesomeIcon icon={faEdit} />
                                 </button>
                             )}
                             <button className="button-class delete-btn" onClick={handleDeleteClick}>
-                                <FontAwesomeIcon icon={faTrashAlt} /> Delete
+                                <FontAwesomeIcon icon={faTrashAlt} />
                             </button>
                             <button className="button-class map-btn" onClick={handleMapClick}>
-                                <FontAwesomeIcon icon={faMapMarkerAlt} /> Map
+                                <FontAwesomeIcon icon={faMapMarkerAlt} />
                             </button>
                         </>
                     ) : (
-                        <span className={`status ${status.toLowerCase()}`}>{status}</span>
+                        <>
+                            <span className={`status ${status.toLowerCase()}`}>{status}</span>
+                            <button className="button-class info-btn" onClick={handleInfoClick}>
+                                <FontAwesomeIcon icon={faInfoCircle} />
+                            </button>
+                        </>
                     )}
-                    <button className="button-class info-btn" onClick={handleInfoClick}>
-                        <FontAwesomeIcon icon={faInfoCircle} /> Info
-                    </button>
                 </td>
             </tr>
             {isInfoVisible && (

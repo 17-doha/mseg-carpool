@@ -1,12 +1,14 @@
-import { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import Page from "../../components/Page";
 import RideRow from "../../components/RidesComp/RideRow";
-import Pagination from "../../components/RidesComp/Pagination";
 import { useNavigate } from "react-router-dom";
-import './Rides.css';
-import '../../components/RidesComp/RideRow.css';
 import RideData from './datatry.json';
-import Calendar from '../../components/RidesComp/Calender'; // Adjust the path as per your actual component location
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import PointsDisplay from '../../components/RidesComp/PointsDisplay';
+import SlidingPanel, { PanelType } from 'react-sliding-side-panel';
+import 'react-sliding-side-panel/lib/index.css';
+import './Rides.css';
 
 interface RideDriver {
     azureID: string;
@@ -40,9 +42,13 @@ interface Ride {
 const Rides = () => {
     const navigate = useNavigate();
     const [rides, setRides] = useState<Ride[]>([]);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage] = useState(1);
     const ridesPerPage = 10;
-    
+    type ValuePiece = Date | null;
+
+    type Value = ValuePiece | [ValuePiece, ValuePiece];
+
+    const [points, setPoints] = useState(120);
     useEffect(() => {
         setRides(RideData);
     }, []);
@@ -50,31 +56,74 @@ const Rides = () => {
     const handleDelete = (id: number) => {
         setRides(rides.filter(ride => ride.id !== id));
     };
+
     const handleCreateRide = () => {
         navigate('/CreateRide');
     };
 
-
-
-    const handlePageChange = (page: number) => {
-        setCurrentPage(page);
-    };
+    const [value, onChange] = useState<Value>(new Date());
 
     const indexOfLastRide = currentPage * ridesPerPage;
     const indexOfFirstRide = indexOfLastRide - ridesPerPage;
     const currentRides = rides.slice(indexOfFirstRide, indexOfLastRide);
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        return date.toISOString().split('T')[0];
+    };
+
+    const tileClassName = ({ date, view }: { date: Date, view: string }) => {
+        if (view === 'month') {
+            const dateString = date.toISOString().split('T')[0];
+            const rideDates = rides.map(ride => formatDate(ride.departureTime));
+            if (rideDates.includes(dateString)) {
+                return 'highlight';
+            }
+        }
+        return '';
+    };
+
+    const [openPanel, setOpenPanel] = useState<boolean>(false);
+    const [panelType] = useState<PanelType>('left');
+    const [panelSize] = useState<number>(30);
 
     return (
         <Page>
-          
+
+            <div className="header-container">
+                <button className="button-search" onClick={handleCreateRide}>+ Create New Ride</button>
+                
+                
+            </div>
+            <button
+                type="button"
+                onClick={() => setOpenPanel(true)}
+                className="button-search"
+            >
+               Calendar
+
+            </button>
+            <PointsDisplay points={points} />
+
+            <SlidingPanel
+                type={panelType}
+                isOpen={openPanel}
+                backdropClicked={() => setOpenPanel(false)}
+                size={panelSize}
+                panelClassName="additional-class"
+                panelContainerClassName=""
+            >
+                <div className="panel-container">
+                    <div className="calendar-container">
+                        <Calendar onChange={onChange} showWeekNumbers value={value} tileClassName={tileClassName} />
+                    </div>
+                    <button type="button" className="button-search" onClick={() => setOpenPanel(false)}>
+                        close
+                    </button>
+                </div>
+            </SlidingPanel>
 
             <div className="container-ride">
-
-                <button className="button" onClick={handleCreateRide}>+ Create New Ride</button>
-            </div>
-
-            <div className="rides-calendar-container">
-                <div className="rides-table-container">
+                <div className="table-container">
                     <table>
                         <thead>
                             <tr>
@@ -82,7 +131,7 @@ const Rides = () => {
                                 <th>From</th>
                                 <th>Destination</th>
                                 <th>Pickup Time</th>
-                                <th>Rides Left</th>
+                                <th>Seats</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -110,16 +159,8 @@ const Rides = () => {
                             ))}
                         </tbody>
                     </table>
-                    <Pagination
-                        currentPage={currentPage}
-                        totalPages={Math.ceil(rides.length / ridesPerPage)}
-                        onPageChange={handlePageChange}
-                    />
                 </div>
-
-                <div className="calendar-container">
-                    <Calendar rides={rides} />
-                </div>
+                
             </div>
         </Page>
     );

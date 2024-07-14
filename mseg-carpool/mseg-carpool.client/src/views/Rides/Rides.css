@@ -1,20 +1,48 @@
-.container-ride {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
+/* Existing CSS */
 .rideText {
     margin-bottom: 20px;
 }
 
-.button {
-    padding: 10px 20px;
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-    font-weight: bold;
+.highlight {
+    background: #ffcc00 !important;
+    color: white !important;
+    border-radius: 100%;
+}
+
+/* CSS for Sliding Panel */
+html,
+body,
+#root {
+    height: 100%;
+    margin: 0px;
+}
+
+.example-container {
+    height: 100%;
+    background-color: rgb(185, 209, 253);
+}
+
+.panel-container {
+    height: 100%;
+    width: 100%;
     background-color: white;
-    border: 1px solid white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    cursor: pointer; /* Add this line to change the cursor shape */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+button {
+    margin: 2px;
+}
+
+.form-container {
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.input-container {
+    padding: 10px;
 }
