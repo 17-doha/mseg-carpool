@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import Page from "../../components/Page";
 import RideRow from "../../components/RidesComp/RideRow";
 import { useNavigate } from "react-router-dom";
@@ -6,9 +6,11 @@ import RideData from './datatry.json';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import PointsDisplay from '../../components/RidesComp/PointsDisplay';
-import SlidingPanel, { PanelType } from 'react-sliding-side-panel';
 import 'react-sliding-side-panel/lib/index.css';
+import * as Dialog from '@radix-ui/react-dialog';
+import { Cross2Icon } from '@radix-ui/react-icons';
 import './Rides.css';
+import '../../components/RidesComp/Styles.css';
 
 interface RideDriver {
     azureID: string;
@@ -48,7 +50,7 @@ const Rides = () => {
 
     type Value = ValuePiece | [ValuePiece, ValuePiece];
 
-    const [points, setPoints] = useState(120);
+    const [points] = useState(120);
     useEffect(() => {
         setRides(RideData);
     }, []);
@@ -82,45 +84,42 @@ const Rides = () => {
         return '';
     };
 
-    const [openPanel, setOpenPanel] = useState<boolean>(false);
-    const [panelType] = useState<PanelType>('left');
-    const [panelSize] = useState<number>(30);
+
 
     return (
         <Page>
-
-            <div className="header-container">
-                <button className="button-search" onClick={handleCreateRide}>+ Create New Ride</button>
+            <Dialog.Root>
+                <div className="header-container">
+                    <button className="button-search" onClick={handleCreateRide}>+ Create New Ride</button>
+                  
+                    <PointsDisplay points={points} />
                 
-                
-            </div>
-            <button
-                type="button"
-                onClick={() => setOpenPanel(true)}
-                className="button-search"
-            >
-               Calendar
-
-            </button>
-            <PointsDisplay points={points} />
-
-            <SlidingPanel
-                type={panelType}
-                isOpen={openPanel}
-                backdropClicked={() => setOpenPanel(false)}
-                size={panelSize}
-                panelClassName="additional-class"
-                panelContainerClassName=""
-            >
-                <div className="panel-container">
-                    <div className="calendar-container">
-                        <Calendar onChange={onChange} showWeekNumbers value={value} tileClassName={tileClassName} />
-                    </div>
-                    <button type="button" className="button-search" onClick={() => setOpenPanel(false)}>
-                        close
-                    </button>
                 </div>
-            </SlidingPanel>
+                  <Dialog.Trigger asChild>
+                        <button className="button-search">Calendar</button>
+                    </Dialog.Trigger>
+
+                
+               
+                <Dialog.Portal>
+                    <Dialog.Overlay className="DialogOverlay" />
+                    <Dialog.Content className="DialogContent">
+                        <div style={{ display: 'flex', marginTop: 25, justifyContent: 'flex-end' }}>
+                            <div className="calendar-container">
+                                <Calendar onChange={onChange} showWeekNumbers value={value} tileClassName={tileClassName} />
+                            </div>
+                            
+                        </div>
+                        <Dialog.Close asChild>
+                        <div>
+                            <button className="button-search" aria-label="Close">
+                                Close
+                                </button>
+                            </div>
+                        </Dialog.Close>
+                    </Dialog.Content>
+                </Dialog.Portal>
+            </Dialog.Root>
 
             <div className="container-ride">
                 <div className="table-container">
@@ -160,7 +159,6 @@ const Rides = () => {
                         </tbody>
                     </table>
                 </div>
-                
             </div>
         </Page>
     );
