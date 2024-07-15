@@ -2,6 +2,7 @@ import React from "react";
 import { DefaultButton, PrimaryButton } from "@fluentui/react";
 import Page from "../../components/Page";
 import { useRequestContext } from "../../context/RequestContext";
+import "./Requests.css";
 
 function Requests() {
     const { state, dispatch } = useRequestContext();
@@ -19,14 +20,16 @@ function Requests() {
     };
 
     return (
-        <Page>
+        <Page className="requests-container">
             <h1>Requests</h1>
             {state.requests.map((req) => (
-                <div key={req.id} style={{ border: "1px solid #ccc", padding: "10px", margin: "10px 0" }}>
+                <div key={req.id} className="request-item">
                     <p><strong>Request from {req.from}</strong></p>
                     <p>{req.message}</p>
-                    <PrimaryButton text="Accept" onClick={() => handleAccept(req.id)} style={{ marginRight: "10px" }} />
-                    <DefaultButton text="Decline" onClick={() => handleDecline(req.id, req.from)} />
+                    <div className="actions">
+                        <PrimaryButton text="Accept" onClick={() => handleAccept(req.id)} />
+                        <DefaultButton text="Decline" onClick={() => handleDecline(req.id, req.from)} />
+                    </div>
                 </div>
             ))}
         </Page>
