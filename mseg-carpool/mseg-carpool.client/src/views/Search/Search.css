@@ -46,7 +46,7 @@ input[type="text"] {
     margin-right: 5px; /* Space between label and value */
 }
 
-button {
+.button-search {
   background-color: #007bff; /* Blue background */
   color: white; /* White text */
   border: none; /* No border */
@@ -61,12 +61,12 @@ button {
   border-radius: 5px; /* Rounded corners */
 }
 
-button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
-  transform: scale(1.05); /* Slightly increase size on hover */
-}
+    .button-search:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+        transform: scale(1.05); /* Slightly increase size on hover */
+    }
 
-button:active {
-  background-color: #004085; /* Even darker blue when active */
-  transform: scale(0.95); /* Slightly decrease size when clicked */
-}
+    .button-search:active {
+        background-color: #004085; /* Even darker blue when active */
+        transform: scale(0.95); /* Slightly decrease size when clicked */
+    }
