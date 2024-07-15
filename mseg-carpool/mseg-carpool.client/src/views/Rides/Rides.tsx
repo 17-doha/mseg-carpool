@@ -6,9 +6,7 @@ import RideData from './datatry.json';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import PointsDisplay from '../../components/RidesComp/PointsDisplay';
-import 'react-sliding-side-panel/lib/index.css';
 import * as Dialog from '@radix-ui/react-dialog';
-import { Cross2Icon } from '@radix-ui/react-icons';
 import './Rides.css';
 import '../../components/RidesComp/Styles.css';
 
@@ -104,16 +102,17 @@ const Rides = () => {
                 <Dialog.Portal>
                     <Dialog.Overlay className="DialogOverlay" />
                     <Dialog.Content className="DialogContent">
-                        <div style={{ display: 'flex', marginTop: 25, justifyContent: 'flex-end' }}>
+                        <div style={{ display: 'flex', marginTop: 25, justifyContent: 'center' }}>
                             <div className="calendar-container">
                                 <Calendar onChange={onChange} showWeekNumbers value={value} tileClassName={tileClassName} />
                             </div>
+
                             
                         </div>
                         <Dialog.Close asChild>
-                        <div>
-                            <button className="button-search" aria-label="Close">
-                                Close
+                            <div>
+                                <button className="button-search" aria-label="Close">
+                                    Close
                                 </button>
                             </div>
                         </Dialog.Close>

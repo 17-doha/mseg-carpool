@@ -112,7 +112,16 @@ function Navbar() {
                                     });
                                 },
                             },
+                            {
+                                key: "edit-profile",
+                                text: "Edit Profile",
+                                iconProps: { iconName: "Edit" },
+                                className: matchPath("/dashboard", pathname) ? "open" : "",
+                            
+                                onClick: () => navigate("/dashboard"),
+                            },
                         ],
+
                     }}
                 >
                     <Persona
