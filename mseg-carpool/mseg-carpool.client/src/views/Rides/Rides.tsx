@@ -4,6 +4,7 @@ import RideRow from "../../components/RidesComp/RideRow";
 import { useNavigate } from "react-router-dom";
 import RideData from './datatry.json';
 import Calendar from 'react-calendar';
+import { Cross2Icon } from '@radix-ui/react-icons';
 import 'react-calendar/dist/Calendar.css';
 import PointsDisplay from '../../components/RidesComp/PointsDisplay';
 import * as Dialog from '@radix-ui/react-dialog';
@@ -88,16 +89,17 @@ const Rides = () => {
         <Page>
             <Dialog.Root>
                 <div className="header-container">
+                <div>
                     <button className="button-search" onClick={handleCreateRide}>+ Create New Ride</button>
+                    <Dialog.Trigger asChild>
+                        <button className="button-search">Calendar</button>
+                        </Dialog.Trigger>
+                    </div>
                   
                     <PointsDisplay points={points} />
+                    
                 
                 </div>
-                  <Dialog.Trigger asChild>
-                        <button className="button-search">Calendar</button>
-                    </Dialog.Trigger>
-
-                
                
                 <Dialog.Portal>
                     <Dialog.Overlay className="DialogOverlay" />
@@ -107,18 +109,16 @@ const Rides = () => {
                                 <Calendar onChange={onChange} showWeekNumbers value={value} tileClassName={tileClassName} />
                             </div>
 
-                            
                         </div>
                         <Dialog.Close asChild>
-                            <div>
-                                <button className="button-search" aria-label="Close">
-                                    Close
-                                </button>
-                            </div>
+                            <button className="IconButton" aria-label="Close">
+                                <Cross2Icon />
+                            </button>
                         </Dialog.Close>
                     </Dialog.Content>
                 </Dialog.Portal>
             </Dialog.Root>
+
 
             <div className="container-ride">
                 <div className="table-container">

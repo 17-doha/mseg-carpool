@@ -9,7 +9,6 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="src\views\EditProfile\" />
     <Folder Include="src\views\Requests\" />
   </ItemGroup>
   <ItemGroup>

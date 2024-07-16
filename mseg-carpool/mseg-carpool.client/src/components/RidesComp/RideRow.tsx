@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUsers, faEdit, faTrashAlt, faSave, faMapMarkerAlt, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faEdit, faTrashAlt, faSave, faMapMarkerAlt, faInfoCircle, faCrown } from '@fortawesome/free-solid-svg-icons'; // Import the crown icon
 import * as Dialog from '@radix-ui/react-dialog';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import './RideRow.css';
@@ -97,7 +97,11 @@ const RideRow: React.FC<RideRowProps> = ({
                             onChange={(e) => setDriver(e.target.value)}
                         />
                     ) : (
-                        editedDriver
+                            <span className="driver-name">
+                                {own === "1" && <FontAwesomeIcon icon={faCrown} className="crown-icon" />} {/* Conditionally render the crown icon */}
+                            {editedDriver}
+                            
+                        </span>
                     )}
                 </td>
                 <td>
