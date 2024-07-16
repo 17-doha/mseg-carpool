@@ -1,4 +1,6 @@
-﻿namespace mseg_carpool.Server;
+﻿using mseg_carpool.Server.Models;
+
+namespace mseg_carpool.Server;
 
 public interface IUserRepository
 {
@@ -25,14 +27,14 @@ class LocalInMemUserRepository : IUserRepository
 
     public User CreateUser(User user)
     {
-        _users[user.AzureID] = user;
+        _users[user.AzureId] = user;
 
         return user;
     }
 
     public void UpdateUser(User user)
     {
-        _users[user.AzureID] = user;
+        _users[user.AzureId] = user;
     }
 
     public void DeleteUser(string azureId)

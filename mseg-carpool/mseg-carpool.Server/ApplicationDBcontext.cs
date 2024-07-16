@@ -18,8 +18,8 @@ namespace mseg_carpool.Server
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           /* base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<User>().HasNoKey();*/
+           base.OnModelCreating(modelBuilder);
+       
         }
 
 

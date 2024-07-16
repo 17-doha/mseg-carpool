@@ -3,8 +3,9 @@
     "",
     "\\mseg-carpool",
     "\\mseg-carpool\\mseg-carpool.client",
-    "\\mseg-carpool\\mseg-carpool.Server"
+    "\\mseg-carpool\\mseg-carpool.Server",
+    "\\mseg-carpool\\mseg-carpool.Server\\Models"
   ],
-  "SelectedNode": "\\mseg-carpool\\mseg-carpool.Server\\Program.cs",
+  "SelectedNode": "\\mseg-carpool\\mseg-carpool.Server\\Properties",
   "PreviewInSolutionExplorer": false
 }

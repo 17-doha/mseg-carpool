@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using mseg_carpool.Server.Models;
 using System.Collections.Generic;
 
 namespace mseg_carpool.Server.Controllers
