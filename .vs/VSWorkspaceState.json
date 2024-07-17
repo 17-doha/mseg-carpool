@@ -4,8 +4,8 @@
     "\\mseg-carpool",
     "\\mseg-carpool\\mseg-carpool.client",
     "\\mseg-carpool\\mseg-carpool.Server",
-    "\\mseg-carpool\\mseg-carpool.Server\\Models"
+    "\\mseg-carpool\\mseg-carpool.Server\\Controllers"
   ],
-  "SelectedNode": "\\mseg-carpool\\mseg-carpool.Server\\Properties",
+  "SelectedNode": "\\mseg-carpool\\mseg-carpool.Server\\Controllers\\RidesController.cs",
   "PreviewInSolutionExplorer": false
 }

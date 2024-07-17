@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace mseg_carpool.Server.Models
 {
-     
+
 
     public class Ride
     {
