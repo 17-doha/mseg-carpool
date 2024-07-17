@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers, faEdit, faTrashAlt, faSave, faMapMarkerAlt, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import * as Dialog from '@radix-ui/react-dialog';
+import { Cross2Icon } from '@radix-ui/react-icons';
 import './RideRow.css';
 
 interface RideRowProps {
@@ -40,7 +42,7 @@ const RideRow: React.FC<RideRowProps> = ({
     onDelete,
 }) => {
     const [isEditing, setIsEditing] = useState(false);
-    const [isInfoVisible, setIsInfoVisible] = useState(false);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [editedDriver, setEditedDriver] = useState(name);
     const [editedFrom, setEditedFrom] = useState(origin);
     const [editedDestination, setEditedDestination] = useState(destination);
@@ -63,12 +65,8 @@ const RideRow: React.FC<RideRowProps> = ({
     };
 
     const handleMapClick = () => {
-        const url = `https://www.google.com/maps/dir/${encodeURIComponent(departureTime)}/${encodeURIComponent(destination)}`;
+        const url = `https://www.google.com/maps/dir/${encodeURIComponent(origin)}/${encodeURIComponent(destination)}`;
         window.open(url, '_blank');
-    };
-
-    const handleInfoClick = () => {
-        setIsInfoVisible(!isInfoVisible);
     };
 
     const setDriver = (value: string) => {
@@ -145,47 +143,57 @@ const RideRow: React.FC<RideRowProps> = ({
                     <span className="count">{"0/" + availableSeats}</span>
                 </td>
                 <td>
-                    {own=="1" ? (
+                    {own === "1" ? (
                         <>
                             {isEditing ? (
                                 <button className="button-class save-btn" onClick={handleEditClick}>
-                                    <FontAwesomeIcon icon={faSave} /> Save
+                                    <FontAwesomeIcon icon={faSave} />
                                 </button>
                             ) : (
-                                    <button className="button-class edit-btn" onClick={handleEditClick}>
-                                    <FontAwesomeIcon icon={faEdit} /> Edit
+                                <button className="button-class edit-btn" onClick={handleEditClick}>
+                                    <FontAwesomeIcon icon={faEdit} />
                                 </button>
                             )}
                             <button className="button-class delete-btn" onClick={handleDeleteClick}>
-                                <FontAwesomeIcon icon={faTrashAlt} /> Delete
+                                <FontAwesomeIcon icon={faTrashAlt} />
                             </button>
                             <button className="button-class map-btn" onClick={handleMapClick}>
-                                <FontAwesomeIcon icon={faMapMarkerAlt} /> Map
+                                <FontAwesomeIcon icon={faMapMarkerAlt} />
                             </button>
                         </>
                     ) : (
-                        <span className={`status ${status.toLowerCase()}`}>{status}</span>
+                        <>
+                            <span className={`status ${status.toLowerCase()}`}>{status}</span>
+                            <Dialog.Root open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                                <Dialog.Trigger asChild>
+                                    <button className="button-class info-btn">
+                                        <FontAwesomeIcon icon={faInfoCircle} />
+                                    </button>
+                                </Dialog.Trigger>
+                                <Dialog.Portal>
+                                    <Dialog.Overlay className="DialogOverlay" />
+                                    <Dialog.Content className="DialogContent">
+                                        <Dialog.Title className="DialogTitle">Driver Information</Dialog.Title>
+                                        <div className="driver-info-content">
+                                            <p>Email: {email}</p>
+                                            <p>Mobile Number: {mobileNumber}</p>
+                                            <p>Location: {location}</p>
+                                            <p>Car: {driverCar}</p>
+                                            <p>Car Plate: {driverCarPlate}</p>
+                                            <p>Car Color: {driverCarColor}</p>
+                                        </div>
+                                        <Dialog.Close asChild>
+                                            <button className="IconButton" aria-label="Close">
+                                                <Cross2Icon />
+                                            </button>
+                                        </Dialog.Close>
+                                    </Dialog.Content>
+                                </Dialog.Portal>
+                            </Dialog.Root>
+                        </>
                     )}
-                    <button className="button-class info-btn" onClick={handleInfoClick}>
-                        <FontAwesomeIcon icon={faInfoCircle} /> Info
-                    </button>
                 </td>
             </tr>
-            {isInfoVisible && (
-                <tr className="driver-info">
-                    <td colSpan={7}>
-                        <div className="card">
-                            <h3>Driver Information</h3>
-                            <p>Email: {email}</p>
-                            <p>Mobile Number: {mobileNumber}</p>
-                            <p>Location: {location}</p>
-                            <p>Car: {driverCar}</p>
-                            <p>Car Plate: {driverCarPlate}</p>
-                            <p>Car Color: {driverCarColor}</p>
-                        </div>
-                    </td>
-                </tr>
-            )}
         </>
     );
 };

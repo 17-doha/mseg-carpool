@@ -1,0 +1,35 @@
+.requests-container {
+    padding: 20px;
+}
+
+    .requests-container h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+.request-item {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+    .request-item p {
+        margin: 5px 0;
+    }
+
+    .request-item strong {
+        font-size: 18px;
+    }
+
+    .request-item .actions {
+        display: flex;
+        justify-content: flex-start;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+        .request-item .actions button {
+            min-width: 100px;
+        }

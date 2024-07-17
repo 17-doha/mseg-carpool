@@ -1,3 +1,4 @@
+/* Table styling */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -14,17 +15,37 @@ th {
     background-color: #f2f2f2;
 }
 
+/* Button styling */
 .button-class {
-    background: none;
-    border: none;
-    cursor: pointer;
-    margin-right: 5px;
+    background-color: white; /* Blue background */
+    color: #007bff; /* White text */
+    border: none; /* No border */
+    padding: 10px 20px; /* Padding around the text */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* No underline */
+    display: inline-block; /* Align items inline */
+    font-size: 16px; /* Text size */
+    margin: 4px 2px; /* Margin around the button */
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transition for background color and transform */
+    cursor: pointer; /* Pointer cursor on hover */
+    border-radius: 5px; /* Rounded corners */
 }
 
-    .button-class:focus {
-        outline: none;
+    /* Specific button styles */
+    .button-class.save-btn,
+    .button-class.cancel-btn,
+    .button-class.map-btn,
+    .button-class.delete-btn,
+    .button-class.edit-btn,
+    .button-class.info-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.2em;
+        color: #007bff;
     }
 
+/* Passenger count styling */
 .count {
     font-weight: bold;
     color: black;
@@ -35,6 +56,7 @@ th {
     vertical-align: middle;
 }
 
+/* Status box styling */
 .status-box {
     display: inline-block;
     background-color: lightgrey;
@@ -61,7 +83,7 @@ th {
         color: white;
     }
 
-/* Styling for input boxes in editing mode */
+/* Editing input box styling */
 input[type="text"].editing {
     border: 2px solid #00A4EF; /* Border color when in editing mode */
     padding: 5px;
@@ -82,42 +104,89 @@ input[type="text"].editing {
         background-color: #f5f5f5; /* Background color when hovering over the input box */
     }
 
-/* Styling for save and cancel buttons */
-.button-class.save-btn, .button-class.cancel-btn {
-    background-color: #00A4EF; /* Background color for save and cancel buttons */
-    color: white;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    margin-top: 10px;
-}
-
-    .button-class.save-btn:hover, .button-class.cancel-btn:hover {
-        background-color: whitesmoke; /* Background color when hovering over save and cancel buttons */
-    }
-
-.button-class.map-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.2em;
-    color: #00A4EF;
-}
-
-    .button-class.map-btn:hover {
-        color: #0078D4; /* Darker shade of blue */
-    }
-
-.info-btn {
-    margin-left: 10px;
-}
-
+/* Driver info card styling */
 .driver-info .card {
     background-color: #f9f9f9;
     padding: 20px;
     margin-top: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
+}
+
+/* Dialog styling */
+.DialogOverlay {
+    background-color: rgba(0, 0, 0, 0.75);
+    position: fixed;
+    inset: 0;
+    animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.DialogContent {
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90vw;
+    max-width: 450px;
+    max-height: 85vh;
+    padding: 25px;
+    animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+    .DialogContent:focus {
+        outline: none;
+    }
+
+.DialogTitle {
+    margin: 0;
+    font-weight: 500;
+    color: var(--mauve-12);
+    font-size: 17px;
+}
+
+.IconButton {
+    font-family: inherit;
+    border-radius: 100%;
+    height: 25px;
+    width: 25px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #007bff;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+    .IconButton:hover {
+        background-color: #f2f2f2;
+    }
+
+    .IconButton:focus {
+        box-shadow: 0 0 0 2px var(--mauve-7);
+    }
+
+@keyframes overlayShow {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes contentShow {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -48%) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
 }

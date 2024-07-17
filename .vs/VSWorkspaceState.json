@@ -2,8 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\mseg-carpool",
-    "\\mseg-carpool\\mseg-carpool.Server"
+    "\\mseg-carpool\\mseg-carpool.client",
+    "\\mseg-carpool\\mseg-carpool.Server",
+    "\\mseg-carpool\\mseg-carpool.Server\\Controllers"
   ],
-  "SelectedNode": "\\mseg-carpool\\mseg-carpool.sln",
+  "SelectedNode": "\\mseg-carpool\\mseg-carpool.Server\\Controllers\\RidesController.cs",
   "PreviewInSolutionExplorer": false
 }
