@@ -3,7 +3,7 @@ import { Card, CardSection } from "@fluentui/react-cards";
 import { Persona, PersonaSize, Text, PrimaryButton, DefaultButton } from "@fluentui/react";
 import { useMsal } from "@azure/msal-react";
 import Page from "../../components/Page";
-import AddRideForm from "./AddRideForm";
+import AddRideForm from "./AddCarForm";
 import RideCard from "./RideCard";
 
 const STORAGE_KEY_PROFILE = "userProfile";
@@ -88,7 +88,7 @@ const Dashboard = () => {
         <Page>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
                 <h1>Dashboard</h1>
-                <DefaultButton text="Add Ride" onClick={handleAddRide} />
+                <DefaultButton text="Add Car" onClick={handleAddRide} />
             </div>
             <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
                 <Card style={{ maxWidth: '400px', padding: '20px', border: '1px solid #ddd', borderRadius: '5px', backgroundColor: '#fff' }}>
