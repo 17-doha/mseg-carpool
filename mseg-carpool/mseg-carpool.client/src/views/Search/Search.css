@@ -13,26 +13,37 @@ input[type="text"] {
     font-size: 16px;
 }
 
+/* Updated Search.css */
+
 .rides-container {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); /* Creates a responsive number of columns */
     gap: 20px; /* Space between cards */
     justify-content: center; /* Center cards in the container */
+    padding: 20px; /* Add padding around the container */
 }
 
 .ride-card {
-    background-color: #f0f1f2;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    background: linear-gradient(145deg, #f5f6f7, #dfe4ea); /* Soft gradient background */
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 15px; /* Rounded corners for a modern look */
     overflow: hidden;
-    width: 300px; /* Fixed width for each card */
-    transition: transform 0.2s; /* Smooth scaling effect */
+    width: 100%; /* Adjust width to fill the grid column */
+    transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition for scale and shadow */
 }
 
 .ride-card:hover {
-    transform: scale(1.05); /* Slightly enlarge cards on hover */
+    transform: translateY(-5px); /* Move up slightly on hover */
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
 }
 
+@media (max-width: 768px) {
+    .rides-container {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Adjust column size for smaller screens */
+    }
+}
+
+/* Add any additional modern styling for other elements as needed */
 .ride-info {
     padding: 20px;
 }
@@ -45,8 +56,13 @@ input[type="text"] {
     color: #333;
     margin-right: 5px; /* Space between label and value */
 }
+.search-and-filter-container {
+    display: flex; /* Use flex to align items horizontally */
+    align-items: center; /* Align vertically in the center */
+    gap: 20px; /* Add some space between the input and the FilterSidebar */
+  }
 
-button {
+.button-search {
   background-color: #007bff; /* Blue background */
   color: white; /* White text */
   border: none; /* No border */
@@ -61,12 +77,12 @@ button {
   border-radius: 5px; /* Rounded corners */
 }
 
-button:hover {
+.button-search:hover {
   background-color: #0056b3; /* Darker blue on hover */
   transform: scale(1.05); /* Slightly increase size on hover */
 }
 
-button:active {
+.button-search:active {
   background-color: #004085; /* Even darker blue when active */
   transform: scale(0.95); /* Slightly decrease size when clicked */
 }

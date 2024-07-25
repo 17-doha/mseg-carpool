@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using mseg_carpool.Server.Models;
 
 namespace mseg_carpool.Server.Controllers
 {
@@ -35,9 +36,10 @@ namespace mseg_carpool.Server.Controllers
         {
             var createdUser = _userRepository.CreateUser(user);
 
-            return CreatedAtAction(nameof(GetUserByAzureId), new { azureId = createdUser.AzureID }, createdUser);
+            return CreatedAtAction(nameof(GetUserByAzureId), new { azureId = createdUser.AzureId }, createdUser);
         }
 
+        
         // update user in DB
         [HttpPut("{azureId}")]
         public IActionResult UpdateUser(string azureId, User updatedUser)
@@ -49,7 +51,7 @@ namespace mseg_carpool.Server.Controllers
                 return NotFound();
             }
 
-         _userRepository.UpdateUser(updatedUser);
+            _userRepository.UpdateUser(updatedUser);
 
             return NoContent();
         }
@@ -65,7 +67,7 @@ namespace mseg_carpool.Server.Controllers
                 return NotFound();
             }
 
-         _userRepository.DeleteUser(azureId);
+            _userRepository.DeleteUser(azureId);
 
             return NoContent();
         }

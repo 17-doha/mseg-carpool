@@ -3,6 +3,21 @@
   flex-direction: column;
   align-items: center;
   height: 100%;
+  background-image: url('assets/bg.png'); /* Update this path */
+  background-size: cover; /* Cover the entire page */
+  background-position: center; 
+  position: relative; 
+}
+
+.App::before {
+  content: ''; /* Required for pseudo-elements */
+  position: absolute;
+  top: 3.5rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(162, 184, 243, 0.7); /* Blue overlay with 50% opacity */
+  z-index: 1; 
 }
 
 .App .content {
@@ -12,4 +27,6 @@
   overflow: auto;
   display: flex;
   flex-direction: column;
+  position: relative; /* Ensure content is above the overlay */
+  z-index: 2; /* Above the overlay */
 }
