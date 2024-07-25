@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import Page from "../../components/Page";
 import RideRow from "../../components/RidesComp/RideRow";
-import Pagination from "../../components/RidesComp/Pagination";
 import { useNavigate } from "react-router-dom";
-import './Rides.css';
-import '../../components/RidesComp/RideRow.css';
 import RideData from './datatry.json';
-
-// Assuming Calendar component is imported here
-import Calendar from '../../components/RidesComp/Calender'; // Adjust the path as per your actual component location
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import PointsDisplay from '../../components/RidesComp/PointsDisplay';
+import * as Dialog from '@radix-ui/react-dialog';
+import './Rides.css';
+import '../../components/RidesComp/Styles.css';
 
 interface RideDriver {
     azureID: string;
@@ -19,8 +19,6 @@ interface RideDriver {
     driverCar: string;
     driverCarPlate: string;
     driverCarColor: string;
-    
-
 }
 
 interface Ride {
@@ -39,15 +37,18 @@ interface Ride {
         mobileNumber: string;
         location: string;
     }>;
-    
 }
 
 const Rides = () => {
     const navigate = useNavigate();
     const [rides, setRides] = useState<Ride[]>([]);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage] = useState(1);
     const ridesPerPage = 10;
+    type ValuePiece = Date | null;
 
+    type Value = ValuePiece | [ValuePiece, ValuePiece];
+
+    const [points] = useState(120);
     useEffect(() => {
         setRides(RideData);
     }, []);
@@ -60,22 +61,67 @@ const Rides = () => {
         navigate('/CreateRide');
     };
 
-    const handlePageChange = (page: number) => {
-        setCurrentPage(page);
-    };
+    const [value, onChange] = useState<Value>(new Date());
 
     const indexOfLastRide = currentPage * ridesPerPage;
     const indexOfFirstRide = indexOfLastRide - ridesPerPage;
     const currentRides = rides.slice(indexOfFirstRide, indexOfLastRide);
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        return date.toISOString().split('T')[0];
+    };
+
+    const tileClassName = ({ date, view }: { date: Date, view: string }) => {
+        if (view === 'month') {
+            const dateString = date.toISOString().split('T')[0];
+            const rideDates = rides.map(ride => formatDate(ride.departureTime));
+            if (rideDates.includes(dateString)) {
+                return 'highlight';
+            }
+        }
+        return '';
+    };
+
+
 
     return (
         <Page>
-            <div className="container">
-                <button className="button" onClick={handleCreateRide}>+ Create New Ride</button>
-            </div>
+            <Dialog.Root>
+                <div className="header-container">
+                    <button className="button-search" onClick={handleCreateRide}>+ Create New Ride</button>
+                  
+                    <PointsDisplay points={points} />
+                
+                </div>
+                  <Dialog.Trigger asChild>
+                        <button className="button-search">Calendar</button>
+                    </Dialog.Trigger>
 
-            <div className="rides-calendar-container">
-                <div className="rides-table-container">
+                
+               
+                <Dialog.Portal>
+                    <Dialog.Overlay className="DialogOverlay" />
+                    <Dialog.Content className="DialogContent">
+                        <div style={{ display: 'flex', marginTop: 25, justifyContent: 'center' }}>
+                            <div className="calendar-container">
+                                <Calendar onChange={onChange} showWeekNumbers value={value} tileClassName={tileClassName} />
+                            </div>
+
+                            
+                        </div>
+                        <Dialog.Close asChild>
+                            <div>
+                                <button className="button-search" aria-label="Close">
+                                    Close
+                                </button>
+                            </div>
+                        </Dialog.Close>
+                    </Dialog.Content>
+                </Dialog.Portal>
+            </Dialog.Root>
+
+            <div className="container-ride">
+                <div className="table-container">
                     <table>
                         <thead>
                             <tr>
@@ -83,7 +129,7 @@ const Rides = () => {
                                 <th>From</th>
                                 <th>Destination</th>
                                 <th>Pickup Time</th>
-                                <th>Rides Left</th>
+                                <th>Seats</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -111,17 +157,7 @@ const Rides = () => {
                             ))}
                         </tbody>
                     </table>
-                    <Pagination
-                        currentPage={currentPage}
-                        totalPages={Math.ceil(rides.length / ridesPerPage)}
-                        onPageChange={handlePageChange}
-                    />
                 </div>
-
-                <div className="calendar-container">
-                    <Calendar rides={rides} />
-                </div>
-
             </div>
         </Page>
     );

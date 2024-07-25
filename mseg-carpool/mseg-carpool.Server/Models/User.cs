@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace mseg_carpool.Server.Models
 {
@@ -12,6 +12,7 @@ namespace mseg_carpool.Server.Models
         public string MobileNumber { get; set; }
         public string Location { get; set; }
         public string? CarType { get; set; }
+        public string? CarMake { get; set; }
         public string? CarPlate { get; set; }
         public string? CarColor { get; set; }
         public int Points { get; set; }

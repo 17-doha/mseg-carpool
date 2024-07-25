@@ -103,7 +103,7 @@ const CreateRideForm: React.FC = () => {
     };
 
     return (
-        <div className="container">
+        <div className="container-create">
             <div className="form-container">
                 <form className="form" onSubmit={handleSubmit}>
                     <div className="radio-group">

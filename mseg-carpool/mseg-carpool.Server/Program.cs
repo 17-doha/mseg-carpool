@@ -21,6 +21,7 @@ builder.Services.AddSingleton<IUserRepository, LocalInMemUserRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 // Add CORS services and define a policy
 builder.Services.AddCors(options =>
 {
@@ -31,11 +32,9 @@ builder.Services.AddCors(options =>
                      .AllowAnyHeader();
     });
 });
-
 // Register DbContext before building the app
 builder.Services.AddDbContext<ApplicationDBcontext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 
 var app = builder.Build();
 

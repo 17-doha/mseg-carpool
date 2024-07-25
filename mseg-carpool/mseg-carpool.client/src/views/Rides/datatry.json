@@ -23,7 +23,7 @@
                 "location": "Suburb"
             }
         ],
-        "departureTime": "2024-07-07T19:21:39.610Z",
+        "departureTime": "2024-07-07",
         "status": "Pending",
         "own": "0"
     },
@@ -51,7 +51,7 @@
                 "location": "Uptown"
             }
         ],
-        "departureTime": "2024-07-08T09:00:00.000Z",
+        "departureTime": "2024-07-08",
         "status": "Approved",
         "own": "0"
     },
@@ -79,7 +79,7 @@
                 "location": "Midtown"
             }
         ],
-        "departureTime": "2024-07-09T15:30:00.000Z",
+        "departureTime": "2024-07-09",
         "status": "Approved",
         "own": "0"
     },
@@ -107,7 +107,7 @@
                 "location": "Old Town"
             }
         ],
-        "departureTime": "2024-07-10T08:45:00.000Z",
+        "departureTime": "2024-07-10",
         "status": "Pending",
         "own": "1"
     },
@@ -135,7 +135,7 @@
                 "location": "City Center"
             }
         ],
-        "departureTime": "2024-07-11T12:00:00.000Z",
+        "departureTime": "2024-07-11",
         "status": "Approved",
         "own": "1"
     }

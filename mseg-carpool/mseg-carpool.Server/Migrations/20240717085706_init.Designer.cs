@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using mseg_carpool.Server;
 
@@ -11,9 +12,11 @@ using mseg_carpool.Server;
 namespace mseg_carpool.Server.Migrations
 {
     [DbContext(typeof(ApplicationDBcontext))]
-    partial class ApplicationDBcontextModelSnapshot : ModelSnapshot
+    [Migration("20240717085706_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,12 +33,17 @@ namespace mseg_carpool.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("RideId")
+                    b.Property<int?>("Passenger")
+                        .HasColumnType("int");
 
+                    b.Property<int?>("Ride")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("rideId")
+                        .HasColumnType("int");
 
                     b.Property<string>("status")
                         .IsRequired()
@@ -43,9 +51,9 @@ namespace mseg_carpool.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RideId");
-
                     b.HasIndex("UserId");
+
+                    b.HasIndex("rideId");
 
                     b.ToTable("Request");
                 });
@@ -67,6 +75,9 @@ namespace mseg_carpool.Server.Migrations
                     b.Property<string>("Destination")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Driver")
+                        .HasColumnType("int");
 
                     b.Property<string>("Origin")
                         .IsRequired()
@@ -126,20 +137,19 @@ namespace mseg_carpool.Server.Migrations
 
             modelBuilder.Entity("mseg_carpool.Server.Models.Request", b =>
                 {
-                    b.HasOne("mseg_carpool.Server.Models.Ride", "Ride")
-                        .WithMany()
-                        .HasForeignKey("RideId");
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-
                     b.HasOne("mseg_carpool.Server.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
+                    b.HasOne("mseg_carpool.Server.Models.Ride", "ride")
+                        .WithMany()
+                        .HasForeignKey("rideId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("User");
 
-                    b.Navigation("Ride");
+                    b.Navigation("ride");
                 });
 
             modelBuilder.Entity("mseg_carpool.Server.Models.Ride", b =>

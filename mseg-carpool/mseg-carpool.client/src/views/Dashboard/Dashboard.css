@@ -1,0 +1,46 @@
+/*not in use currently */
+.dashboard-container {
+    padding: 20px;
+}
+
+.user-card {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+    .user-card .ms-Persona {
+        margin-bottom: 20px;
+    }
+
+    .user-card .ms-CardSection {
+        margin-bottom: 10px;
+    }
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+    .user-info label,
+    .user-info .ms-TextField-wrapper {
+        width: 100%;
+    }
+
+    .user-info .ms-TextField-fieldGroup {
+        border: 1px solid #ccc; /* Regular border */
+        border-radius: 4px; /* Rounded corners */
+    }
+
+        .user-info .ms-TextField-fieldGroup:focus {
+            border-color: #0078d4; /* Border color when focused */
+            outline: none; /* Remove default outline */
+        }
+
+    .user-info .ms-TextField-field {
+        padding: 10px;
+    }
