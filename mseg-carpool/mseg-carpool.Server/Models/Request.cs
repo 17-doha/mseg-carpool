@@ -7,12 +7,13 @@ namespace mseg_carpool.Server.Models
         [Key]
         public int Id { get; set; }
         public string status { get; set; }
+        public string coordinates { get; set; }
 
-        public int? Passenger { get; set; }
+        public string? UserId { get; set; }
         public User User { get; set; }
 
-        public int? Ride { get; set; }
-        public Ride ride { get; set; }
+        public int? RideId { get; set; }
+        public Ride Ride { get; set; }
 
     }
 }

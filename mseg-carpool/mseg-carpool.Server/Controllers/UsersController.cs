@@ -39,6 +39,7 @@ namespace mseg_carpool.Server.Controllers
             return CreatedAtAction(nameof(GetUserByAzureId), new { azureId = createdUser.AzureId }, createdUser);
         }
 
+        
         // update user in DB
         [HttpPut("{azureId}")]
         public IActionResult UpdateUser(string azureId, User updatedUser)
@@ -50,7 +51,7 @@ namespace mseg_carpool.Server.Controllers
                 return NotFound();
             }
 
-         _userRepository.UpdateUser(updatedUser);
+            _userRepository.UpdateUser(updatedUser);
 
             return NoContent();
         }
@@ -66,7 +67,7 @@ namespace mseg_carpool.Server.Controllers
                 return NotFound();
             }
 
-         _userRepository.DeleteUser(azureId);
+            _userRepository.DeleteUser(azureId);
 
             return NoContent();
         }

@@ -6,6 +6,8 @@ import Footer from "./components/Footer";
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from "@azure/msal-react";
 import { DefaultButton } from "@fluentui/react";
 import { useEffect } from "react";
+import { ThemeProvider } from "./components/theme-provider"
+
 
 function App() {
     const { instance } = useMsal();
@@ -19,6 +21,8 @@ function App() {
     }, [instance]);
 
     return (
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">{
+
         <>
             <div className="App">
                 <AuthenticatedTemplate>
@@ -36,6 +40,7 @@ function App() {
                 </UnauthenticatedTemplate>
             </div>
         </>
+}</ThemeProvider>
     );
 }
 
