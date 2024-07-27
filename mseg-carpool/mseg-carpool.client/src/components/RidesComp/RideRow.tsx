@@ -88,12 +88,13 @@ const RideRow: React.FC<RideRowProps> = ({
         setIsEditing(!isEditing);
     };
     const handleCancelClick = () => {
-        if (window.confirm(`Are you sure you want to delete the ride of ${name}?`)) {
-            
-             
-                    onDelete(id);
-              
-                
+        if (window.confirm(`Are you sure you want to cancel the request for the ride of ${name}?`)) {
+            apiService.cancelRequest(id, azureID)
+                .then(() => {
+                    console.log('Request canceled successfully');
+                    window.location.reload(); // Reload the entire page
+                })
+                .catch(error => console.error('Error canceling request:', error));
         }
     };
 
@@ -115,7 +116,6 @@ const RideRow: React.FC<RideRowProps> = ({
         if (pickupPoints && pickupPoints.length > 0) {
             // Use the first pickup point as the starting point
             const firstPickupPoint = pickupPoints[0];
-            const lastPickupPoint = pickupPoints[pickupPoints.length - 1];
 
             // Construct the route URL
             url = `${baseUrl}${encodeURIComponent(origin)}/${firstPickupPoint.pickupPointLat},${firstPickupPoint.pickupPointLong}`;

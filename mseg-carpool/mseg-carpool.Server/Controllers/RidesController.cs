@@ -185,7 +185,7 @@ namespace mseg_carpool.Server.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteRequest(int id)
+        public IActionResult DeleteRidet(int id)
         {
             var ride = dbcontext.Ride
                                 .Include(r => r.Users)
@@ -202,11 +202,6 @@ namespace mseg_carpool.Server.Controllers
 
             return NoContent(); // 204 No Content
         }
-
-
-
-
-
         //Get Rides all rides
         [HttpGet]
         public ActionResult<IEnumerable<Ride>> GetRides([FromQuery] DateTime currentTime)
@@ -251,6 +246,27 @@ namespace mseg_carpool.Server.Controllers
 
             return Ok(rides);
         }
+
+        [HttpDelete("cancel-request/{rideId}/{azureId}")]
+        public IActionResult CancelRequest(int rideId, string azureId)
+        {
+            // Find the request by linking the ride table with the request table
+            var request = dbcontext.Request
+                                   .FirstOrDefault(r => r.RideId == rideId && r.UsersId == azureId);
+
+            // Check if the request exists
+            if (request == null)
+            {
+                return NotFound();
+            }
+
+            // Remove the request from the Requests table
+            dbcontext.Request.Remove(request);
+            dbcontext.SaveChanges();
+
+            return NoContent(); // 204 No Content
+        }
+
 
         // Create a new ride
         [HttpPost]

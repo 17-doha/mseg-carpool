@@ -62,8 +62,8 @@ const Rides: React.FC = () => {
     const [loading, setLoading] = useState(true); // State to store loading status
 
     useEffect(() => {
-        const userId: string = 'user1'; // Replace with the actual user ID
-        const azureId: string = 'user1'; // Replace with the actual Azure ID
+        const userId: string = 'user2'; // Replace with the actual user ID
+        const azureId: string = 'user2'; // Replace with the actual Azure ID
 
         const fetchData = async () => {
             setLoading(true); // Set loading to true before fetching data
@@ -273,7 +273,7 @@ const Rides: React.FC = () => {
                                         pickupPoints={ride.pickupPoints}
                                         mainSeats={ride.mainSeats}
                                         status={ride.status || 'N/A'}
-                                        azureID="user1"
+                                        azureID="user2"
                                         email={ride.rideDriver?.email || 'N/A'}
                                         mobileNumber={ride.rideDriver?.mobileNumber || 'N/A'}
                                         location={ride.rideDriver?.location || 'N/A'}

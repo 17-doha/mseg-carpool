@@ -48,11 +48,11 @@ interface User {
 export interface ApiResponse<T> {
     $id: string;
     $values: T;
-}   
+}
 
 // API service functions
 const apiService = {
-  
+
     getRidesByUserId: async (userId: string): Promise<AxiosResponse<ApiResponse<Ride[]>>> => {
         const response = await axios.get<ApiResponse<Ride[]>>(`${API_BASE_URL}/rides/${userId}`);
         return response;
@@ -74,9 +74,15 @@ const apiService = {
         console.log(id);
         return axios.delete<void>(`${API_BASE_URL}/rides/${id}`);
     },
+
     getUserPoints: (azureId: string): Promise<AxiosResponse<User>> => {
         return axios.get<User>(`${API_BASE_URL}/users/${azureId}`);
+    },
+
+    cancelRequest: (rideId: number, azureId: string): Promise<AxiosResponse<void>> => {
+        return axios.delete<void>(`${API_BASE_URL}/rides/cancel-request/${rideId}/${azureId}`);
     }
+
 };
 
 export default apiService;
