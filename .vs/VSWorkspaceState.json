@@ -3,9 +3,14 @@
     "",
     "\\mseg-carpool",
     "\\mseg-carpool\\mseg-carpool.client",
+    "\\mseg-carpool\\mseg-carpool.client\\src",
+    "\\mseg-carpool\\mseg-carpool.client\\src\\components",
+    "\\mseg-carpool\\mseg-carpool.client\\src\\components\\RidesComp",
+    "\\mseg-carpool\\mseg-carpool.client\\src\\views",
+    "\\mseg-carpool\\mseg-carpool.client\\src\\views\\Rides",
     "\\mseg-carpool\\mseg-carpool.Server",
-    "\\mseg-carpool\\mseg-carpool.Server\\Controllers"
+    "\\mseg-carpool\\mseg-carpool.Server\\Models"
   ],
-  "SelectedNode": "\\mseg-carpool\\mseg-carpool.Server\\Controllers\\RidesController.cs",
+  "SelectedNode": "\\mseg-carpool\\mseg-carpool.sln",
   "PreviewInSolutionExplorer": false
 }

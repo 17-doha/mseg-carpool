@@ -12,7 +12,7 @@ namespace mseg_carpool.Server
         {
 
         }
-        public DbSet<User> User { get; set; }
+        public DbSet<Users> User { get; set; }
 
         public DbSet<Ride> Ride { get; set; }
 
@@ -21,6 +21,7 @@ namespace mseg_carpool.Server
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
 
         }
 

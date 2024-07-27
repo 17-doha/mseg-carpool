@@ -103,6 +103,7 @@ th {
 }
 
 
+
 /* Editing input box styling */
 input[type="text"].editing {
     border: 2px solid #00A4EF; /* Border color when in editing mode */
@@ -125,13 +126,30 @@ input[type="text"].editing {
     }
 
 /* Driver info card styling */
-.driver-info .card {
-    background-color: #f9f9f9;
-    padding: 20px;
-    margin-top: 10px;
+.driver-info-card {
+    background-color: #fff;
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin: 16px 0;
+    max-width: 400px;
 }
+
+.driver-info-content p {
+    margin: 8px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+    .driver-info-content p:first-child {
+        margin-top: 0;
+    }
+
+    .driver-info-content p:last-child {
+        margin-bottom: 0;
+    }
+
 
 /* Dialog styling */
 .DialogOverlay {
