@@ -1,3 +1,4 @@
+import React from "react";
 import {
     CommandBar,
     CommandBarButton,
@@ -11,7 +12,11 @@ import logo from "../../assets/logo.png";
 import { useLocation, useNavigate, matchPath } from "react-router-dom";
 import { useMsal } from "@azure/msal-react";
 
-function Navbar() {
+interface NavbarProps {
+    showNavs: boolean;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ showNavs }) => {
     const { instance } = useMsal();
     const userAccount = () => instance.getActiveAccount() || instance.getAllAccounts()[0];
     const userInitials = () => {
@@ -30,70 +35,72 @@ function Navbar() {
             <Stack.Item disableShrink className="stack-item logo-container">
                 <img title="Microsoft" src={logo} />
             </Stack.Item>
-            <Stack.Item grow className="stack-item menu-container">
-                <CommandBar
-                    className="menu"
-                    styles={{
-                        root: {
-                            padding: 0,
-                            height: 54,
-                        },
-                    }}
-                    items={[
-                        {
-                            key: "rides",
-                            text: "Rides",
-                            className:
-                                matchPath("/", pathname) || matchPath("/rides", pathname)
-                                    ? "open"
-                                    : "",
-                            buttonStyles: {
-                                root: {
-                                    paddingLeft: 10,
-                                    paddingRight: 10,
-                                },
+            {showNavs && (
+                <Stack.Item grow className="stack-item menu-container">
+                    <CommandBar
+                        className="menu"
+                        styles={{
+                            root: {
+                                padding: 0,
+                                height: 54,
                             },
-                            onClick: () => navigate("/rides"),
-                        },
-                        {
-                            key: "requests",
-                            text: "Requests",
-                            className: matchPath("/requests", pathname) ? "open" : "",
-                            buttonStyles: {
-                                root: {
-                                    paddingLeft: 10,
-                                    paddingRight: 10,
+                        }}
+                        items={[
+                            {
+                                key: "rides",
+                                text: "Rides",
+                                className:
+                                    matchPath("/", pathname) || matchPath("/rides", pathname)
+                                        ? "open"
+                                        : "",
+                                buttonStyles: {
+                                    root: {
+                                        paddingLeft: 10,
+                                        paddingRight: 10,
+                                    },
                                 },
+                                onClick: () => navigate("/rides"),
                             },
-                            onClick: () => navigate("/requests"),
-                        },
-                        {
-                            key: "dashboard",
-                            text: "Dashboard",
-                            className: matchPath("/dashboard", pathname) ? "open" : "",
-                            buttonStyles: {
-                                root: {
-                                    paddingLeft: 10,
-                                    paddingRight: 10,
+                            {
+                                key: "requests",
+                                text: "Requests",
+                                className: matchPath("/requests", pathname) ? "open" : "",
+                                buttonStyles: {
+                                    root: {
+                                        paddingLeft: 10,
+                                        paddingRight: 10,
+                                    },
                                 },
+                                onClick: () => navigate("/requests"),
                             },
-                            onClick: () => navigate("/dashboard"),
-                        },
-                        {
-                            key: "search",
-                            text: "Search",
-                            className: matchPath("/search", pathname) ? "open" : "",
-                            buttonStyles: {
-                                root: {
-                                    paddingLeft: 10,
-                                    paddingRight: 10,
+                            {
+                                key: "dashboard",
+                                text: "Dashboard",
+                                className: matchPath("/dashboard", pathname) ? "open" : "",
+                                buttonStyles: {
+                                    root: {
+                                        paddingLeft: 10,
+                                        paddingRight: 10,
+                                    },
                                 },
+                                onClick: () => navigate("/dashboard"),
                             },
-                            onClick: () => navigate("/search"),
-                        },
-                    ]}
-                />
-            </Stack.Item>
+                            {
+                                key: "search",
+                                text: "Search",
+                                className: matchPath("/search", pathname) ? "open" : "",
+                                buttonStyles: {
+                                    root: {
+                                        paddingLeft: 10,
+                                        paddingRight: 10,
+                                    },
+                                },
+                                onClick: () => navigate("/search"),
+                            },
+                        ]}
+                    />
+                </Stack.Item>
+            )}
             <Stack.Item disableShrink className="stack-item user-container">
                 <CommandBarButton
                     className="user-button"
@@ -117,11 +124,9 @@ function Navbar() {
                                 text: "Edit Profile",
                                 iconProps: { iconName: "Edit" },
                                 className: matchPath("/dashboard", pathname) ? "open" : "",
-                            
                                 onClick: () => navigate("/dashboard"),
                             },
                         ],
-
                     }}
                 >
                     <Persona
@@ -135,6 +140,6 @@ function Navbar() {
             </Stack.Item>
         </Stack>
     );
-}
+};
 
 export default Navbar;

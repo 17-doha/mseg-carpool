@@ -1,4 +1,4 @@
-using mseg_carpool.Server.Models;
+﻿using mseg_carpool.Server.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -11,9 +11,9 @@ public class Ride
     public int AvailableSeats { get; set; }
     public DateTime DepartureTime { get; set; }
     public string Coordinates { get; set; }
-    public string? UsersId { get; set; }
+    public string? UserId { get; set; }
     [JsonIgnore]
-    public Users Users { get; set; }
+    public Users User { get; set; }
     [JsonIgnore]
     public ICollection<Request> Requests { get; set; }
 }

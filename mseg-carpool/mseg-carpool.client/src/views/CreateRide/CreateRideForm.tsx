@@ -1,5 +1,6 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import './CreateRideForm.css';
+import Map from '../../components/Map';
 
 interface RideDriver {
     azureID: string;
@@ -83,6 +84,22 @@ const CreateRideForm: React.FC = () => {
         };
 
         console.log('Form Data:', formData);
+        fetch("api/rides/create", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Ride created:", data);
+                // Handle the response data here
+            })
+            .catch(error => {
+                console.error("Error creating ride:", error);
+                // Handle the error here
+            });
     };
 
     return (
@@ -176,7 +193,7 @@ const CreateRideForm: React.FC = () => {
             </div>
             <div className="map-container">
                 <div className="map-placeholder">
-                    Google Maps Placeholder
+                    <Map />
                 </div>
             </div>
         </div>

@@ -5,10 +5,12 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from "@azure/msal-react";
 import { DefaultButton } from "@fluentui/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import ProfileSetup from './components/ProfileSetup'; 
 
-function App() {
-    const { instance } = useMsal();
+const App: React.FC = () => {
+    const { instance, accounts } = useMsal();
+    const [isProfileComplete, setIsProfileComplete] = useState<boolean | null>(true);
 
     // set active account
     useEffect(() => {
@@ -18,16 +20,44 @@ function App() {
         }
     }, [instance]);
 
+    useEffect(() => {
+        const checkUserProfile = async () => {
+            if (accounts.length > 0) {
+                const user = accounts[0];
+                const AzureID = user.localAccountId;
+                //Check if the profile info is complete
+                const response = await fetch(`http://localhost:5062/api/Users/check_profile?Id=${AzureID}`); 
+                //returns a boolean value 
+                //TODO 
+                const data = await response.json();
+                setIsProfileComplete(data); 
+            }
+        };
+
+        checkUserProfile();
+    }, [accounts]);
+
+    if (isProfileComplete === null) {
+        return <div>Loading...</div>;
+    }
+
     return (
-        <>
             <div className="App">
-                <AuthenticatedTemplate>
-                    <Navbar />
-                    <div className="content">
-                        <Outlet />
+                {isProfileComplete ? (
+                    <AuthenticatedTemplate>
+                        <Navbar showNavs={true} />
+                        <div className="content">
+                            <Outlet />
+                            <Footer />
+                        </div>
+                    </AuthenticatedTemplate>
+                ) : (
+                    <AuthenticatedTemplate>
+                        <Navbar showNavs={false} /> 
+                        <ProfileSetup />
                         <Footer />
-                    </div>
-                </AuthenticatedTemplate>
+                    </AuthenticatedTemplate>
+                )}
 
                 <UnauthenticatedTemplate>
                     <Navigate to="/" replace />
@@ -35,8 +65,7 @@ function App() {
                     <DefaultButton onClick={() => instance.loginRedirect()} primary>Login</DefaultButton>
                 </UnauthenticatedTemplate>
             </div>
-        </>
     );
-}
+};
 
 export default App;

@@ -1,4 +1,6 @@
 .Navbar {
+  display: flex;
+  align-items: center;
   background-color: white;
   overflow: hidden;
   width: 100%;
@@ -11,6 +13,7 @@
 
 .Navbar .stack-item {
   align-items: center;
+  margin-right: 10px;
   display: flex;
   height: 100%;
   padding-left: 10px;
@@ -19,6 +22,7 @@
 
 .Navbar .logo-container {
   width: 137px;
+  margin-right: auto;
   padding: 0;
 }
 
@@ -29,6 +33,7 @@
 
 .Navbar .menu-container {
   position: relative;
+  flex-grow: 1;
 }
 
 .Navbar .menu-container::before {
@@ -64,4 +69,5 @@
 
 .Navbar .user-container .user-button {
   height: 100%;
+  margin-left: auto;
 }

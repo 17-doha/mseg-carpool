@@ -22,7 +22,35 @@ namespace mseg_carpool.Server.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Ride", b =>
+            modelBuilder.Entity("mseg_carpool.Server.Models.Request", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("RideId")
+
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RideId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Request");
+                });
+
+            modelBuilder.Entity("mseg_carpool.Server.Models.Ride", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -141,17 +169,20 @@ namespace mseg_carpool.Server.Migrations
 
             modelBuilder.Entity("mseg_carpool.Server.Models.Request", b =>
                 {
-                    b.HasOne("Ride", "ride")
-                        .WithMany("Requests")
+                    b.HasOne("mseg_carpool.Server.Models.Ride", "Ride")
+                        .WithMany()
                         .HasForeignKey("RideId");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("mseg_carpool.Server.Models.Users", "Users")
-                        .WithMany("Requests")
-                        .HasForeignKey("UsersId");
 
-                    b.Navigation("Users");
+                    b.HasOne("mseg_carpool.Server.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
-                    b.Navigation("ride");
+                    b.Navigation("User");
+
+                    b.Navigation("Ride");
                 });
 
             modelBuilder.Entity("Ride", b =>
