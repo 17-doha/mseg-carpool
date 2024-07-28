@@ -13,6 +13,7 @@ namespace mseg_carpool.Server.Models
         public string Location { get; set; }
         public string? CarModel { get; set; }
         public string? CarType { get; set; }
+        public string? CarMake { get; set; }
         public string? CarPlate { get; set; }
         public string? CarColor { get; set; }
         public int Points { get; set; }
