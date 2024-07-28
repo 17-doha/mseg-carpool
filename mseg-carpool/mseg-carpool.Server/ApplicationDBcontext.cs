@@ -1,8 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure.Core;
+using Microsoft.EntityFrameworkCore;
 using mseg_carpool.Server.Models;
-using System.Collections.Generic;
 using System.Data.Common;
-using System.Reflection.Emit;
 
 namespace mseg_carpool.Server
 {
@@ -15,7 +14,8 @@ namespace mseg_carpool.Server
         public DbSet<User> User { get; set; }
 
         public DbSet<Ride> Ride { get; set; }
-        public DbSet<Request> Request { get; set; }
+
+        public DbSet<Models.Request> Request { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
