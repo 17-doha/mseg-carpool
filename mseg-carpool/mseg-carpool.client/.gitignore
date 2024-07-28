@@ -8,6 +8,9 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+/.vs/mseg-carpool/FileContentIndex/731b75a5-2d22-4c6e-b9ec-5395d13a4844.vsidx
+*.vsidx
+node_modules
 dist
 dist-ssr
 *.local
