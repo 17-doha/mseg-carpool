@@ -29,7 +29,7 @@ const Navbar: React.FC<NavbarProps> = ({ showNavs }) => {
     };
     const navigate = useNavigate();
     const { pathname } = useLocation();
-
+    console.log(userAccount().idTokenClaims?.oid);
     return (
         <Stack enableScopedSelectors horizontal className="Navbar">
             <Stack.Item disableShrink className="stack-item logo-container">

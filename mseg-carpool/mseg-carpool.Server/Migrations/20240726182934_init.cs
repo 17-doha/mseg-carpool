@@ -16,11 +16,11 @@ namespace mseg_carpool.Server.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AzureId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MobileNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CarModel = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CarType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CarPlate = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CarColor = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -41,15 +41,15 @@ namespace mseg_carpool.Server.Migrations
                     Destination = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AvailableSeats = table.Column<int>(type: "int", nullable: false),
                     DepartureTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Driver = table.Column<int>(type: "int", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    Coordinates = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UsersId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Ride", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Ride_User_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Ride_User_UsersId",
+                        column: x => x.UsersId,
                         principalTable: "User",
                         principalColumn: "Id");
                 });
@@ -61,41 +61,39 @@ namespace mseg_carpool.Server.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Passenger = table.Column<int>(type: "int", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Ride = table.Column<int>(type: "int", nullable: true),
-                    rideId = table.Column<int>(type: "int", nullable: false)
+                    pickupPoints = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UsersId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    RideId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Request", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Request_Ride_rideId",
-                        column: x => x.rideId,
+                        name: "FK_Request_Ride_RideId",
+                        column: x => x.RideId,
                         principalTable: "Ride",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Request_User_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Request_User_UsersId",
+                        column: x => x.UsersId,
                         principalTable: "User",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Request_rideId",
+                name: "IX_Request_RideId",
                 table: "Request",
-                column: "rideId");
+                column: "RideId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Request_UserId",
+                name: "IX_Request_UsersId",
                 table: "Request",
-                column: "UserId");
+                column: "UsersId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ride_UserId",
+                name: "IX_Ride_UsersId",
                 table: "Ride",
-                column: "UserId");
+                column: "UsersId");
         }
 
         /// <inheritdoc />

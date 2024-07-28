@@ -90,7 +90,7 @@
         "availableSeats": 1,
         "rideDriver": {
             "azureID": "drv678",
-            "name": "Emily Davis",
+            "name": "Doha",
             "email": "emily.davis@example.com",
             "mobileNumber": " ",
             "location": "Suburb",
@@ -118,7 +118,7 @@
         "availableSeats": 5,
         "rideDriver": {
             "azureID": "drv345",
-            "name": "George Martin",
+            "name": "Doha",
             "email": "george.martin@example.com",
             "mobileNumber": " ",
             "location": "Main Street",

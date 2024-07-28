@@ -29,7 +29,7 @@ namespace mseg_carpool.Server.Controllers
 
             if (user == null)
             {
-                return NotFound();
+                return NotFound(); // Return 404 if user is not found
             }
 
             return Ok(user);

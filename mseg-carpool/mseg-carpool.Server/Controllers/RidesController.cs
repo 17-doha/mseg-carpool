@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.Json;
 using mseg_carpool.Server.Models;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
@@ -128,14 +130,15 @@ namespace mseg_carpool.Server.Controllers
 
         // Update a specific ride by ID
         [HttpPut("{id}")]
-        public IActionResult UpdateRide(int id, Ride updatedRide)
+       
+        public IActionResult UpdateRide(string id, RideDto updatedRide)
         {
             return Ok(null);
         }
 
         // Delete a Ride by ID
         [HttpDelete("{id}")]
-        public IActionResult DeleteRide(int id)
+        public IActionResult DeleteRidet(int id)
         {
             return Ok(null);
         }
