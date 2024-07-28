@@ -11,6 +11,8 @@ import './Rides.css';
 import '../../components/RidesComp/Styles.css';
 import apiService from '../Rides/apiService'; // Import the apiService
 import '../../components/RidesComp/RideRow.css'; // Ensure this is imported as needed
+import { useMsal } from '@azure/msal-react';
+
 
 interface RideDriver {
     azureID: string;
@@ -60,10 +62,12 @@ const Rides: React.FC = () => {
     const [points, setPoints] = useState<number | null>(null); // State to store points
     const [error, setError] = useState<string | null>(null); // State to store errors
     const [loading, setLoading] = useState(true); // State to store loading status
+    const auth = useMsal();
+    const azureID = auth.accounts[0].localAccountId;
 
     useEffect(() => {
-        const userId: string = 'user2'; // Replace with the actual user ID
-        const azureId: string = 'user2'; // Replace with the actual Azure ID
+        const userId: string = azureID; // Replace with the actual user ID
+        const azureId: string = azureID; // Replace with the actual Azure ID
 
         const fetchData = async () => {
             setLoading(true); // Set loading to true before fetching data
@@ -273,7 +277,7 @@ const Rides: React.FC = () => {
                                         pickupPoints={ride.pickupPoints}
                                         mainSeats={ride.mainSeats}
                                         status={ride.status || 'N/A'}
-                                        azureID="user2"
+                                        azureID={azureID}
                                         email={ride.rideDriver?.email || 'N/A'}
                                         mobileNumber={ride.rideDriver?.mobileNumber || 'N/A'}
                                         location={ride.rideDriver?.location || 'N/A'}

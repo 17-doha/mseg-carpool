@@ -22,6 +22,10 @@ interface FormData {
     departureTime: string;
     status: number;
 }
+interface LatLng {
+    lat: number;
+    lng: number;
+  }
 
 const CreateRideForm: React.FC = () => {
     const [rideType, setRideType] = useState<string>('toOffice');
@@ -29,6 +33,12 @@ const CreateRideForm: React.FC = () => {
     const [office, setOffice] = useState<string>('');
     const [dateTime, setDateTime] = useState<string>('');
     const [seats, setSeats] = useState<string>('');
+    const [selectedLocation, setSelectedLocation] = useState<LatLng | null>(null);
+
+    const handleLocationSelect = (location: LatLng) => {
+        setSelectedLocation(location);
+    }
+
 
     useEffect(() => {
         const savedFormData = JSON.parse(localStorage.getItem('rideFormData') || '{}');
@@ -193,7 +203,7 @@ const CreateRideForm: React.FC = () => {
             </div>
             <div className="map-container">
                 <div className="map-placeholder">
-                    <Map />
+                    <Map selectedLocation={selectedLocation} onLocationSelect={handleLocationSelect} />
                 </div>
             </div>
         </div>

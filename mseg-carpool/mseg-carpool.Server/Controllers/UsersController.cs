@@ -56,7 +56,7 @@ namespace mseg_carpool.Server.Controllers
             var createdUser = _context.User.Add(user).Entity;
             _context.SaveChanges();
 
-            return CreatedAtAction(nameof(GetUserById), new { Id = createdUser.Id }, createdUser);
+            return Ok();//CreatedAtAction(nameof(GetUserById), new { Id = createdUser.Id }, createdUser);
         }
 
         

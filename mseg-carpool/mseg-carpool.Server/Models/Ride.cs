@@ -13,7 +13,7 @@ public class Ride
     public string Coordinates { get; set; }
     public string? UserId { get; set; }
     [JsonIgnore]
-    public Users User { get; set; }
+    public User User { get; set; }
     [JsonIgnore]
     public ICollection<Request> Requests { get; set; }
 }
