@@ -62,19 +62,20 @@ const Rides: React.FC = () => {
     const [points, setPoints] = useState<number | null>(null); // State to store points
     const [error, setError] = useState<string | null>(null); // State to store errors
     const [loading, setLoading] = useState(true); // State to store loading status
+    const [hasUserRides, setHasUserRides] = useState(false);
     const auth = useMsal();
     const azureID = auth.accounts[0].localAccountId;
 
     useEffect(() => {
-        const userId: string = azureID; // Replace with the actual user ID
-        const azureId: string = azureID; // Replace with the actual Azure ID
+        const userId: string = "user2"; // Replace with the actual user ID
+        const azureId: string = "user2"; // Replace with the actual Azure ID
 
         const fetchData = async () => {
             setLoading(true); // Set loading to true before fetching data
             const currentTime = new Date().toISOString(); // Get the current time in ISO 8601 format
             try {
                 const [userRidesResponse, azureRidesResponse, userPointsResponse] = await Promise.allSettled([
-                    apiService.getRidesByUserId(userId),
+                    apiService.getRidesByUserId(userId, currentTime),
                     apiService.getRideByAzureId(azureId, currentTime),
                     apiService.getUserPoints(azureId) // Fetch user points
                 ]);
@@ -93,6 +94,8 @@ const Rides: React.FC = () => {
                 const userRides = userRidesResponse.status === 'fulfilled' ? extractRides(userRidesResponse.value.data) : [];
                 const azureRides = azureRidesResponse.status === 'fulfilled' ? extractRides(azureRidesResponse.value.data) : [];
 
+                setHasUserRides(userRides.length > 0); // Set state based on the presence of user rides
+
                 if (userRides.length === 0 && azureRides.length === 0) {
                     setRides([]);
                 } else {
@@ -105,11 +108,11 @@ const Rides: React.FC = () => {
                         departureTime: ride.departureTime,
                         coordinatesLong: ride.coordinatesLong,
                         coordinatesLat: ride.coordinatesLat,
-                        pickupPoints: ride.requests?.$values?.[0]?.pickupPoints?.$values?.map((point: any) => ({
+                        pickupPoints: ride.requests?.[0]?.pickupPoints?.map((point: any) => ({
                             pickupPointLong: point.pickupPointLong || 'N/A',
                             pickupPointLat: point.pickupPointLat || 'N/A'
                         })) || [],
-                        status: ride.requests?.$values?.[0]?.status || 'N/A',
+                        status: ride.requests?.[0]?.status || 'N/A',
                         rideDriver: {
                             azureID: ride.user?.id || '',
                             name: ride.user?.name || 'N/A',
@@ -123,6 +126,7 @@ const Rides: React.FC = () => {
                         riders: [], // Add logic to populate if needed
                         own: false // Set own to false for rides fetched by user ID
                     }));
+
                     const transformedAzureRides = azureRides.map((ride: any) => ({
                         id: ride.id,
                         origin: ride.origin,
@@ -132,7 +136,7 @@ const Rides: React.FC = () => {
                         departureTime: ride.departureTime,
                         coordinatesLong: ride.coordinatesLong,
                         coordinatesLat: ride.coordinatesLat,
-                        pickupPoints: ride.pickupPoints?.$values?.map((point: any) => ({
+                        pickupPoints: ride.pickupPoints?.map((point: any) => ({
                             pickupPointLong: point.pickupPointLong || 'N/A',
                             pickupPointLat: point.pickupPointLat || 'N/A'
                         })) || [],
@@ -171,7 +175,10 @@ const Rides: React.FC = () => {
         };
 
         fetchData();
-    }, []);
+    }, [azureID]); // Add azureID as a dependency
+
+
+
 
 
     const handleDelete = (id: number) => {
@@ -258,8 +265,8 @@ const Rides: React.FC = () => {
                                     <th>Destination</th>
                                     <th>Pickup Time</th>
                                     <th>Seats Left</th>
-                                    <th>Status</th>
-                                    <th></th>
+                                    {hasUserRides && <th>Status</th>}
+                                    <th></th> {/* Column for icons without header */}
                                 </tr>
                             </thead>
                             <tbody>
@@ -276,8 +283,8 @@ const Rides: React.FC = () => {
                                         coordinatesLong={ride.coordinatesLong}
                                         pickupPoints={ride.pickupPoints}
                                         mainSeats={ride.mainSeats}
-                                        status={ride.status || 'N/A'}
-                                        azureID={azureID}
+                                        status={hasUserRides ? ride.status || 'N/A' : ''} // Conditionally set status
+                                        azureID="user2"
                                         email={ride.rideDriver?.email || 'N/A'}
                                         mobileNumber={ride.rideDriver?.mobileNumber || 'N/A'}
                                         location={ride.rideDriver?.location || 'N/A'}
@@ -295,6 +302,7 @@ const Rides: React.FC = () => {
             </div>
         </Page>
     );
+
 };
 
 export default Rides;

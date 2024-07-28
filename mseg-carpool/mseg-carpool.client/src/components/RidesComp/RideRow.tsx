@@ -88,6 +88,16 @@ const RideRow: React.FC<RideRowProps> = ({
         setIsEditing(!isEditing);
     };
     const handleCancelClick = () => {
+        const departureDateTime = new Date(departureTime);
+        const currentTime = new Date();
+        const timeDifferenceInMilliseconds = departureDateTime.getTime() - currentTime.getTime(); // Ensure both sides are numbers
+        const twoHoursInMilliseconds = 2 * 60 * 60 * 1000;
+
+        if (timeDifferenceInMilliseconds <= twoHoursInMilliseconds) {
+            alert("You cannot cancel the ride within two hours of the departure time.");
+            return;
+        }
+
         if (window.confirm(`Are you sure you want to cancel the request for the ride of ${name}?`)) {
             apiService.cancelRequest(id, azureID)
                 .then(() => {
@@ -98,7 +108,19 @@ const RideRow: React.FC<RideRowProps> = ({
         }
     };
 
+
+
     const handleDeleteClick = () => {
+        const departureDateTime = new Date(departureTime);
+        const currentTime = new Date();
+        const timeDifferenceInMilliseconds = departureDateTime.getTime() - currentTime.getTime();
+        const twoHoursInMilliseconds = 2 * 60 * 60 * 1000;
+
+        if (timeDifferenceInMilliseconds <= twoHoursInMilliseconds) {
+            alert("You cannot delete the ride within two hours of the departure time.");
+            return;
+        }
+
         if (window.confirm(`Are you sure you want to delete the ride of ${name}?`)) {
             apiService.deleteRide(id)
                 .then(() => {
@@ -108,6 +130,7 @@ const RideRow: React.FC<RideRowProps> = ({
                 .catch(error => console.error('Error deleting ride:', error));
         }
     };
+
 
     const handleMapClick = () => {
         const baseUrl = 'https://www.google.com/maps/dir/';

@@ -91,5 +91,22 @@ namespace mseg_carpool.Server.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("points/{azureId}")]
+        public IActionResult GetUserPoints(string azureId)
+        {
+            // Fetch the user by azureId
+            var user = _context.User
+                               .Where(u => u.Id == azureId)
+                               .Select(u => new { u.Id, u.Points })
+                               .FirstOrDefault();
+
+            if (user == null)
+            {
+                return NotFound(); // Return 404 if user is not found
+            }
+
+            return Ok(user); // Return the user object containing points
+        }
     }
 }

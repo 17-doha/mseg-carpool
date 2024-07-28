@@ -148,9 +148,8 @@ namespace mseg_carpool.Server.Controllers
                                      r.DepartureTime,
                                      Coordinates = r.Coordinates,
                                      DriverName = r.User.Name, // Assuming the User entity has a Name property
-                                     ConfirmedRequestsCount = r.Requests.Count(req => req.status == "Approved"),
+                                     AvailableSeats = r.Requests.Count(req => req.status == "Approved"),
                                      MainSeats = r.AvailableSeats + r.Requests.Count(req => req.status == "Approved"),
-                                     AvailableSeats = r.AvailableSeats - r.Requests.Count(req => req.status == "Approved"),
                                      Requests = r.Requests
                                                  .Where(req => req.status == "Approved")
                                                  .Select(req => new
@@ -175,7 +174,6 @@ namespace mseg_carpool.Server.Controllers
                 CoordinatesLong = r.Coordinates != null ? r.Coordinates.Split(',')[0] : null,
                 CoordinatesLat = r.Coordinates != null ? r.Coordinates.Split(',')[1] : null,
                 r.DriverName,
-                r.ConfirmedRequestsCount,
                 r.MainSeats,
                 r.AvailableSeats,
                 PickupPoints = r.Requests
@@ -200,13 +198,13 @@ namespace mseg_carpool.Server.Controllers
 
         //get the rides that i have requested and their request status is Pending or Approved and get also the info of the driver
         [HttpGet("{id}")]
-        public IActionResult GetRidesByUserId(string id)
+        public IActionResult GetRidesByUserId(string id, [FromQuery] DateTime currentTime)
         {
             var rides = _context.Ride
                 .Include(r => r.User)
                 .Include(r => r.Requests)
                 .ThenInclude(req => req.User)
-                .Where(r => r.Requests.Any(req => req.UserId == id && (req.status == "Pending" || req.status == "Approved")))
+                .Where(r => r.Requests.Any(req => req.UserId == id && (req.status == "Pending" || req.status == "Approved") && r.DepartureTime >= currentTime))
                 .ToList() // Fetch the data from the database first
                 .Select(r => new
                 {
@@ -249,9 +247,9 @@ namespace mseg_carpool.Server.Controllers
                             
                         })
                         .ToList(),
-                    ApprovedRequestsCount = r.Requests.Count(req => req.status == "Approved"),
-                    MainSeats = r.AvailableSeats + r.Requests.Count(req => req.status == "Approved"),
-                    AvailableSeats = r.Requests.Count(req => req.status == "Approved")
+                    AvailableSeats = r.Requests.Count(req => req.status == "Approved"),
+                    MainSeats = r.AvailableSeats + r.Requests.Count(req => req.status == "Approved")
+                    
                     // BookedSeats = r.Requests.Count(req => req.status == "Approved")
                 })
                 .ToList();
@@ -308,51 +306,71 @@ namespace mseg_carpool.Server.Controllers
 
             return NoContent(); // 204 No Content
         }
-        
-        //Get Rides all rides
-        // [HttpGet]
-        // public ActionResult<IEnumerable<Ride>> GetRides([FromQuery] DateTime currentTime)
-        // {
-        //     // Define the GMT+3 time zone
-        //     TimeZoneInfo gmtPlus3 = TimeZoneInfo.CreateCustomTimeZone("GMT+3", TimeSpan.FromHours(3), "GMT+3", "GMT+3");
-        //     DateTime gmtPlus3Time = TimeZoneInfo.ConvertTimeFromUtc(currentTime, gmtPlus3);
 
-        //     var rides = _context.Ride
-        //                           .Include(r => r.User)
-        //                           .Include(r => r.Requests)
-        //                           .ToList();
+        // Get all rides and update points if departure time is before current time
+        [HttpGet("points")]
+        public ActionResult<IEnumerable<Ride>> GetRides([FromQuery] DateTime currentTime)
+        {
+            // Define the GMT+3 time zone
+            TimeZoneInfo gmtPlus3 = TimeZoneInfo.CreateCustomTimeZone("GMT+3", TimeSpan.FromHours(3), "GMT+3", "GMT+3");
+            DateTime gmtPlus3Time = TimeZoneInfo.ConvertTimeFromUtc(currentTime, gmtPlus3);
 
-        //     foreach (var ride in rides)
-        //     {
-        //         if (ride.DepartureTime < gmtPlus3Time)
-        //         {
-        //             // Update driver points
-        //             var driver = ride.User;
-        //             if (driver != null)
-        //             {
-        //                 driver.Points += 40;
-        //             }
+            // Fetch the rides with necessary includes
+            var rides = _context.Ride
+                                .Include(r => r.User)
+                                .Include(r => r.Requests)
+                                .ThenInclude(req => req.User)
+                                .ToList();
 
-        //             // Update requesters points and set request status to "Completed"
-        //             foreach (var request in ride.Requests)
-        //             {
-        //                 var requester = request.User;
-        //                 if (requester != null)
-        //                 {
-        //                     requester.Points += 10;
-        //                 }
+            var updatedRides = new List<Ride>();
 
-        //                 // Update the request status to "Completed"
-        //                 request.status = "Completed";
-        //             }
-        //         }
-        //     }
+            foreach (var ride in rides)
+            {
+                if (ride.DepartureTime < gmtPlus3Time)
+                {
+                    // Update driver points
+                    var driver = ride.User;
+                    if (driver != null)
+                    {
+                        driver.Points += 40;
+                        Console.WriteLine($"Driver {driver.Id} points updated to {driver.Points}");
+                    }
 
-        //     // Save changes to the database
-        //     _context.SaveChanges();
+                    // Update requesters points and set request status to "Completed"
+                    foreach (var request in ride.Requests)
+                    {
+                        var requester = request.User;
+                        if (requester != null)
+                        {
+                            requester.Points += 10;
+                            Console.WriteLine($"Requester {requester.Id} points updated to {requester.Points}");
+                        }
 
-        //     return Ok(rides);
-        // }
+                        // Update the request status to "Completed"
+                        request.status = "Completed";
+                        Console.WriteLine($"Request {request.Id} status updated to Completed");
+                    }
+
+                    // Add the ride to the list of updated rides
+                    updatedRides.Add(ride);
+                }
+            }
+
+            // Save changes to the database
+            try
+            {
+                var saveResult = _context.SaveChanges();
+                Console.WriteLine($"{saveResult} records saved to the database");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving changes: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error saving changes to the database");
+            }
+
+            return Ok(updatedRides);
+        }
+
 
         [HttpDelete("cancel-request/{rideId}/{azureId}")]
         public IActionResult CancelRequest(int rideId, string azureId)

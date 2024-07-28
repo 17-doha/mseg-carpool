@@ -53,8 +53,11 @@ export interface ApiResponse<T> {
 // API service functions
 const apiService = {
 
-    getRidesByUserId: async (userId: string): Promise<AxiosResponse<ApiResponse<Ride[]>>> => {
-        const response = await axios.get<ApiResponse<Ride[]>>(`${API_BASE_URL}/rides/${userId}`);
+    getRidesByUserId: async (userId: string, currentTime: string): Promise<AxiosResponse<ApiResponse<Ride[]>>> => {
+        const response = await axios.get<ApiResponse<Ride[]>>(
+            `${API_BASE_URL}/rides/${userId}`,
+            { params: { currentTime } }
+        );
         return response;
     },
 
@@ -76,7 +79,7 @@ const apiService = {
     },
 
     getUserPoints: (azureId: string): Promise<AxiosResponse<User>> => {
-        return axios.get<User>(`${API_BASE_URL}/users/${azureId}`);
+        return axios.get<User>(`${API_BASE_URL}/users/points/${azureId}`);
     },
 
     cancelRequest: (rideId: number, azureId: string): Promise<AxiosResponse<void>> => {
