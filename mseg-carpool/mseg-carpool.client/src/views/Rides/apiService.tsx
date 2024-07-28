@@ -84,8 +84,23 @@ const apiService = {
 
     cancelRequest: (rideId: number, azureId: string): Promise<AxiosResponse<void>> => {
         return axios.delete<void>(`${API_BASE_URL}/rides/cancel-request/${rideId}/${azureId}`);
-    }
+    },
 
+    // New function to get counts
+    getCounts: async (): Promise<AxiosResponse<ApiResponse<{
+        TotalRides: number;
+        TotalDrivers: number;
+        TotalRequests: number;
+        TotalPassengers: number;
+    }>>> => {
+        const response = await axios.get<ApiResponse<{
+            TotalRides: number;
+            TotalDrivers: number;
+            TotalRequests: number;
+            TotalPassengers: number;
+        }>>(`${API_BASE_URL}/rides/counts`);
+        return response;
+    }
 };
 
 export default apiService;

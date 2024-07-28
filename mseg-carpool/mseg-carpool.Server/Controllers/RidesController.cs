@@ -392,6 +392,37 @@ namespace mseg_carpool.Server.Controllers
             return NoContent(); // 204 No Content
         }
 
+        [HttpGet("counts")]
+        public async Task<IActionResult> GetCounts()
+        {
+            // Count of all rides
+            var rideCount = await _context.Ride.CountAsync();
+
+            // Count of all drivers (users) who have created rides
+            var driverCount = await _context.User
+                .CountAsync(u => _context.Ride.Any(r => r.UserId == u.Id));
+
+            // Count of all requests
+            var requestCount = await _context.Request.CountAsync();
+
+            // Count of all passengers (distinct users involved in requests)
+            var passengerCount = await _context.Request
+                .Select(r => r.UserId)
+                .Distinct()
+                .CountAsync();
+
+            var result = new
+            {
+                TotalRides = rideCount,
+                TotalDrivers = driverCount,
+                TotalRequests = requestCount,
+                TotalPassengers = passengerCount
+            };
+
+            return Ok(result);
+        }
+
+
 
         // Create a new ride
         [HttpPost]
