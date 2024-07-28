@@ -1,26 +1,31 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using mseg_carpool.Server.Models;
+using Microsoft.AspNetCore.Cors;
+
 
 namespace mseg_carpool.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [EnableCors("AllowAll")] // Apply CORS policy to this controller
     // Uncomment when authentication is implemented in frontend
     // [Authorize]
     public class UsersController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
+        private readonly ApplicationDBcontext _context;
 
-        public UsersController(IUserRepository userRepository)
+        public UsersController(ApplicationDBcontext context)
         {
-            _userRepository = userRepository;
+            _context = context;
         }
 
+
         [HttpGet("{azureId}")]
-        public IActionResult GetUserByAzureId(string azureId)
+        public IActionResult GetUserById(string Id)
         {
-            var user = _userRepository.GetUserByAzureId(azureId);
+            var user = _context.User.FirstOrDefault(u => u.Id == Id);
 
             if (user == null)
             {
@@ -30,13 +35,28 @@ namespace mseg_carpool.Server.Controllers
             return Ok(user);
         }
 
+        [HttpGet("check_profile")]
+        public IActionResult CheckProfile([FromQuery] string Id)
+        {
+            var user = _context.User.FirstOrDefault(u => u.Id == Id);
+
+            if (user == null || string.IsNullOrEmpty(user.MobileNumber) || string.IsNullOrEmpty(user.Location))
+            {
+                return Ok(false);
+            }
+
+            return Ok(true);
+        }
+
+
         // create user in DB
         [HttpPost]
         public IActionResult CreateUser(User user)
         {
-            var createdUser = _userRepository.CreateUser(user);
+            var createdUser = _context.User.Add(user).Entity;
+            _context.SaveChanges();
 
-            return CreatedAtAction(nameof(GetUserByAzureId), new { azureId = createdUser.AzureId }, createdUser);
+            return CreatedAtAction(nameof(GetUserById), new { Id = createdUser.Id }, createdUser);
         }
 
         
@@ -44,14 +64,14 @@ namespace mseg_carpool.Server.Controllers
         [HttpPut("{azureId}")]
         public IActionResult UpdateUser(string azureId, User updatedUser)
         {
-            var user = _userRepository.GetUserByAzureId(azureId);
+            var user = _context.User.FirstOrDefault(u => u.Id == azureId);
 
             if (user == null)
             {
                 return NotFound();
             }
 
-            _userRepository.UpdateUser(updatedUser);
+            _context.Update(updatedUser);
 
             return NoContent();
         }
@@ -60,14 +80,14 @@ namespace mseg_carpool.Server.Controllers
         [HttpDelete("{azureId}")]
         public IActionResult DeleteUser(string azureId)
         {
-            var user = _userRepository.GetUserByAzureId(azureId);
+            var user = _context.User.FirstOrDefault(u => u.Id == azureId);  
 
             if (user == null)
             {
                 return NotFound();
             }
 
-            _userRepository.DeleteUser(azureId);
+            _context.Remove(user);
 
             return NoContent();
         }

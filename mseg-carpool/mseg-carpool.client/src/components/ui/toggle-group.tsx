@@ -40,13 +40,7 @@ const ToggleGroupItem = React.forwardRef<
   return (
     <ToggleGroupPrimitive.Item
       ref={ref}
-      className={cn(
-        toggleVariants({
-          variant: context.variant || variant,
-          size: context.size || size,
-        }),
-        className
-      )}
+      className={cn("px-4 py-2 rounded-s text-xs focus:outline-none focus:bg-blue-600", className)}
       {...props}
     >
       {children}

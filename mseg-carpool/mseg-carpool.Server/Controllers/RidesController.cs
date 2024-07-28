@@ -31,22 +31,45 @@ namespace mseg_carpool.Server.Controllers
         {
             int skip = (pageNumber - 1) * pageSize;
 
-            var query = _context.Ride
-                                .Where(r => r.UserId != userId && r.DepartureTime > DateTime.Now && r.AvailableSeats >= minimumSeatsAvailable)
-                                .AsQueryable();
+            var query = _context.Ride.AsQueryable();
 
-            // Apply filters if parameters are provided
+            // Initial count
+            var initialCount = await query.CountAsync();
+            Console.WriteLine($"Initial total rides: {initialCount}");
+
+            // Filter by userId
+            query = query.Where(r => r.UserId != userId);
+            var afterUserIdFilterCount = await query.CountAsync();
+            Console.WriteLine($"Rides after userId filter: {afterUserIdFilterCount}");
+
+            // Filter by DepartureTimeq //TODO ENABLE THIS FILTER
+            //query = query.Where(r => r.DepartureTime > DateTime.Now);
+            var afterDepartureTimeFilterCount = await query.CountAsync();
+            Console.WriteLine($"Rides after DepartureTime filter: {afterDepartureTimeFilterCount}");
+
+            // Filter by AvailableSeats
+            query = query.Where(r => r.AvailableSeats >= minimumSeatsAvailable);
+            var afterSeatsFilterCount = await query.CountAsync();
+            Console.WriteLine($"Rides after AvailableSeats filter: {afterSeatsFilterCount}");
+
+            // Apply additional filters if parameters are provided
             if (!string.IsNullOrEmpty(origin))
             {
                 query = query.Where(r => r.Origin == origin);
+                var afterOriginFilterCount = await query.CountAsync();
+                Console.WriteLine($"Rides after origin filter: {afterOriginFilterCount}");
             }
             if (!string.IsNullOrEmpty(destination))
             {
                 query = query.Where(r => r.Destination == destination);
+                var afterDestinationFilterCount = await query.CountAsync();
+                Console.WriteLine($"Rides after destination filter: {afterDestinationFilterCount}");
             }
             if (!string.IsNullOrEmpty(filterDate) && DateTime.TryParse(filterDate, out DateTime parsedDate))
             {
                 query = query.Where(r => r.DepartureTime.Date == parsedDate.Date);
+                var afterDateFilterCount = await query.CountAsync();
+                Console.WriteLine($"Rides after date filter: {afterDateFilterCount}");
             }
             if (!string.IsNullOrEmpty(filterTime) && TimeSpan.TryParse(filterTime, out TimeSpan parsedTime))
             {
@@ -55,7 +78,13 @@ namespace mseg_carpool.Server.Controllers
                 var endTime = parsedTime.Add(TimeSpan.FromMinutes(1));
 
                 query = query.Where(r => r.DepartureTime.TimeOfDay >= startTime && r.DepartureTime.TimeOfDay < endTime);
+                var afterTimeFilterCount = await query.CountAsync();
+                Console.WriteLine($"Rides after time filter: {afterTimeFilterCount}");
             }
+
+            // Log the count of rides before pagination
+            var totalRidesBeforePagination = await query.CountAsync();
+            Console.WriteLine($"Total rides before pagination: {totalRidesBeforePagination}");
 
             var rides = await query
                                 .OrderBy(r => r.DepartureTime)
@@ -82,6 +111,9 @@ namespace mseg_carpool.Server.Controllers
                                     }
                                 })
                                 .ToListAsync();
+
+            // Log the count of rides after pagination
+            Console.WriteLine($"Total rides after pagination: {rides.Count}");
 
             return Ok(rides);
         }

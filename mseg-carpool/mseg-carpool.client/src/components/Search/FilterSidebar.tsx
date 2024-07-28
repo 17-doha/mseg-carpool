@@ -19,9 +19,9 @@ export function InputWithLabel(props: InputWithLabelProps) {
     const { label, value, onChange } = props;
 
     return (
-        <div className="grid w-full max-w-sm gap-1.5">
+        <div className="grid w-full max-w-sm gap-1">
             <Label htmlFor={label.toLowerCase()}>{label}</Label>
-            <Input type="text" id={label.toLowerCase()} placeholder={label} value={value} onChange={onChange} />
+            <Input className='h-4 mt-1' type="text" id={label.toLowerCase()} placeholder={label} value={value} onChange={onChange} />
         </div>
     )
 }
@@ -44,7 +44,8 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ onFilterChange }) => {
         setDestination(event.target.value);
     };
 
-    const handleDateChange = (formattedDate: string): void => {
+    const handleDateChange = (date: string): void => {
+        const formattedDate = new Date(date).toISOString().slice(0, 10);
         setFormattedDate(formattedDate); 
     };
 
@@ -89,12 +90,12 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ onFilterChange }) => {
                 <DrawerTrigger className="hover:bg-blue-100 text-gray-700 font-bold py-2 px-4 rounded">🔍 Filters</DrawerTrigger>
                 <DrawerContent className="p-4 bg-slate-200">
                     <DrawerHeader className="mb-4">
-                        <DrawerTitle className="text-lg font-semibold">Filters</DrawerTitle>
-                        <DrawerDescription className="text-sm text-gray-500">Filter rides based on your preferences.</DrawerDescription>
+                        <DrawerTitle className="text-md font-semibold">Filters</DrawerTitle>
+                        {/* <DrawerDescription className="text-sm text-gray-500">Filter rides based on your preferences.</DrawerDescription> */}
                     </DrawerHeader>
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                    <form onSubmit={handleSubmit} className="">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700">Date</label>
+                            <label className="block text-sm font-medium text-gray-700">Date:</label>
                             <DatePicker onDateChange={handleDateChange} formattedDate={formattedDate} />
                         </div>
                         {/* <div>
@@ -113,20 +114,21 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ onFilterChange }) => {
                         </div> */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Going to:</label>
-                            <InputWithLabel label="" value={origin} onChange={handleOriginChange} />
-                            <Office onOfficeChange={(value) => setOrigin(value)} />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">Leaving from:</label>
                             <InputWithLabel label="" value={destination} onChange={handleDestinationChange} />
                             <Office onOfficeChange={(value) => setDestination(value)} />
                         </div>
-                        <DrawerFooter className="flex justify-end space-x-2">
-                            <Button type="submit">Submit</Button>
+                        <br></br>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">Leaving from:</label>
+                            <InputWithLabel label="" value={origin} onChange={handleOriginChange} />
+                            <Office onOfficeChange={(value) => setOrigin(value)} />
+                        </div>
+                        <DrawerFooter className="">
+                            <Button variant="default" type="submit">Submit</Button>
                             <Button variant="outline" onClick={handleClearFilters}>Clear</Button>
-                            <DrawerClose>
+                            {/* <DrawerClose>
                                 <Button variant="outline">Cancel</Button>
-                            </DrawerClose>
+                            </DrawerClose> */}
                         </DrawerFooter>
                     </form>
                 </DrawerContent>

@@ -13,10 +13,12 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
 }
 
     .button-search:hover {
         background-color: #0056b3;
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
     }
 
 .container-ride {
@@ -50,5 +52,55 @@ th {
     background-color: yellow;
 }
 
+/* Center the navigation buttons */
+/* Center the navigation buttons */
+.react-calendar__navigation {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem; /* Reduce the font size */
+}
+
+    .react-calendar__navigation button {
+        flex: 1;
+        text-align: center;
+        background: none;
+        border: none;
+        font-size: 1.0rem; /* Reduce the font size */
+        cursor: pointer;
+    }
+
+.DialogOverlay {
+    background: rgba(0, 0, 0, 0.4);
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+}
+
+.DialogContent {
+    background: white;
+    border-radius: 8px;
+    box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
+    padding: 20px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: auto;
+    display: flex; /* Flex container for side-by-side layout */
+    justify-content: center; /* Center the content horizontally */
+    align-items: center; /* Center the content vertically */
+}
+
 .calendar-container {
-    margin
+    margin-right: 20px; /* Add some spacing between the calendar and the close button */
+}
+
+.IconButton {
+    position: static; /* Remove the absolute positioning */
+    background: none;
+    border: none;
+    cursor: pointer;
+}

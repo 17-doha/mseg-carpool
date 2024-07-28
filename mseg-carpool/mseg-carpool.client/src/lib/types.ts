@@ -1,3 +1,5 @@
+import internal from "stream";
+
 export interface Driver {
     driverID: string;
     driverName: string;
@@ -18,4 +20,17 @@ export interface Driver {
     departureTime: string;
     availableSeats: number;
     driver: Driver;
+  }
+
+  export interface User {
+    Id: string;
+    Name: string;
+    Email: string;
+    MobileNumber: string;
+    Location: string;
+    Points: number;
+    CarType: string | null;
+    CarColor: string | null;
+    CarPlate: string | null;
+    CarMake: string | null;
   }

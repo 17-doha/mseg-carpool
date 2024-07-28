@@ -27,7 +27,7 @@ export function DatePicker({ onDateChange, formattedDate }: { onDateChange: (dat
                     <Button
                         variant={"outline"}
                         className={cn(
-                            "w-full justify-start text-left font-normal",
+                            "w-full justify-start text-left font-normal border-slate-100",
                             !date && "text-muted-foreground"
                         )}
                     >
