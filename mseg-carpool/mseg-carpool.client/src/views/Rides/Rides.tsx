@@ -67,8 +67,8 @@ const Rides: React.FC = () => {
     const azureID = auth.accounts[0].localAccountId;
 
     useEffect(() => {
-        const userId: string = "user2"; // Replace with the actual user ID
-        const azureId: string = "user2"; // Replace with the actual Azure ID
+        const userId: string = azureID; // Replace with the actual user ID
+        const azureId: string = azureID; // Replace with the actual Azure ID
 
         const fetchData = async () => {
             setLoading(true); // Set loading to true before fetching data
@@ -284,7 +284,7 @@ const Rides: React.FC = () => {
                                         pickupPoints={ride.pickupPoints}
                                         mainSeats={ride.mainSeats}
                                         status={hasUserRides ? ride.status || 'N/A' : ''} // Conditionally set status
-                                        azureID="user2"
+                                        azureID={azureID}
                                         email={ride.rideDriver?.email || 'N/A'}
                                         mobileNumber={ride.rideDriver?.mobileNumber || 'N/A'}
                                         location={ride.rideDriver?.location || 'N/A'}
