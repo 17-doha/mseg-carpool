@@ -6,13 +6,12 @@ namespace mseg_carpool.Server.Models
     {
         [Key]
         public int Id { get; set; }
-        public string status { get; set; }
+        public string Status { get; set; }
+        public string PickupPoints { get; set; }
+        public string? UsersId { get; set; }
+        public Users Users { get; set; }
 
-        public int? Passenger { get; set; }
-        public User User { get; set; }
-
-        public int? Ride { get; set; }
-        public Ride ride { get; set; }
-
+        public int? RideId { get; set; }
+        public Ride ride { get; set; }  // Ensure this property is correctly named with lowercase 'r'
     }
 }

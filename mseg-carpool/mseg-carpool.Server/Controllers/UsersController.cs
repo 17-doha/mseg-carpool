@@ -32,16 +32,16 @@ namespace mseg_carpool.Server.Controllers
 
         // create user in DB
         [HttpPost]
-        public IActionResult CreateUser(User user)
+        public IActionResult CreateUser(Users user)
         {
             var createdUser = _userRepository.CreateUser(user);
 
-            return CreatedAtAction(nameof(GetUserByAzureId), new { azureId = createdUser.AzureId }, createdUser);
+            return CreatedAtAction(nameof(GetUserByAzureId), new { azureId = createdUser.Id }, createdUser);
         }
 
         // update user in DB
         [HttpPut("{azureId}")]
-        public IActionResult UpdateUser(string azureId, User updatedUser)
+        public IActionResult UpdateUser(string azureId, Users updatedUser)
         {
             var user = _userRepository.GetUserByAzureId(azureId);
 

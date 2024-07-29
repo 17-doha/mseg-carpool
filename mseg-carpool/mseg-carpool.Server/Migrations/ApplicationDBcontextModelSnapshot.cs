@@ -22,40 +22,7 @@ namespace mseg_carpool.Server.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("mseg_carpool.Server.Models.Request", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("Passenger")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Ride")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("rideId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("rideId");
-
-                    b.ToTable("Request");
-                });
-
-            modelBuilder.Entity("mseg_carpool.Server.Models.Ride", b =>
+            modelBuilder.Entity("Ride", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -66,6 +33,10 @@ namespace mseg_carpool.Server.Migrations
                     b.Property<int>("AvailableSeats")
                         .HasColumnType("int");
 
+                    b.Property<string>("Coordinates")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DepartureTime")
                         .HasColumnType("datetime2");
 
@@ -73,33 +44,60 @@ namespace mseg_carpool.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Driver")
-                        .HasColumnType("int");
-
                     b.Property<string>("Origin")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("UsersId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UsersId");
 
                     b.ToTable("Ride");
                 });
 
-            modelBuilder.Entity("mseg_carpool.Server.Models.User", b =>
+            modelBuilder.Entity("mseg_carpool.Server.Models.Request", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("RideId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UsersId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("pickupPoints")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RideId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("Request");
+                });
+
+            modelBuilder.Entity("mseg_carpool.Server.Models.Users", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("AzureId")
-                        .IsRequired()
+                    b.Property<string>("CarColor")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CarColor")
+                    b.Property<string>("CarModel")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CarPlate")
@@ -132,30 +130,40 @@ namespace mseg_carpool.Server.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("Ride", b =>
+                {
+                    b.HasOne("mseg_carpool.Server.Models.Users", "Users")
+                        .WithMany("Rides")
+                        .HasForeignKey("UsersId");
+
+                    b.Navigation("Users");
+                });
+
             modelBuilder.Entity("mseg_carpool.Server.Models.Request", b =>
                 {
-                    b.HasOne("mseg_carpool.Server.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                    b.HasOne("Ride", "ride")
+                        .WithMany("Requests")
+                        .HasForeignKey("RideId");
 
-                    b.HasOne("mseg_carpool.Server.Models.Ride", "ride")
-                        .WithMany()
-                        .HasForeignKey("rideId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("mseg_carpool.Server.Models.Users", "Users")
+                        .WithMany("Requests")
+                        .HasForeignKey("UsersId");
 
-                    b.Navigation("User");
+                    b.Navigation("Users");
 
                     b.Navigation("ride");
                 });
 
-            modelBuilder.Entity("mseg_carpool.Server.Models.Ride", b =>
+            modelBuilder.Entity("Ride", b =>
                 {
-                    b.HasOne("mseg_carpool.Server.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                    b.Navigation("Requests");
+                });
 
-                    b.Navigation("User");
+            modelBuilder.Entity("mseg_carpool.Server.Models.Users", b =>
+                {
+                    b.Navigation("Requests");
+
+                    b.Navigation("Rides");
                 });
 #pragma warning restore 612, 618
         }

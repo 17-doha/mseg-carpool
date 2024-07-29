@@ -4,18 +4,18 @@ namespace mseg_carpool.Server;
 
 public interface IUserRepository
 {
-    User GetUserByAzureId(string azureId);
-    User CreateUser(User user);
-    void UpdateUser(User user);
+    Users GetUserByAzureId(string azureId);
+    Users CreateUser(Users user);
+    void UpdateUser(Users user);
     void DeleteUser(string azureId);
 }
 
 // implement IUserRepository using local Dictionary
 class LocalInMemUserRepository : IUserRepository
 {
-    private readonly Dictionary<string, User> _users = new();
+    private readonly Dictionary<string, Users> _users = new();
 
-    public User GetUserByAzureId(string azureId)
+    public Users GetUserByAzureId(string azureId)
     {
         if (_users.ContainsKey(azureId))
         {
@@ -25,16 +25,16 @@ class LocalInMemUserRepository : IUserRepository
         return null;
     }
 
-    public User CreateUser(User user)
+    public Users CreateUser(Users user)
     {
-        _users[user.AzureId] = user;
+        _users[user.Id] = user;
 
         return user;
     }
 
-    public void UpdateUser(User user)
+    public void UpdateUser(Users user)
     {
-        _users[user.AzureId] = user;
+        _users[user.Id] = user;
     }
 
     public void DeleteUser(string azureId)
