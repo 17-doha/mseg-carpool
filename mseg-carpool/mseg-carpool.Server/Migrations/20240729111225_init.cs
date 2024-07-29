@@ -22,7 +22,6 @@ namespace mseg_carpool.Server.Migrations
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CarModel = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CarType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CarModel = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CarPlate = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CarColor = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Points = table.Column<int>(type: "int", nullable: false)
@@ -43,18 +42,14 @@ namespace mseg_carpool.Server.Migrations
                     AvailableSeats = table.Column<int>(type: "int", nullable: false),
                     DepartureTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Coordinates = table.Column<string>(type: "nvarchar(max)", nullable: false),
-<<<<<<<< HEAD:mseg-carpool/mseg-carpool.Server/Migrations/20240728163107_init.cs
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-========
-                    UsersId = table.Column<string>(type: "nvarchar(450)", nullable: true)
->>>>>>>> New-Ahmed:mseg-carpool/mseg-carpool.Server/Migrations/20240722123337_init.cs
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Ride", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Ride_User_UsersId",
-                        column: x => x.UsersId,
+                        name: "FK_Ride_User_UserId",
+                        column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id");
                 });
@@ -66,13 +61,8 @@ namespace mseg_carpool.Server.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-<<<<<<<< HEAD:mseg-carpool/mseg-carpool.Server/Migrations/20240728163107_init.cs
                     coordinates = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-========
-                    pickupPoints = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UsersId = table.Column<string>(type: "nvarchar(450)", nullable: true),
->>>>>>>> New-Ahmed:mseg-carpool/mseg-carpool.Server/Migrations/20240722123337_init.cs
                     RideId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -84,8 +74,8 @@ namespace mseg_carpool.Server.Migrations
                         principalTable: "Ride",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Request_User_UsersId",
-                        column: x => x.UsersId,
+                        name: "FK_Request_User_UserId",
+                        column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id");
                 });
@@ -96,14 +86,14 @@ namespace mseg_carpool.Server.Migrations
                 column: "RideId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Request_UsersId",
+                name: "IX_Request_UserId",
                 table: "Request",
-                column: "UsersId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ride_UsersId",
+                name: "IX_Ride_UserId",
                 table: "Ride",
-                column: "UsersId");
+                column: "UserId");
         }
 
         /// <inheritdoc />

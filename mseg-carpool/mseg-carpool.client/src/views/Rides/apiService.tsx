@@ -55,7 +55,7 @@ const apiService = {
 
     getRidesByUserId: async (userId: string, currentTime: string): Promise<AxiosResponse<ApiResponse<Ride[]>>> => {
         const response = await axios.get<ApiResponse<Ride[]>>(
-            `${API_BASE_URL}/rides/${userId}`,
+            `${API_BASE_URL}/rides/byUser/${userId}`,
             { params: { currentTime } }
         );
         return response;

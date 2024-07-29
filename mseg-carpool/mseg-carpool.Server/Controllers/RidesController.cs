@@ -202,7 +202,7 @@ namespace mseg_carpool.Server.Controllers
 
 
         //get the rides that i have requested and their request status is Pending or Approved and get also the info of the driver
-        [HttpGet("{id}")]
+        [HttpGet("byUser/{id}")]
         public IActionResult GetRidesByUserId(string id, [FromQuery] DateTime currentTime)
         {
             var rides = _context.Ride
@@ -422,60 +422,16 @@ namespace mseg_carpool.Server.Controllers
             return Ok(ride);
         }
 
-        // Update a specific ride by ID
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateRide(int id, Ride updatedRide)
-        {
-            if (id != updatedRide.Id)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(updatedRide).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!_context.Ride.Any(e => e.Id == id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // Delete a Ride by ID
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRide(int id)
-        {
-            var ride = await _context.Ride.FindAsync(id);
-            if (ride == null)
-            {
-                return NotFound();
-            }
-
-            _context.Ride.Remove(ride);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
 
         // Get requests for rides where the user is the driver
         [HttpGet("requests/{driverAzureId}")]
         public async Task<ActionResult<IEnumerable<Request>>> GetRequestsForRidesByDriver(string driverAzureId)
         {
             var requests = await _context.Request
-                .Include(r => r.ride)  // Use lowercase 'ride' to match the property name
+                .Include(r => r.Ride)  // Use lowercase 'ride' to match the property name
                 .Include(r => r.User)
-                .Where(r => r.ride.UserId == driverAzureId)  // Use lowercase 'ride' to match the property name
+                .Where(r => r.Ride.UserId == driverAzureId)  // Use lowercase 'ride' to match the property name
                 .ToListAsync();
 
             return Ok(requests);
@@ -486,7 +442,7 @@ namespace mseg_carpool.Server.Controllers
         public async Task<IActionResult> AcceptRequest(int id)
         {
             var request = await _context.Request
-                .Include(r => r.ride)
+                .Include(r => r.Ride)
                 .FirstOrDefaultAsync(r => r.Id == id);
 
             if (request == null)
@@ -494,17 +450,18 @@ namespace mseg_carpool.Server.Controllers
                 return NotFound();
             }
 
-            if (request.ride.AvailableSeats <= 0)
+            if (request.Ride.AvailableSeats <= 0)
             {
                 return BadRequest("No available seats");
             }
 
-            request.Status = "Approved";
-            request.ride.AvailableSeats--;
+            request.status = "Approved";
+            request.Ride.AvailableSeats--;
 
             await _context.SaveChangesAsync();
 
             return NoContent();
+
         }
 
 

@@ -51,7 +51,7 @@ namespace mseg_carpool.Server.Controllers
 
         // create user in DB
         [HttpPost]
-        public IActionResult CreateUser(Users user)
+        public IActionResult CreateUser(User user)
         {
             var createdUser = _context.User.Add(user).Entity;
             _context.SaveChanges();
@@ -62,7 +62,7 @@ namespace mseg_carpool.Server.Controllers
         
         // update user in DB
         [HttpPut("{azureId}")]
-        public IActionResult UpdateUser(string azureId, Users updatedUser)
+        public IActionResult UpdateUser(string azureId, User updatedUser)
         {
             var user = _context.User.FirstOrDefault(u => u.Id == azureId);
 
