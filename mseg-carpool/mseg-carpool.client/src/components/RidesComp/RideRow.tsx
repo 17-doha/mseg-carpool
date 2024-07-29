@@ -4,6 +4,7 @@ import { faUsers, faSave, faInfoCircle, faCrown, faEdit, faTrash, faMapMarkerAlt
 import * as Dialog from '@radix-ui/react-dialog';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import apiService from '../../views/Rides/apiService'; // Ensure the apiService is imported
+import { format } from "date-fns";
 import './RideRow.css';
 
 interface PickupPoint {
@@ -229,11 +230,11 @@ const RideRow: React.FC<RideRowProps> = ({
                         <input
                             type="text"
                             className="editing"
-                            value={editedPickuptime}
+                            value={format(new Date(editedPickuptime), "MMMM d, yyyy, h:mm a")}
                             onChange={(e) => setPickuptime(e.target.value)}
                         />
                     ) : (
-                        editedPickuptime
+                        format(new Date(editedPickuptime), "MMMM d, yyyy, h:mm a")
                     )}
                 </td>
                 <td>

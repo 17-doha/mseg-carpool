@@ -29,10 +29,10 @@ namespace mseg_carpool.Server.Controllers
 
         [HttpGet("{azureId}")]
        
-        public IActionResult GetUserById(string Id)
+        public IActionResult GetUserById(string azureId)
         {
             
-            var user = _context.User.FirstOrDefault(u => u.Id == Id);
+            var user = _context.User.FirstOrDefault(u => u.Id == azureId);
 
             if (user == null)
             {

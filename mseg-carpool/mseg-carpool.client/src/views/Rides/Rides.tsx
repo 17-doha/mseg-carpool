@@ -13,7 +13,6 @@ import apiService from '../Rides/apiService'; // Import the apiService
 import '../../components/RidesComp/RideRow.css'; // Ensure this is imported as needed
 import { useMsal } from '@azure/msal-react';
 
-
 interface RideDriver {
     azureID: string;
     name: string;
@@ -74,10 +73,11 @@ const Rides: React.FC = () => {
             setLoading(true); // Set loading to true before fetching data
             const currentTime = new Date().toISOString(); // Get the current time in ISO 8601 format
             try {
-                const [userRidesResponse, azureRidesResponse, userPointsResponse] = await Promise.allSettled([
+                const [userRidesResponse, azureRidesResponse, userPointsResponse, userResponse] = await Promise.allSettled([
                     apiService.getRidesByUserId(userId, currentTime),
                     apiService.getRideByAzureId(azureId, currentTime),
-                    apiService.getUserPoints(azureId) // Fetch user points
+                    apiService.getUserPoints(azureId), // Fetch user points
+                    apiService.getUserById(azureId)
                 ]);
 
                 const extractRides = (response: any) => {
@@ -165,6 +165,8 @@ const Rides: React.FC = () => {
                 } else {
                     setError('Error fetching user points.');
                 }
+
+
             } catch (error) {
                 console.error('Error fetching data:', error);
                 setRides([]);
@@ -175,11 +177,7 @@ const Rides: React.FC = () => {
         };
 
         fetchData();
-    }, [azureID]); // Add azureID as a dependency
-
-
-
-
+    }, [azureID, navigate]); // Add azureID and navigate as dependencies
 
     const handleDelete = (id: number) => {
         apiService.deleteRide(id)
@@ -189,8 +187,21 @@ const Rides: React.FC = () => {
             .catch(error => console.error('Error deleting ride:', error));
     };
 
-    const handleCreateRide = () => {
-        navigate('/CreateRide');
+    const handleCreateRide = async () => {
+        try {
+            const userResponse = await apiService.getUserById(azureID);
+            const user = userResponse.data;
+
+            if (!user.carModel || !user.carType || !user.carPlate || !user.carColor) {
+                alert('Please complete your car information first.');
+                navigate('/dashboard');
+            } else {
+                navigate('/CreateRide');
+            }
+        } catch (error) {
+            console.error('Error checking user car info:', error);
+            alert('Error checking user car info. Please try again later.');
+        }
     };
 
     const indexOfLastRide = currentPage * ridesPerPage;
@@ -259,15 +270,15 @@ const Rides: React.FC = () => {
                     <div className="table-container">
                         <table>
                             <thead>
-                                <tr>
-                                    <th>Driver</th>
-                                    <th>From</th>
-                                    <th>Destination</th>
-                                    <th>Pickup Time</th>
-                                    <th>Seats Left</th>
-                                    {hasUserRides && <th>Status</th>}
-                                    <th></th> {/* Column for icons without header */}
-                                </tr>
+                                        <tr>
+                                            <th>Driver</th>
+                                            <th>From</th>
+                                            <th>Destination</th>
+                                            <th>Pickup Date & Time</th>
+                                            <th>Seats Left</th>
+                                            {hasUserRides && <th>Status</th>}
+                                            {!hasUserRides && <th></th>} {/* Only render this column if status column is present */}
+                                        </tr>
                             </thead>
                             <tbody>
                                 {currentRides.map(ride => (

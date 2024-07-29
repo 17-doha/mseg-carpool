@@ -43,6 +43,14 @@ interface RideDto {
 interface User {
     id: string;
     points: number;
+    name: string;
+    email: string;
+    mobileNumber: string;
+    location: string;
+    carModel: string;
+    carType: string;
+    carPlate: string;
+    carColor: string;
 }
 
 export interface ApiResponse<T> {
@@ -52,7 +60,6 @@ export interface ApiResponse<T> {
 
 // API service functions
 const apiService = {
-
     getRidesByUserId: async (userId: string, currentTime: string): Promise<AxiosResponse<ApiResponse<Ride[]>>> => {
         const response = await axios.get<ApiResponse<Ride[]>>(
             `${API_BASE_URL}/rides/byUser/${userId}`,
@@ -84,8 +91,11 @@ const apiService = {
 
     cancelRequest: (rideId: number, azureId: string): Promise<AxiosResponse<void>> => {
         return axios.delete<void>(`${API_BASE_URL}/rides/cancel-request/${rideId}/${azureId}`);
-    }
+    },
 
+    getUserById: (azureId: string): Promise<AxiosResponse<User>> => {
+        return axios.get<User>(`${API_BASE_URL}/users/${azureId}`);
+    }
 };
 
 export default apiService;
