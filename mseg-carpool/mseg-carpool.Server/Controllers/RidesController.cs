@@ -474,8 +474,8 @@ namespace mseg_carpool.Server.Controllers
         {
             var requests = await _context.Request
                 .Include(r => r.ride)  // Use lowercase 'ride' to match the property name
-                .Include(r => r.Users)
-                .Where(r => r.ride.UsersId == driverAzureId)  // Use lowercase 'ride' to match the property name
+                .Include(r => r.User)
+                .Where(r => r.ride.UserId == driverAzureId)  // Use lowercase 'ride' to match the property name
                 .ToListAsync();
 
             return Ok(requests);
