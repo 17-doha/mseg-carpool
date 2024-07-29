@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Cors;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace mseg_carpool.Server.Controllers
 {
@@ -15,14 +19,19 @@ namespace mseg_carpool.Server.Controllers
     [EnableCors("AllowAll")] // Apply CORS policy to this controller
     public class RidesController : ControllerBase
     {
+        private readonly ApplicationDBcontext dbcontext;
+        private readonly ILogger<RidesController> logger;
 
         private readonly ApplicationDBcontext _context;
         public class RideDto
+        public RidesController(ApplicationDBcontext dbcontext, ILogger<RidesController> logger)
         {
             public string Origin { get; set; }
             public string Destination { get; set; }
             public int AvailableSeats { get; set; }
             public DateTime DepartureTime { get; set; }
+            this.dbcontext = dbcontext;
+            this.logger = logger;
         }
         public class RequestDto
         {
@@ -400,26 +409,44 @@ namespace mseg_carpool.Server.Controllers
 
         // Create a new ride
         [HttpPost]
-        public async Task<ActionResult<Ride>> CreateRide(Ride ride)
+        public async Task<ActionResult<RideDto>> CreateRide(RideDto rideDto)
         {
-            _context.Ride.Add(ride);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetRideById), new { id = ride.Id }, ride);
-        }
-
-
-        // Get a ride by ID
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Ride>> GetRideById(int id)
-        {
-            var ride = await _context.Ride.FindAsync(id);
-
-            if (ride == null)
+            if (rideDto == null)
             {
-                return NotFound();
+                return BadRequest("Ride data is null.");
             }
 
-            return Ok(ride);
+            try
+            {
+                var ride = new Ride
+                {
+                    Origin = rideDto.Origin,
+                    Destination = rideDto.Destination,
+                    AvailableSeats = rideDto.AvailableSeats,
+                    DepartureTime = rideDto.DepartureTime,
+                    Coordinates = rideDto.Coordinates,
+                    UserId = rideDto.UserId
+                };
+
+                dbcontext.Ride.Add(ride);
+                await dbcontext.SaveChangesAsync();
+
+                rideDto.Id = ride.Id;
+
+                return CreatedAtAction(nameof(GetRideById), new { id = rideDto.Id }, rideDto);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occurred while creating a ride.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
+            }
+        }
+
+        // Get a specific ride by ID
+        [HttpGet("{id}")]
+        public ActionResult<Ride> GetRideById(int id)
+        {
+            return Ok(null);
         }
 
 
@@ -481,5 +508,16 @@ namespace mseg_carpool.Server.Controllers
             return NoContent();
         }
 
+    public class RideDto
+    {
+        [Key]
+        public int Id { get; set; }
+        public string Origin { get; set; }
+        public string Destination { get; set; }
+        public int AvailableSeats { get; set; }
+        public DateTime DepartureTime { get; set; }
+        public string Coordinates { get; set; }
+        public string? UserId { get; set; }
+        
     }
 }
