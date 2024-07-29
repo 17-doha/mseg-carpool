@@ -2,13 +2,13 @@
 
 //namespace mseg_carpool.Server;
 
-//public interface IUserRepository
-//{
-//    User GetUserByAzureId(string azureId);
-//    User CreateUser(User user);
-//    void UpdateUser(User user);
-//    void DeleteUser(string azureId);
-//}
+public interface IUserRepository
+{
+    User GetUserByAzureId(string azureId);
+    User CreateUser(User user);
+    void UpdateUser(User user);
+    void DeleteUser(string azureId);
+}
 
 //// implement IUserRepository using local Dictionary
 //class LocalInMemUserRepository : IUserRepository

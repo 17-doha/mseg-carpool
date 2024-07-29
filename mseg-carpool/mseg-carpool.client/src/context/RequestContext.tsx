@@ -1,11 +1,35 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import { getRequestsForDriver } from '../services/requestService';
 
 const STORAGE_KEY = "requests";
 
 interface Request {
     id: number;
-    from: string;
-    message: string;
+    status: string;
+    pickupPoints: string;
+    usersId: string;
+    rideId: number;
+    users: {
+        id: string;
+        name: string;
+        email: string;
+        mobileNumber: string;
+        location: string;
+        carType: string;
+        carModel: string;
+        carPlate: string;
+        carColor: string;
+        points: number;
+    };
+    ride: {
+        id: number;
+        origin: string;
+        destination: string;
+        availableSeats: number;
+        departureTime: string;
+        coordinates: string;
+        usersId: string;
+    };
 }
 
 interface RequestState {
@@ -50,15 +74,47 @@ const requestReducer = (state: RequestState, action: Action): RequestState => {
             return state;
     }
 };
+// working code
+//export const RequestProvider: React.FC = ({ children }) => {
+//    const [state, dispatch] = useReducer(requestReducer, initialState);
+//    const { instance, accounts } = useMsal();
 
+//    useEffect(() => {
+//        const fetchRequests = async () => {
+//            try {
+//                const account = accounts[0];
+//                const userAzureId = account?.username; // Assuming Azure ID is in the username field
+//                const fetchedRequests = await getRequestsForDriver(userAzureId);
+//                console.log('Fetched requests:', fetchedRequests);
+
+//                const requestsArray = fetchedRequests.$values || [];
+
+//                dispatch({ type: 'LOAD_REQUESTS', payload: requestsArray });
+//            } catch (error) {
+//                console.error('Error fetching requests', error);
+//            }
+//        };
+
+//Testing with user1 from local DB
 export const RequestProvider: React.FC = ({ children }) => {
     const [state, dispatch] = useReducer(requestReducer, initialState);
 
     useEffect(() => {
-        const savedRequests = localStorage.getItem(STORAGE_KEY);
-        if (savedRequests) {
-            dispatch({ type: 'LOAD_REQUESTS', payload: JSON.parse(savedRequests) });
-        }
+        const fetchRequests = async () => {
+            try {
+                const fetchedRequests = await getRequestsForDriver('user3');
+                console.log('Fetched requests:', fetchedRequests);  // Log the fetched requests
+                if (fetchedRequests.$values) {
+                    dispatch({ type: 'LOAD_REQUESTS', payload: fetchedRequests.$values });
+                } else {
+                    dispatch({ type: 'LOAD_REQUESTS', payload: fetchedRequests });
+                }
+            } catch (error) {
+                console.error('Error fetching requests:', error);
+            }
+        };
+
+        fetchRequests();
     }, []);
 
     useEffect(() => {

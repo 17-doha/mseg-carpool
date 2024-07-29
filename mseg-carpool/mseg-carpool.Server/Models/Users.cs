@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace mseg_carpool.Server.Models
 {
-    public class User
+    public class Users
     {
         [Key]
         public string Id { get; set; }
@@ -17,6 +17,10 @@ namespace mseg_carpool.Server.Models
         public string? CarColor { get; set; }
         public int Points { get; set; }
 
+        [JsonIgnore]
+        public ICollection<Ride> Rides { get; set; }
+        [JsonIgnore]
+        public ICollection<Request> Requests { get; set; }
     }
 
 }

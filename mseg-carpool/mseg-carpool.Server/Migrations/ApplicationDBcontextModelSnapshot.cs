@@ -48,12 +48,12 @@ namespace mseg_carpool.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("UsersId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UsersId");
 
                     b.ToTable("Ride");
                 });
@@ -69,10 +69,17 @@ namespace mseg_carpool.Server.Migrations
                     b.Property<int?>("RideId")
                         .HasColumnType("int");
 
+<<<<<<< HEAD
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("coordinates")
+=======
+                    b.Property<string>("UsersId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("pickupPoints")
+>>>>>>> New-Ahmed
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -84,12 +91,20 @@ namespace mseg_carpool.Server.Migrations
 
                     b.HasIndex("RideId");
 
+<<<<<<< HEAD
                     b.HasIndex("UserId");
+=======
+                    b.HasIndex("UsersId");
+>>>>>>> New-Ahmed
 
                     b.ToTable("Request");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("mseg_carpool.Server.Models.User", b =>
+=======
+            modelBuilder.Entity("mseg_carpool.Server.Models.Users", b =>
+>>>>>>> New-Ahmed
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -131,11 +146,24 @@ namespace mseg_carpool.Server.Migrations
                 });
 
             modelBuilder.Entity("Ride", b =>
+<<<<<<< HEAD
+=======
                 {
-                    b.HasOne("mseg_carpool.Server.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                    b.HasOne("mseg_carpool.Server.Models.Users", "Users")
+                        .WithMany("Rides")
+                        .HasForeignKey("UsersId");
 
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("mseg_carpool.Server.Models.Request", b =>
+>>>>>>> New-Ahmed
+                {
+                    b.HasOne("Ride", "ride")
+                        .WithMany("Requests")
+                        .HasForeignKey("RideId");
+
+<<<<<<< HEAD
                     b.Navigation("User");
                 });
 
@@ -152,6 +180,27 @@ namespace mseg_carpool.Server.Migrations
                     b.Navigation("Ride");
 
                     b.Navigation("User");
+=======
+                    b.HasOne("mseg_carpool.Server.Models.Users", "Users")
+                        .WithMany("Requests")
+                        .HasForeignKey("UsersId");
+
+                    b.Navigation("Users");
+
+                    b.Navigation("ride");
+                });
+
+            modelBuilder.Entity("Ride", b =>
+                {
+                    b.Navigation("Requests");
+                });
+
+            modelBuilder.Entity("mseg_carpool.Server.Models.Users", b =>
+                {
+                    b.Navigation("Requests");
+
+                    b.Navigation("Rides");
+>>>>>>> New-Ahmed
                 });
 
             modelBuilder.Entity("Ride", b =>
