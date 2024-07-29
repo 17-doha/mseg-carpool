@@ -1,5 +1,7 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './CreateRideForm.css';
+import apiService from '../../API/ApiServices'; // Import the shared API service
 
 interface RideDriver {
     azureID: string;
@@ -28,6 +30,8 @@ const CreateRideForm: React.FC = () => {
     const [office, setOffice] = useState<string>('');
     const [dateTime, setDateTime] = useState<string>('');
     const [seats, setSeats] = useState<string>('');
+    const [feedbackMessage, setFeedbackMessage] = useState<string>(''); // State for feedback
+    const navigate = useNavigate(); // Initialize useNavigate
 
     useEffect(() => {
         const savedFormData = JSON.parse(localStorage.getItem('rideFormData') || '{}');
@@ -60,7 +64,7 @@ const CreateRideForm: React.FC = () => {
         setSeats(event.target.value);
     };
 
-    const handleSubmit = (event: FormEvent) => {
+    const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
 
         const formData: FormData = {
@@ -81,6 +85,25 @@ const CreateRideForm: React.FC = () => {
             departureTime: new Date(dateTime).toISOString(),
             status: 0,
         };
+
+        try {
+            const data = await apiService.createRide({
+                origin: formData.origin,
+                destination: formData.destination,
+                availableSeats: formData.availableSeats,
+                departureTime: formData.departureTime,
+                coordinates: '', // Update this if you have coordinate data
+                userId: formData.rideDriver.azureID
+            });
+            setFeedbackMessage('Ride created successfully!');
+            alert('Ride created successfully!'); // Add alert here
+            console.log('Ride created successfully:', data);
+            navigate('/rides'); // Navigate to the rides page
+        } catch (error) {
+            setFeedbackMessage('Error creating ride.');
+            console.error('Error creating ride:', error);
+            console.log('Error Creating ride:', formData);
+        }
 
         console.log('Form Data:', formData);
     };
@@ -173,6 +196,11 @@ const CreateRideForm: React.FC = () => {
                     </div>
                     <button className="create-button" type="submit">Create</button>
                 </form>
+                {feedbackMessage && (
+                    <div className="feedback-message">
+                        {feedbackMessage}
+                    </div>
+                )}
             </div>
             <div className="map-container">
                 <div className="map-placeholder">

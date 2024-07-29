@@ -1,6 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using mseg_carpool.Server.Models;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace mseg_carpool.Server.Controllers
 {
@@ -8,67 +13,197 @@ namespace mseg_carpool.Server.Controllers
     [Route("api/[controller]")]
     public class RidesController : ControllerBase
     {
-        private readonly List<Ride> _rides;
+        private readonly ApplicationDBcontext dbcontext;
+        private readonly ILogger<RidesController> logger;
 
-        public RidesController()
+        public RidesController(ApplicationDBcontext dbcontext, ILogger<RidesController> logger)
         {
+            this.dbcontext = dbcontext;
+            this.logger = logger;
         }
 
         // Get Rides
         [HttpGet]
-        public ActionResult<IEnumerable<Ride>> GetRides()
+        public async Task<ActionResult<IEnumerable<RideDto>>> GetRides()
         {
-            return Ok(null);
+            try
+            {
+                var rides = await dbcontext.Ride.Select(r => new RideDto
+                {
+                    Id = r.Id,
+                    Origin = r.Origin,
+                    Destination = r.Destination,
+                    AvailableSeats = r.AvailableSeats,
+                    DepartureTime = r.DepartureTime,
+                    Coordinates = r.Coordinates,
+                    UserId = r.UserId
+                }).ToListAsync();
+
+                return Ok(rides);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occurred while getting rides.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
+            }
         }
 
         // Create a new ride
         [HttpPost]
-        public ActionResult<Ride> CreateRide(Ride ride)
+        public async Task<ActionResult<RideDto>> CreateRide(RideDto rideDto)
         {
-            return Ok(null);
+            if (rideDto == null)
+            {
+                return BadRequest("Ride data is null.");
+            }
+
+            try
+            {
+                var ride = new Ride
+                {
+                    Origin = rideDto.Origin,
+                    Destination = rideDto.Destination,
+                    AvailableSeats = rideDto.AvailableSeats,
+                    DepartureTime = rideDto.DepartureTime,
+                    Coordinates = rideDto.Coordinates,
+                    UserId = rideDto.UserId
+                };
+
+                dbcontext.Ride.Add(ride);
+                await dbcontext.SaveChangesAsync();
+
+                rideDto.Id = ride.Id;
+
+                return CreatedAtAction(nameof(GetRideById), new { id = rideDto.Id }, rideDto);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occurred while creating a ride.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
+            }
         }
 
-        // Return Ok(null);
+        // Get a specific ride by ID
         [HttpGet("{id}")]
-        public ActionResult<Ride> GetRideById(int id)
+        public async Task<ActionResult<RideDto>> GetRideById(int id)
         {
-            return Ok(null);
+            try
+            {
+                var ride = await dbcontext.Ride.FindAsync(id);
+
+                if (ride == null)
+                {
+                    return NotFound();
+                }
+
+                var rideDto = new RideDto
+                {
+                    Id = ride.Id,
+                    Origin = ride.Origin,
+                    Destination = ride.Destination,
+                    AvailableSeats = ride.AvailableSeats,
+                    DepartureTime = ride.DepartureTime,
+                    Coordinates = ride.Coordinates,
+                    UserId = ride.UserId
+                };
+
+                return Ok(rideDto);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"An error occurred while getting the ride with ID {id}.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
+            }
         }
 
         // Update a specific ride by ID
         [HttpPut("{id}")]
-        public IActionResult UpdateRide(int id, Ride updatedRide)
+        public async Task<IActionResult> UpdateRide(int id, RideDto updatedRideDto)
         {
-            return Ok(null);
+            try
+            {
+                var ride = await dbcontext.Ride.FindAsync(id);
+
+                if (ride == null)
+                {
+                    return NotFound();
+                }
+
+                ride.Origin = updatedRideDto.Origin;
+                ride.Destination = updatedRideDto.Destination;
+                ride.AvailableSeats = updatedRideDto.AvailableSeats;
+                ride.DepartureTime = updatedRideDto.DepartureTime;
+                ride.Coordinates = updatedRideDto.Coordinates;
+                ride.UserId = updatedRideDto.UserId;
+
+                await dbcontext.SaveChangesAsync();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"An error occurred while updating the ride with ID {id}.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
+            }
         }
 
-        // Delete a Ride by ID
+        // Delete a ride by ID
         [HttpDelete("{id}")]
-        public IActionResult DeleteRide(int id)
+        public async Task<IActionResult> DeleteRide(int id)
         {
-            return Ok(null);
+            try
+            {
+                var ride = await dbcontext.Ride.FindAsync(id);
+
+                if (ride == null)
+                {
+                    return NotFound();
+                }
+
+                dbcontext.Ride.Remove(ride);
+                await dbcontext.SaveChangesAsync();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"An error occurred while deleting the ride with ID {id}.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
+            }
         }
 
         [HttpPost("search")]
-        public ActionResult<IEnumerable<Ride>> SearchRides(User riderInfo)
+        public ActionResult<IEnumerable<RideDto>> SearchRides(Users riderInfo)
         {
-            // implement search logic
-            return Ok(null);
+            // Implement search logic here, currently returning empty list
+            return Ok(new List<RideDto>());
         }
 
         [HttpPost("{id}/join")]
-        public IActionResult JoinRide(int id, User rider)
+        public IActionResult JoinRide(int id, Users rider)
         {
-            // implement join logic
-            return Ok(null);
+            // Implement join logic here, currently returning Ok
+            return Ok();
         }
 
         [HttpPost("{id}/leave")]
-        public IActionResult LeaveRide(int id, User rider)
+        public IActionResult LeaveRide(int id, Users rider)
         {
-            // implement leave logic
-            return Ok(null);
+            // Implement leave logic here, currently returning Ok
+            return Ok();
         }
+    }
 
+    public class RideDto
+    {
+        [Key]
+        public int Id { get; set; }
+        public string Origin { get; set; }
+        public string Destination { get; set; }
+        public int AvailableSeats { get; set; }
+        public DateTime DepartureTime { get; set; }
+        public string Coordinates { get; set; }
+        public string? UserId { get; set; }
+        
     }
 }

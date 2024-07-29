@@ -12,7 +12,7 @@ namespace mseg_carpool.Server
         {
 
         }
-        public DbSet<User> User { get; set; }
+        public DbSet<Users> User { get; set; }
 
         public DbSet<Ride> Ride { get; set; }
         public DbSet<Request> Request { get; set; }
