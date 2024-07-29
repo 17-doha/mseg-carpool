@@ -16,22 +16,22 @@ namespace mseg_carpool.Server.Controllers
     // [Authorize]
     public class UsersController : ControllerBase
     {
-        private readonly ApplicationDBcontext dbcontext;
+       
         private readonly ApplicationDBcontext _context;
 
-        public UsersController(ApplicationDBcontext context)
-        public UsersController(ApplicationDBcontext dbcontext)
+       
+        public UsersController(ApplicationDBcontext _context)
         {
-            this.dbcontext = dbcontext;
-            _context = context;
+            this._context = _context;
+     
         }
 
 
         [HttpGet("{azureId}")]
-        public async Task<IActionResult> GetUserByAzureId(string azureId)
+       
         public IActionResult GetUserById(string Id)
         {
-            var user = await dbcontext.User.SingleOrDefaultAsync(u => u.Id == azureId);
+            
             var user = _context.User.FirstOrDefault(u => u.Id == Id);
 
             if (user == null)
@@ -63,30 +63,14 @@ namespace mseg_carpool.Server.Controllers
         {
             var createdUser = _context.User.Add(user).Entity;
             _context.SaveChanges();
-        public async Task<IActionResult> CreateUser(UserDto userDto)
-        {
-            var user = new Users
-            {
-                Name = userDto.Name,
-                MobileNumber = userDto.MobileNumber,
-                Location = userDto.Location,
-                CarType = userDto.CarType,
-                CarPlate = userDto.CarPlate,
-                CarColor = userDto.CarColor
-               
-            };
-
-            dbcontext.User.Add(user);
-            await dbcontext.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetUserByAzureId), new { azureId = user.Id }, user);
+            return Ok();//CreatedAtAction(nameof(GetUserById), new { Id = createdUser.Id }, createdUser);
         }
 
         // Update user details in DB
         [HttpPut("User/{azureId}")]
         public async Task<IActionResult> UpdateUserDetails(string azureId, UserUpdateDto updatedUserDto)
         {
-            var user = await dbcontext.User.SingleOrDefaultAsync(u => u.Id == azureId);
+            var user = await _context.User.SingleOrDefaultAsync(u => u.Id == azureId);
 
             if (user == null)
             {
@@ -98,9 +82,9 @@ namespace mseg_carpool.Server.Controllers
             user.MobileNumber = updatedUserDto.MobileNumber;
             user.Location = updatedUserDto.Location;
 
-            await dbcontext.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
-            return Ok();//CreatedAtAction(nameof(GetUserById), new { Id = createdUser.Id }, createdUser);
+            
             return NoContent();
         }
 
@@ -108,7 +92,7 @@ namespace mseg_carpool.Server.Controllers
         [HttpPut("Car/{azureId}")]
         public async Task<IActionResult> UpdateCarDetails(string azureId, CarUpdateDto updatedCarDto)
         {
-            var user = await dbcontext.User.SingleOrDefaultAsync(u => u.Id == azureId);
+            var user = await _context.User.SingleOrDefaultAsync(u => u.Id == azureId);
 
             if (user == null)
             {
@@ -121,7 +105,7 @@ namespace mseg_carpool.Server.Controllers
             user.CarColor = updatedCarDto.CarColor;
             user.CarModel = updatedCarDto.CarModel;
 
-            await dbcontext.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -130,7 +114,7 @@ namespace mseg_carpool.Server.Controllers
         [HttpGet("{azureId}/car-details")]
         public async Task<IActionResult> GetCarDetails(string azureId)
         {
-            var user = await dbcontext.User.SingleOrDefaultAsync(u => u.Id == azureId);
+            var user = await _context.User.SingleOrDefaultAsync(u => u.Id == azureId);
 
             if (user == null)
             {
@@ -163,6 +147,23 @@ namespace mseg_carpool.Server.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("points/{azureId}")]
+        public IActionResult GetUserPoints(string azureId)
+        {
+            // Fetch the user by azureId
+            var user = _context.User
+                               .Where(u => u.Id == azureId)
+                               .Select(u => new { u.Id, u.Points })
+                               .FirstOrDefault();
+
+            if (user == null)
+            {
+                return NotFound(); // Return 404 if user is not found
+            }
+
+            return Ok(user); // Return the user object containing points
+        }
     }
 }
 
@@ -193,21 +194,6 @@ namespace mseg_carpool.Server.Models
         public string CarColor { get; set; }
         public string CarModel { get; set; }    
 
-        [HttpGet("points/{azureId}")]
-        public IActionResult GetUserPoints(string azureId)
-        {
-            // Fetch the user by azureId
-            var user = _context.User
-                               .Where(u => u.Id == azureId)
-                               .Select(u => new { u.Id, u.Points })
-                               .FirstOrDefault();
-
-            if (user == null)
-            {
-                return NotFound(); // Return 404 if user is not found
-            }
-
-            return Ok(user); // Return the user object containing points
-        }
+        
     }
 }

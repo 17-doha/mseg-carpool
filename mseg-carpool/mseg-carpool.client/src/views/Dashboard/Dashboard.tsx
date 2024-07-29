@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { Card, CardSection } from "@fluentui/react-cards";
 import { Persona, PersonaSize, Text, PrimaryButton, DefaultButton } from "@fluentui/react";
 import { useMsal } from "@azure/msal-react";
 import Page from "../../components/Page";
-import AddRideForm from "./AddCarForm";
 import RideCard from "./RideCard";
 import apiService from '../../API/ApiServices';
 
+
 const STORAGE_KEY_PROFILE = "userProfile";
 const STORAGE_KEY_RIDES = "rides";
+
 
 const Dashboard = () => {
     const { instance } = useMsal();
@@ -31,6 +32,8 @@ const Dashboard = () => {
     const [rides, setRides] = useState(initialRides);
     const [isEditing, setIsEditing] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const auth = useMsal();
+    const azureID = auth.accounts[0].localAccountId;
 
     useEffect(() => {
         localStorage.setItem(STORAGE_KEY_PROFILE, JSON.stringify(profile));
@@ -43,7 +46,7 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchCarDetails = async () => {
             try {
-                const carDetails = await apiService.getCarDetails(profile.azureID);
+                const carDetails = await apiService.getCarDetails(azureID);
                 setProfile(prevProfile => ({
                     ...prevProfile,
                     ...carDetails,
@@ -54,10 +57,10 @@ const Dashboard = () => {
             }
         };
 
-        if (profile.azureID) {
+        if (azureID) {
             fetchCarDetails();
         }
-    }, [profile.azureID]);
+    }, [azureID]);
 
     const handleEdit = () => {
         setIsEditing(true);
@@ -69,14 +72,14 @@ const Dashboard = () => {
 
         try {
             console.log("Sending update request for profile:", profile);
-
-            await apiService.updateUserDetails(profile.azureID, {
+            console.log(azureID);
+            await apiService.updateUserDetails(azureID, {
                 name: profile.name,
                 mobileNumber: profile.phoneNumber,
                 location: profile.location,
             });
 
-            await apiService.updateCarDetails(profile.azureID, {
+            await apiService.updateCarDetails(azureID, {
                 carType: profile.carType,
                 carPlate: profile.carPlate,
                 carColor: profile.carColor,
@@ -101,10 +104,7 @@ const Dashboard = () => {
 
     return (
         <Page>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
-                <h1>Dashboard</h1>
-                <DefaultButton text="Add Car" onClick={handleAddRide} />
-            </div>
+          
             <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
                 <Card style={{ maxWidth: '400px', padding: '20px', border: '1px solid #ddd', borderRadius: '5px', backgroundColor: '#fff' }}>
                     <CardSection>

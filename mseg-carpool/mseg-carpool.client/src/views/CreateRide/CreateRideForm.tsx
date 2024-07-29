@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './CreateRideForm.css';
 import Map from '../../components/Map';
 import apiService from '../../API/ApiServices'; // Import the shared API service
+import { useMsal } from "@azure/msal-react";
 
 interface RideDriver {
     azureID: string;
@@ -38,7 +39,8 @@ const CreateRideForm: React.FC = () => {
     const [feedbackMessage, setFeedbackMessage] = useState<string>(''); // State for feedback
     const navigate = useNavigate(); // Initialize useNavigate
     const [selectedLocation, setSelectedLocation] = useState<LatLng | null>(null);
-
+    const auth = useMsal();
+    const azureID = auth.accounts[0].localAccountId;
     const handleLocationSelect = (location: LatLng) => {
         setSelectedLocation(location);
     }
@@ -103,8 +105,8 @@ const CreateRideForm: React.FC = () => {
                 destination: formData.destination,
                 availableSeats: formData.availableSeats,
                 departureTime: formData.departureTime,
-                coordinates: '', // Update this if you have coordinate data
-                userId: formData.rideDriver.azureID
+                coordinates: '30.0066, 30.9754', // Update this if you have coordinate data
+                userId: azureID
             });
             setFeedbackMessage('Ride created successfully!');
             alert('Ride created successfully!'); // Add alert here
