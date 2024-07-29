@@ -43,6 +43,14 @@ interface RideDto {
 interface User {
     id: string;
     points: number;
+    name: string;
+    email: string;
+    mobileNumber: string;
+    location: string;
+    carModel: string;
+    carType: string;
+    carPlate: string;
+    carColor: string;
 }
 
 export interface ApiResponse<T> {
@@ -52,10 +60,9 @@ export interface ApiResponse<T> {
 
 // API service functions
 const apiService = {
-
     getRidesByUserId: async (userId: string, currentTime: string): Promise<AxiosResponse<ApiResponse<Ride[]>>> => {
         const response = await axios.get<ApiResponse<Ride[]>>(
-            `${API_BASE_URL}/rides/${userId}`,
+            `${API_BASE_URL}/rides/byUser/${userId}`,
             { params: { currentTime } }
         );
         return response;
@@ -86,20 +93,8 @@ const apiService = {
         return axios.delete<void>(`${API_BASE_URL}/rides/cancel-request/${rideId}/${azureId}`);
     },
 
-    // New function to get counts
-    getCounts: async (): Promise<AxiosResponse<ApiResponse<{
-        TotalRides: number;
-        TotalDrivers: number;
-        TotalRequests: number;
-        TotalPassengers: number;
-    }>>> => {
-        const response = await axios.get<ApiResponse<{
-            TotalRides: number;
-            TotalDrivers: number;
-            TotalRequests: number;
-            TotalPassengers: number;
-        }>>(`${API_BASE_URL}/rides/counts`);
-        return response;
+    getUserById: (azureId: string): Promise<AxiosResponse<User>> => {
+        return axios.get<User>(`${API_BASE_URL}/users/${azureId}`);
     }
 };
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Card, CardSection } from "@fluentui/react-cards";
 import { Text, IconButton, PrimaryButton, DefaultButton, FontIcon } from "@fluentui/react";
 import { SketchPicker } from "react-color";

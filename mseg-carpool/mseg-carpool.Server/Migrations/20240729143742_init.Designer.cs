@@ -12,7 +12,7 @@ using mseg_carpool.Server;
 namespace mseg_carpool.Server.Migrations
 {
     [DbContext(typeof(ApplicationDBcontext))]
-    [Migration("20240728163107_init")]
+    [Migration("20240729143742_init")]
     partial class init
     {
         /// <inheritdoc />

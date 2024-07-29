@@ -21,6 +21,7 @@ namespace mseg_carpool.Server
         {
             base.OnModelCreating(modelBuilder);
 
+
         }
 
 

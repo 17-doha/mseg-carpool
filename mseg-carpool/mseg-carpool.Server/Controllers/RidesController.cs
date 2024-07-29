@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.Json;
 using mseg_carpool.Server.Models;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+
 using Microsoft.AspNetCore.Cors;
+
+using System.ComponentModel.DataAnnotations;
+
 
 namespace mseg_carpool.Server.Controllers
 {
@@ -14,27 +15,34 @@ namespace mseg_carpool.Server.Controllers
     public class RidesController : ControllerBase
     {
 
+        private readonly ILogger<RidesController> logger;
+
         private readonly ApplicationDBcontext _context;
-                public class RideDto
+        public class RideDTo
         {
             public string Origin { get; set; }
             public string Destination { get; set; }
             public int AvailableSeats { get; set; }
             public DateTime DepartureTime { get; set; }
+
+
         }
         public class RequestDto
         {
             public string status { get; set; }
-           
+
         }
 
 
-        public RidesController(ApplicationDBcontext context)
+        public RidesController(ApplicationDBcontext context, ILogger<RidesController> logger)
         {
+
             _context = context;
+            this.logger = logger;
         }
 
         [HttpGet]
+
         public async Task<ActionResult<IEnumerable<object>>> GetRides(
             [FromQuery] string userId,
             [FromQuery] int pageNumber = 1,
@@ -130,8 +138,9 @@ namespace mseg_carpool.Server.Controllers
 
             // Log the count of rides after pagination
             Console.WriteLine($"Total rides after pagination: {rides.Count}");
-           return Ok(rides);
+            return Ok(rides);
         }
+
 
         [HttpGet("byDriver/{id}")]
         public IActionResult GetRideByAzureId(string id, [FromQuery] DateTime currentTime)
@@ -197,7 +206,7 @@ namespace mseg_carpool.Server.Controllers
 
 
         //get the rides that i have requested and their request status is Pending or Approved and get also the info of the driver
-        [HttpGet("{id}")]
+        [HttpGet("byUser/{id}")]
         public IActionResult GetRidesByUserId(string id, [FromQuery] DateTime currentTime)
         {
             var rides = _context.Ride
@@ -244,12 +253,12 @@ namespace mseg_carpool.Server.Controllers
                                    };
                                })
                                .ToList()
-                            
+
                         })
                         .ToList(),
                     AvailableSeats = r.Requests.Count(req => req.status == "Approved"),
                     MainSeats = r.AvailableSeats + r.Requests.Count(req => req.status == "Approved")
-                    
+
                     // BookedSeats = r.Requests.Count(req => req.status == "Approved")
                 })
                 .ToList();
@@ -261,8 +270,8 @@ namespace mseg_carpool.Server.Controllers
 
 
         [HttpPut("{id}")]
-       
-        public IActionResult UpdateRide(string id, RideDto updatedRide)
+
+        public IActionResult UpdateRide(string id, RideDTo updatedRide)
         {
             // Fetch the existing ride by its Id
             var ride = _context.Ride
@@ -391,45 +400,146 @@ namespace mseg_carpool.Server.Controllers
 
             return NoContent(); // 204 No Content
         }
-
-        [HttpGet("counts")]
-        public async Task<IActionResult> GetCounts()
+        [HttpGet("{id}")]
+        public async Task<ActionResult<RideDto>> GetRideById(int id)
         {
-            // Count of all rides
-            var rideCount = await _context.Ride.CountAsync();
 
-            // Count of all drivers (users) who have created rides
-            var driverCount = await _context.User
-                .CountAsync(u => _context.Ride.Any(r => r.UserId == u.Id));
-
-            // Count of all requests
-            var requestCount = await _context.Request.CountAsync();
-
-            // Count of all passengers (distinct users involved in requests)
-            var passengerCount = await _context.Request
-                .Select(r => r.UserId)
-                .Distinct()
-                .CountAsync();
-
-            var result = new
+            try
             {
-                TotalRides = rideCount,
-                TotalDrivers = driverCount,
-                TotalRequests = requestCount,
-                TotalPassengers = passengerCount
-            };
+                var ride = await _context.Ride.FindAsync(id);
 
-            return Ok(result);
+                if (ride == null)
+                {
+                    return NotFound();
+                }
+
+                var rideDto = new RideDto
+                {
+                    Id = ride.Id,
+                    Origin = ride.Origin,
+                    Destination = ride.Destination,
+                    AvailableSeats = ride.AvailableSeats,
+                    DepartureTime = ride.DepartureTime,
+                    Coordinates = ride.Coordinates,
+                    UserId = ride.UserId
+                };
+
+                return Ok(rideDto);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"An error occurred while getting the ride with ID {id}.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
+            }
         }
-
-
 
         // Create a new ride
         [HttpPost]
-        public ActionResult<Ride> CreateRide(Ride ride)
+        public async Task<ActionResult<RideDto>> CreateRide(RideDto rideDto)
         {
-            return Ok(null);
+            if (rideDto == null)
+            {
+                return BadRequest("Ride data is null.");
+            }
+
+            try
+            {
+                var ride = new Ride
+                {
+                    Origin = rideDto.Origin,
+                    Destination = rideDto.Destination,
+                    AvailableSeats = rideDto.AvailableSeats,
+                    DepartureTime = rideDto.DepartureTime,
+                    Coordinates = rideDto.Coordinates,
+                    UserId = rideDto.UserId
+                };
+
+                _context.Ride.Add(ride);
+                await _context.SaveChangesAsync();
+
+                rideDto.Id = ride.Id;
+
+                return CreatedAtAction(nameof(GetRideById), new { id = rideDto.Id }, rideDto);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occurred while creating a ride.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
+            }
         }
 
+
+
+
+
+        // Get requests for rides where the user is the driver
+        [HttpGet("requests/{driverAzureId}")]
+        public async Task<ActionResult<IEnumerable<Request>>> GetRequestsForRidesByDriver(string driverAzureId)
+        {
+            var requests = await _context.Request
+                .Include(r => r.Ride)  // Use lowercase 'ride' to match the property name
+                .Include(r => r.User)
+                .Where(r => r.Ride.UserId == driverAzureId)  // Use lowercase 'ride' to match the property name
+                .ToListAsync();
+
+            return Ok(requests);
+        }
+
+        // Accept a request by ID
+        [HttpPut("requests/{id}/accept")]
+        public async Task<IActionResult> AcceptRequest(int id)
+        {
+            var request = await _context.Request
+                .Include(r => r.Ride)
+                .FirstOrDefaultAsync(r => r.Id == id);
+
+            if (request == null)
+            {
+                return NotFound();
+            }
+
+            if (request.Ride.AvailableSeats <= 0)
+            {
+                return BadRequest("No available seats");
+            }
+
+            request.status = "Approved";
+            request.Ride.AvailableSeats--;
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+
+        }
+
+
+        // Delete a request by ID
+        [HttpDelete("requests/{id}")]
+        public async Task<IActionResult> DeleteRequest(int id)
+        {
+            var request = await _context.Request.FindAsync(id);
+            if (request == null)
+            {
+                return NotFound();
+            }
+
+            _context.Request.Remove(request);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        public class RideDto
+        {
+            [Key]
+            public int Id { get; set; }
+            public string Origin { get; set; }
+            public string Destination { get; set; }
+            public int AvailableSeats { get; set; }
+            public DateTime DepartureTime { get; set; }
+            public string Coordinates { get; set; }
+            public string? UserId { get; set; }
+
+        }
     }
 }
