@@ -7,7 +7,7 @@ import  {Ride, Driver}  from "../../lib/types";
 const RideCard = ({ ride, setRequested }: { ride: Ride; setRequested: () => void  }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
-    const bkColor = (ride.destination === 'Zamalek' || ride.origin === 'Zamalek') ? 'bg-[#5da549]' : (ride.destination === 'Smart Village' || ride.origin === 'Smart Village') ? '[#d6af2d]' : 'bg-[#b0594d]';
+    const bkColor = (ride.destination === 'Zamalek' || ride.origin === 'Zamalek') ? 'bg-[#5da549]' : (ride.destination === 'Smart Village' || ride.origin === 'Smart Village') ? 'bg-[#d6af2d]' : 'bg-[#b0594d]';
 
     const handleCloseDialog = (isOpen: boolean) => {
         setIsExpanded(isOpen);

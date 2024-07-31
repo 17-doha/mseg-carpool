@@ -40,6 +40,7 @@ const CreateRideForm: React.FC = () => {
     const [feedbackMessage, setFeedbackMessage] = useState<string>('');
     const navigate = useNavigate();
     const [selectedLocation, setSelectedLocation] = useState<LatLng | null>(null);
+    const [defaultLocation, setDefaultLocation] = useState<LatLng>({ lat: 0, lng: 0 });
     const auth = useMsal();
     const azureID = auth.accounts[0].localAccountId;
 
@@ -58,27 +59,30 @@ const CreateRideForm: React.FC = () => {
         }
     }, []);
 
-    const GetUserCoordinates = async () => {
-        try {
-            const response = await fetch('/api/user');
-            const data: RideDriver = await response.json();
-            console.log('User data:', data);
-            
-            const locationString = data.location;
-            const [lat, lng] = locationString.split(',');
-            const coordinates: LatLng = {
-                lat: parseFloat(lat),
-                lng: parseFloat(lng),
-            };
-            return coordinates;
-            console.log('Coordinates:', coordinates);
-            
-        } catch (error) {
-            console.error('Error fetching user:', error);
-        }
-        
-    }
-    const defaultLocation = GetUserCoordinates();
+    useEffect(() => {
+        const fetchUserCoordinates = async () => {
+            try {
+                const response = await fetch('http://localhost:5062/api/Users/' + azureID);
+                const data: RideDriver = await response.json();
+                console.log('User data:', data);
+                
+                const locationString = data.location;
+                const [lat, lng] = locationString.split(',');
+                const coordinates: LatLng = {
+                    lat: parseFloat(lat),
+                    lng: parseFloat(lng),
+                };
+                console.log('Coordinates:', coordinates);
+
+                setDefaultLocation(coordinates);
+                
+            } catch (error) {
+                console.error('Error fetching user:', error);
+            }
+        };
+
+        fetchUserCoordinates();
+    }, [azureID]);
 
     const handleRideTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
         setRideType(event.target.value);
@@ -151,8 +155,8 @@ const CreateRideForm: React.FC = () => {
                    <div className="radio-group">
                         <label>
                             <input
-                               // type="radio"
-                               // value="toOffice"
+                                type="radio"
+                                value="toOffice"
                                 checked={rideType === 'toOffice'}
                                 onChange={handleRideTypeChange}
                             />
@@ -160,8 +164,8 @@ const CreateRideForm: React.FC = () => {
                         </label>
                         <label>
                             <input
-                              //  type="radio"
-                               // value="fromOffice"
+                                type="radio"
+                                value="fromOffice"
                                 checked={rideType === 'fromOffice'}
                                 onChange={handleRideTypeChange}
                             />
@@ -239,7 +243,7 @@ const CreateRideForm: React.FC = () => {
                 )}
             </div>
             <div className="map-container">
-                    <MapPicker defaultLocation={defaultLocation} selectedLocation={selectedLocation} onLocationSelect={handleLocationSelect} />
+                <MapPicker defaultLocation={defaultLocation} selectedLocation={selectedLocation} onLocationSelect={handleLocationSelect} />
             </div>
         </div>
     );
