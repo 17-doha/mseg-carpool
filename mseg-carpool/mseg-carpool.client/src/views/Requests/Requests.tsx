@@ -15,6 +15,7 @@ function Requests() {
                 type: 'UPDATE_REQUEST_STATUS',
                 payload: { id, status: 'Approved' },
             });
+            window.location.reload(); // Reload the entire page
             alert(`Request ${id} is accepted`);
         } catch (error) {
             console.error("Error accepting request", error);
