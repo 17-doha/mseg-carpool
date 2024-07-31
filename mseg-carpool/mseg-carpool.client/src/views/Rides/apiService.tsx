@@ -43,6 +43,14 @@ interface RideDto {
 interface User {
     id: string;
     points: number;
+    name: string;
+    email: string;
+    mobileNumber: string;
+    location: string;
+    carModel: string;
+    carType: string;
+    carPlate: string;
+    carColor: string;
 }
 
 export interface ApiResponse<T> {
@@ -52,9 +60,11 @@ export interface ApiResponse<T> {
 
 // API service functions
 const apiService = {
-
-    getRidesByUserId: async (userId: string): Promise<AxiosResponse<ApiResponse<Ride[]>>> => {
-        const response = await axios.get<ApiResponse<Ride[]>>(`${API_BASE_URL}/rides/${userId}`);
+    getRidesByUserId: async (userId: string, currentTime: string): Promise<AxiosResponse<ApiResponse<Ride[]>>> => {
+        const response = await axios.get<ApiResponse<Ride[]>>(
+            `${API_BASE_URL}/rides/byUser/${userId}`,
+            { params: { currentTime } }
+        );
         return response;
     },
 
@@ -66,7 +76,7 @@ const apiService = {
         return response;
     },
 
-    updateRide: (id: string, updatedRide: RideDto): Promise<AxiosResponse<Ride>> => {
+    updateRide: (id: number, updatedRide: RideDto): Promise<AxiosResponse<Ride>> => {
         return axios.put<Ride>(`${API_BASE_URL}/rides/${id}`, updatedRide);
     },
 
@@ -76,13 +86,24 @@ const apiService = {
     },
 
     getUserPoints: (azureId: string): Promise<AxiosResponse<User>> => {
-        return axios.get<User>(`${API_BASE_URL}/users/${azureId}`);
+        return axios.get<User>(`${API_BASE_URL}/users/points/${azureId}`);
     },
 
     cancelRequest: (rideId: number, azureId: string): Promise<AxiosResponse<void>> => {
         return axios.delete<void>(`${API_BASE_URL}/rides/cancel-request/${rideId}/${azureId}`);
-    }
+    },
 
+    getUserById: (azureId: string): Promise<AxiosResponse<User>> => {
+        return axios.get<User>(`${API_BASE_URL}/users/${azureId}`);
+    },
+
+    getRides: async (currentTime: string): Promise<AxiosResponse<ApiResponse<Ride[]>>> => {
+        const response = await axios.get<ApiResponse<Ride[]>>(
+            `${API_BASE_URL}/Rides/points`,
+            { params: { currentTime } }
+        );
+        return response;
+    }
 };
 
 export default apiService;

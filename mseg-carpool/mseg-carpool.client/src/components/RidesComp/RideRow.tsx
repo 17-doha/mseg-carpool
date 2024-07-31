@@ -4,6 +4,7 @@ import { faUsers, faSave, faInfoCircle, faCrown, faEdit, faTrash, faMapMarkerAlt
 import * as Dialog from '@radix-ui/react-dialog';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import apiService from '../../views/Rides/apiService'; // Ensure the apiService is imported
+import { format, addHours } from 'date-fns';
 import './RideRow.css';
 
 interface PickupPoint {
@@ -35,7 +36,20 @@ interface RideRowProps {
 }
 
 
-const officeLocations = ["Zamalek", "Smart Village", "5th Settlement"];
+const officeLocations = ["Zamalek office", "Smart village office", "5th settlement office"];
+type CoordinatesDictionary = {
+    [key: string]: string;
+};
+
+const coordinatesDictionary: CoordinatesDictionary = {
+    "Zamalek office": "30.063766324057067, 31.21602628465705",
+    "Smart village office": "30.071368788707005, 31.016812873014413",
+    "5th settlement office": "30.010445176357045, 31.40715013068589"
+};
+
+function getCoordinates(place: string): string {
+    return coordinatesDictionary[place] || "Coordinates not found";
+}
 
 const RideRow: React.FC<RideRowProps> = ({
     id,
@@ -75,7 +89,7 @@ const RideRow: React.FC<RideRowProps> = ({
                 departureTime: new Date(editedPickuptime),
             };
 
-            apiService.updateRide(azureID, updatedRide)
+            apiService.updateRide(id, updatedRide)
                 .then(response => {
                     console.log('Ride updated successfully:', response.data);
                     // Optionally, you can refresh the ride data here or set a success message
@@ -88,6 +102,16 @@ const RideRow: React.FC<RideRowProps> = ({
         setIsEditing(!isEditing);
     };
     const handleCancelClick = () => {
+        const departureDateTime = new Date(departureTime);
+        const currentTime = new Date();
+        const timeDifferenceInMilliseconds = departureDateTime.getTime() - currentTime.getTime(); // Ensure both sides are numbers
+        const twoHoursInMilliseconds = 2 * 60 * 60 * 1000;
+
+        if (timeDifferenceInMilliseconds <= twoHoursInMilliseconds) {
+            alert("You cannot cancel the ride within two hours of the departure time.");
+            return;
+        }
+
         if (window.confirm(`Are you sure you want to cancel the request for the ride of ${name}?`)) {
             apiService.cancelRequest(id, azureID)
                 .then(() => {
@@ -98,7 +122,19 @@ const RideRow: React.FC<RideRowProps> = ({
         }
     };
 
+
+
     const handleDeleteClick = () => {
+        const departureDateTime = new Date(departureTime);
+        const currentTime = new Date();
+        const timeDifferenceInMilliseconds = departureDateTime.getTime() - currentTime.getTime();
+        const twoHoursInMilliseconds = 2 * 60 * 60 * 1000;
+
+        if (timeDifferenceInMilliseconds <= twoHoursInMilliseconds) {
+            alert("You cannot delete the ride within two hours of the departure time.");
+            return;
+        }
+
         if (window.confirm(`Are you sure you want to delete the ride of ${name}?`)) {
             apiService.deleteRide(id)
                 .then(() => {
@@ -109,6 +145,8 @@ const RideRow: React.FC<RideRowProps> = ({
         }
     };
 
+
+
     const handleMapClick = () => {
         const baseUrl = 'https://www.google.com/maps/dir/';
         let url = '';
@@ -116,9 +154,16 @@ const RideRow: React.FC<RideRowProps> = ({
         if (pickupPoints && pickupPoints.length > 0) {
             // Use the first pickup point as the starting point
             const firstPickupPoint = pickupPoints[0];
+            console.log("Lat and long", coordinatesLat, "  ", coordinatesLong)
 
             // Construct the route URL
-            url = `${baseUrl}${encodeURIComponent(origin)}/${firstPickupPoint.pickupPointLat},${firstPickupPoint.pickupPointLong}`;
+            if (!officeLocations.includes(origin)) {
+                url = `${baseUrl}${coordinatesLat},${coordinatesLong}/${firstPickupPoint.pickupPointLat},${firstPickupPoint.pickupPointLong}`;
+            }
+            else if (officeLocations.includes(origin)) {
+                url = `${baseUrl}${encodeURIComponent(getCoordinates(origin))}/${firstPickupPoint.pickupPointLat},${firstPickupPoint.pickupPointLong}`;
+            }
+            
 
             // Add intermediate pickup points
             for (let i = 1; i < pickupPoints.length; i++) {
@@ -127,13 +172,18 @@ const RideRow: React.FC<RideRowProps> = ({
             }
 
             // Add the final destination
-            url += `/${encodeURIComponent(destination)}`;
+            if (!officeLocations.includes(destination)) {
+                url += `/${coordinatesLat},${coordinatesLong}`;
+            }
+            else if (officeLocations.includes(destination)) { 
+                url += `/${encodeURIComponent(getCoordinates(destination))}`;
+            }
         } else if (officeLocations.includes(origin)) {
-            url = `${baseUrl}${encodeURIComponent(origin)}/${coordinatesLat},${coordinatesLong}`;
+            url = `${baseUrl}${encodeURIComponent(getCoordinates(origin))}/${coordinatesLat},${coordinatesLong}`;
         } else if (officeLocations.includes(destination)) {
-            url = `${baseUrl}${coordinatesLat},${coordinatesLong}/${encodeURIComponent(destination)}`;
+            url = `${baseUrl}${coordinatesLat},${coordinatesLong}/${encodeURIComponent(getCoordinates(destination))}`;
         } else {
-            url = `${baseUrl}${encodeURIComponent(origin)}/${encodeURIComponent(destination)}`;
+            url = `${baseUrl}${encodeURIComponent(getCoordinates(origin))}/${encodeURIComponent(getCoordinates(destination))}`;
         }
 
         window.open(url, '_blank');
@@ -206,11 +256,11 @@ const RideRow: React.FC<RideRowProps> = ({
                         <input
                             type="text"
                             className="editing"
-                            value={editedPickuptime}
+                            value={format(addHours(new Date(editedPickuptime), 3), "MMMM d, yyyy, h:mm a")}
                             onChange={(e) => setPickuptime(e.target.value)}
                         />
                     ) : (
-                        editedPickuptime
+                        format(addHours(new Date(editedPickuptime), 3), "MMMM d, yyyy, h:mm a")
                     )}
                 </td>
                 <td>

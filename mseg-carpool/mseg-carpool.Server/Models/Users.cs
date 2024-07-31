@@ -17,6 +17,7 @@ namespace mseg_carpool.Server.Models
         public string? CarColor { get; set; }
         public int Points { get; set; }
 
+
     }
 
 }

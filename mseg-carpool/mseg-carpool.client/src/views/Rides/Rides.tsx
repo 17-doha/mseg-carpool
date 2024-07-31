@@ -13,7 +13,6 @@ import apiService from '../Rides/apiService'; // Import the apiService
 import '../../components/RidesComp/RideRow.css'; // Ensure this is imported as needed
 import { useMsal } from '@azure/msal-react';
 
-
 interface RideDriver {
     azureID: string;
     name: string;
@@ -60,8 +59,10 @@ const Rides: React.FC = () => {
     type Value = ValuePiece | [ValuePiece, ValuePiece];
     const [value, onChange] = useState<Value>(new Date());
     const [points, setPoints] = useState<number | null>(null); // State to store points
+    const [oldPoints, setOldPoints] = useState<number | null>(null); // State to store old points
     const [error, setError] = useState<string | null>(null); // State to store errors
     const [loading, setLoading] = useState(true); // State to store loading status
+    const [hasUserRides, setHasUserRides] = useState(false);
     const auth = useMsal();
     const azureID = auth.accounts[0].localAccountId;
 
@@ -74,9 +75,11 @@ const Rides: React.FC = () => {
             const currentTime = new Date().toISOString(); // Get the current time in ISO 8601 format
             try {
                 const [userRidesResponse, azureRidesResponse, userPointsResponse] = await Promise.allSettled([
-                    apiService.getRidesByUserId(userId),
+                    apiService.getRidesByUserId(userId, currentTime),
                     apiService.getRideByAzureId(azureId, currentTime),
-                    apiService.getUserPoints(azureId) // Fetch user points
+                    apiService.getUserPoints(azureId), // Fetch user points
+                    apiService.getUserById(azureId),
+                    apiService.getRides(currentTime)
                 ]);
 
                 const extractRides = (response: any) => {
@@ -93,6 +96,8 @@ const Rides: React.FC = () => {
                 const userRides = userRidesResponse.status === 'fulfilled' ? extractRides(userRidesResponse.value.data) : [];
                 const azureRides = azureRidesResponse.status === 'fulfilled' ? extractRides(azureRidesResponse.value.data) : [];
 
+                setHasUserRides(userRides.length > 0); // Set state based on the presence of user rides
+
                 if (userRides.length === 0 && azureRides.length === 0) {
                     setRides([]);
                 } else {
@@ -105,11 +110,11 @@ const Rides: React.FC = () => {
                         departureTime: ride.departureTime,
                         coordinatesLong: ride.coordinatesLong,
                         coordinatesLat: ride.coordinatesLat,
-                        pickupPoints: ride.requests?.$values?.[0]?.pickupPoints?.$values?.map((point: any) => ({
+                        pickupPoints: ride.requests?.[0]?.pickupPoints?.map((point: any) => ({
                             pickupPointLong: point.pickupPointLong || 'N/A',
                             pickupPointLat: point.pickupPointLat || 'N/A'
                         })) || [],
-                        status: ride.requests?.$values?.[0]?.status || 'N/A',
+                        status: ride.requests?.[0]?.status || 'N/A',
                         rideDriver: {
                             azureID: ride.user?.id || '',
                             name: ride.user?.name || 'N/A',
@@ -123,6 +128,7 @@ const Rides: React.FC = () => {
                         riders: [], // Add logic to populate if needed
                         own: false // Set own to false for rides fetched by user ID
                     }));
+
                     const transformedAzureRides = azureRides.map((ride: any) => ({
                         id: ride.id,
                         origin: ride.origin,
@@ -132,7 +138,7 @@ const Rides: React.FC = () => {
                         departureTime: ride.departureTime,
                         coordinatesLong: ride.coordinatesLong,
                         coordinatesLat: ride.coordinatesLat,
-                        pickupPoints: ride.pickupPoints?.$values?.map((point: any) => ({
+                        pickupPoints: ride.pickupPoints?.map((point: any) => ({
                             pickupPointLong: point.pickupPointLong || 'N/A',
                             pickupPointLat: point.pickupPointLat || 'N/A'
                         })) || [],
@@ -161,6 +167,8 @@ const Rides: React.FC = () => {
                 } else {
                     setError('Error fetching user points.');
                 }
+
+
             } catch (error) {
                 console.error('Error fetching data:', error);
                 setRides([]);
@@ -171,8 +179,7 @@ const Rides: React.FC = () => {
         };
 
         fetchData();
-    }, []);
-
+    }, [azureID, navigate]); // Add azureID and navigate as dependencies
 
     const handleDelete = (id: number) => {
         apiService.deleteRide(id)
@@ -182,8 +189,21 @@ const Rides: React.FC = () => {
             .catch(error => console.error('Error deleting ride:', error));
     };
 
-    const handleCreateRide = () => {
-        navigate('/CreateRide');
+    const handleCreateRide = async () => {
+        try {
+            const userResponse = await apiService.getUserById(azureID);
+            const user = userResponse.data;
+
+            if (!user.carModel || !user.carType || !user.carPlate || !user.carColor) {
+                alert('Please complete your car information first.');
+                navigate('/dashboard');
+            } else {
+                navigate('/CreateRide');
+            }
+        } catch (error) {
+            console.error('Error checking user car info:', error);
+            alert('Error checking user car info. Please try again later.');
+        }
     };
 
     const indexOfLastRide = currentPage * ridesPerPage;
@@ -242,8 +262,9 @@ const Rides: React.FC = () => {
             <div className="container-ride">
                 {loading ? (
                     <div className="loading-message">
-                        <p>Loading rides...</p>
+                        <div className="spinner"></div>
                     </div>
+
                 ) : rides.length === 0 ? (
                     <div className="no-rides-message">
                         <p>No rides found. Create one or request one.</p>
@@ -251,16 +272,16 @@ const Rides: React.FC = () => {
                 ) : (
                     <div className="table-container">
                         <table>
-                            <thead>
-                                <tr>
-                                    <th>Driver</th>
-                                    <th>From</th>
-                                    <th>Destination</th>
-                                    <th>Pickup Time</th>
-                                    <th>Seats Left</th>
-                                    <th>Status</th>
-                                    <th></th>
-                                </tr>
+                            <thead className="bg-gray-900">
+                                        <tr>
+                                            <th>Driver</th>
+                                            <th>From</th>
+                                            <th>Destination</th>
+                                            <th>Pickup Date & Time</th>
+                                            <th>Seats Left</th>
+                                            {hasUserRides && <th>Status</th>}
+                                            {!hasUserRides && <th></th>} {/* Only render this column if status column is present */}
+                                        </tr>
                             </thead>
                             <tbody>
                                 {currentRides.map(ride => (
@@ -276,7 +297,7 @@ const Rides: React.FC = () => {
                                         coordinatesLong={ride.coordinatesLong}
                                         pickupPoints={ride.pickupPoints}
                                         mainSeats={ride.mainSeats}
-                                        status={ride.status || 'N/A'}
+                                        status={hasUserRides ? ride.status || 'N/A' : ''} // Conditionally set status
                                         azureID={azureID}
                                         email={ride.rideDriver?.email || 'N/A'}
                                         mobileNumber={ride.rideDriver?.mobileNumber || 'N/A'}
@@ -295,6 +316,7 @@ const Rides: React.FC = () => {
             </div>
         </Page>
     );
+
 };
 
 export default Rides;
