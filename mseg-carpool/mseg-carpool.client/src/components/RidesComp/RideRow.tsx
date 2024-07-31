@@ -144,18 +144,7 @@ const RideRow: React.FC<RideRowProps> = ({
                 .catch(error => console.error('Error deleting ride:', error));
         }
     };
-    function removeLastWord(input) {
-        if (!input || typeof input !== 'string') {
-            return input; // Return the input as-is if it's not a valid string
-        }
 
-        const lastSpaceIndex = input.lastIndexOf(' ');
-        if (lastSpaceIndex === -1) {
-            return input; // Return the input as-is if there's no space (i.e., only one word)
-        }
-
-        return input.substring(0, lastSpaceIndex);
-    }
 
 
     const handleMapClick = () => {
