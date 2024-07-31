@@ -456,7 +456,8 @@ namespace mseg_carpool.Server.Controllers
 
             if (!double.TryParse(coordinateParts[0], out double lat) || !double.TryParse(coordinateParts[1], out double lon))
             {
-                throw new ArgumentException("Invalid coordinate values");
+                lat = 29.9724;
+                lon = 31.0164;
             }
 
             return (lat, lon);

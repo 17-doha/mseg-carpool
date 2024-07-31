@@ -1,9 +1,8 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CreateRideForm.css';
-
 import MapPicker from '../../components/Map';
-import apiService from '../../API/ApiServices'; // Import the shared API service
+import apiService from '../../API/ApiServices';
 import { useMsal } from "@azure/msal-react";
 
 interface RideDriver {
@@ -58,6 +57,7 @@ const CreateRideForm: React.FC = () => {
             setSeats(savedFormData.seats || '');
         }
     }, []);
+
 
     useEffect(() => {
         const fetchUserCoordinates = async () => {
@@ -243,7 +243,9 @@ const CreateRideForm: React.FC = () => {
                 )}
             </div>
             <div className="map-container">
+
                 <MapPicker defaultLocation={defaultLocation} selectedLocation={selectedLocation} onLocationSelect={handleLocationSelect} />
+
             </div>
         </div>
     );
