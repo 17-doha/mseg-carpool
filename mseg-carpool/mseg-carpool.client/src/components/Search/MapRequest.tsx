@@ -1,30 +1,67 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { GoogleMap, useJsApiLoader, DirectionsService, DirectionsRenderer, Marker } from '@react-google-maps/api';
 
-const center = { lat: 41.85, lng: -87.66 };
+interface MapRequestProps {
+    onLocationSelect: (location: { lat: number, lng: number }) => void;
+    origin: string;
+    destination: string;
+    coordinates: string;
+}
 
-const MapRequest: React.FC = () => {
+const center = { lat: 30.0669, lng: 31.2241 };
+
+const MapRequest: React.FC<MapRequestProps> = ({ onLocationSelect, origin, destination, coordinates }) => {
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: "AIzaSyCuH_djHLBBi8yD7vtWkMByZR32Rn7w1fQ"
     });
 
     const [map, setMap] = useState<google.maps.Map | null>(null);
+    const [zoom, setZoom] = useState(6);
     const [directions, setDirections] = useState<google.maps.DirectionsResult | null>(null);
     const [directionsRequested, setDirectionsRequested] = useState(false);
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(null);
 
-    const onLoad = React.useCallback(function callback(map: google.maps.Map) {
+    const assignCoords = (origin: string, destination: string, coordinates: string = '0,0') => {
+        const officeLocations: { [key: string]: { lat: number, lng: number } } = {
+            'Zamalek': { lat: 30.0669, lng: 31.2241 },
+            '5th Settlement': { lat: 29.9634, lng: 31.2619 },
+            'Smart Village': { lat: 29.9594, lng: 31.2592 }
+        };
+
+        if (!coordinates) {
+            throw new Error('Coordinates are required');
+        }
+
+        const coordinatesArray = coordinates.split(',');
+        if (coordinatesArray.length !== 2) {
+            throw new Error('Invalid coordinates format');
+        }
+
+        const parsedCoords = { lat: parseFloat(coordinatesArray[0]), lng: parseFloat(coordinatesArray[1]) };
+        if (isNaN(parsedCoords.lat) || isNaN(parsedCoords.lng)) {
+            throw new Error('Invalid coordinates values');
+        }
+
+        const originCords = officeLocations[origin] || parsedCoords;
+        const destinationCords = officeLocations[destination] || parsedCoords;
+
+        return { originCords, destinationCords };
+    };
+
+    const { originCords, destinationCords } = assignCoords(origin, destination, coordinates);
+
+    const onLoad = useCallback(function callback(map: google.maps.Map) {
         const bounds = new window.google.maps.LatLngBounds(center);
         map.fitBounds(bounds);
         setMap(map);
     }, []);
 
-    const onUnmount = React.useCallback(function callback() {
+    const onUnmount = useCallback(function callback() {
         setMap(null);
     }, []);
 
-    const directionsCallback = React.useCallback((result: google.maps.DirectionsResult | null, status: google.maps.DirectionsStatus) => {
+    const directionsCallback = useCallback((result: google.maps.DirectionsResult | null, status: google.maps.DirectionsStatus) => {
         if (result !== null && status === 'OK') {
             setDirections(result);
         } else {
@@ -33,7 +70,7 @@ const MapRequest: React.FC = () => {
         setDirectionsRequested(false);
     }, []);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (isLoaded && !directionsRequested) {
             setDirectionsRequested(true);
         }
@@ -41,21 +78,17 @@ const MapRequest: React.FC = () => {
 
     const handleMapClick = (event: google.maps.MapMouseEvent) => {
         if (event.latLng) {
-            setMarkerPosition(event.latLng.toJSON());
+            const position = event.latLng.toJSON();
+            setMarkerPosition(position);
+            onLocationSelect(position);
         }
     };
 
     const handleMarkerDragEnd = (event: google.maps.MapMouseEvent) => {
         if (event.latLng) {
-            setMarkerPosition(event.latLng.toJSON());
-        }
-    };
-
-    const handleSubmitCoordinates = () => {
-        if (markerPosition) {
-            console.log('Submitted coordinates:', markerPosition);
-            // Here you can implement the logic to submit the coordinates
-            // For example, send them to a server or update your app's state
+            const position = event.latLng.toJSON();
+            setMarkerPosition(position);
+            onLocationSelect(position);
         }
     };
 
@@ -64,15 +97,15 @@ const MapRequest: React.FC = () => {
     return (
         <div>
             <GoogleMap
-                mapContainerStyle={{ height: "100px", width: "250%" }}
+                mapContainerStyle={{ height: "400px", width: "100%" }}
                 center={center}
-                zoom={6}
+                zoom={zoom}
                 onLoad={onLoad}
                 onUnmount={onUnmount}
                 onClick={handleMapClick}
                 options={{
                     mapId: "7c52568365d1edbf",
-                    gestureHandling: "greedy",
+                    gestureHandling: "cooperative",
                     zoomControl: false,
                     streetViewControl: false,
                 }}
@@ -80,8 +113,8 @@ const MapRequest: React.FC = () => {
                 {directionsRequested && (
                     <DirectionsService
                         options={{
-                            origin: { lat: 41.8781, lng: -87.6298 },
-                            destination: { lat: 34.0522, lng: -118.2437 },
+                            origin: originCords,
+                            destination: destinationCords,
                             travelMode: google.maps.TravelMode.DRIVING,
                         }}
                         callback={directionsCallback}
@@ -96,9 +129,6 @@ const MapRequest: React.FC = () => {
                     />
                 )}
             </GoogleMap>
-            <button onClick={handleSubmitCoordinates} disabled={!markerPosition}>
-                Submit Coordinates
-            </button>
         </div>
     );
 };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import './CreateRideForm.css';
-import Map from '../../components/Map';
+import MapPicker from '../../components/Map';
 
 interface RideDriver {
     azureID: string;
@@ -50,6 +50,28 @@ const CreateRideForm: React.FC = () => {
             setSeats(savedFormData.seats || '');
         }
     }, []);
+
+    const GetUserCoordinates = async () => {
+        try {
+            const response = await fetch('/api/user');
+            const data: RideDriver = await response.json();
+            console.log('User data:', data);
+            
+            const locationString = data.location;
+            const [lat, lng] = locationString.split(',');
+            const coordinates: LatLng = {
+                lat: parseFloat(lat),
+                lng: parseFloat(lng),
+            };
+            return coordinates;
+            console.log('Coordinates:', coordinates);
+            
+        } catch (error) {
+            console.error('Error fetching user:', error);
+        }
+        
+    }
+    const defaultLocation = GetUserCoordinates();
 
     const handleRideTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
         setRideType(event.target.value);
@@ -202,9 +224,7 @@ const CreateRideForm: React.FC = () => {
                 </form>
             </div>
             <div className="map-container">
-                <div className="map-placeholder">
-                    <Map selectedLocation={selectedLocation} onLocationSelect={handleLocationSelect} />
-                </div>
+                    <MapPicker defaultLocation={defaultLocation} selectedLocation={selectedLocation} onLocationSelect={handleLocationSelect} />
             </div>
         </div>
     );

@@ -40,7 +40,7 @@ const ToggleGroupItem = React.forwardRef<
   return (
     <ToggleGroupPrimitive.Item
       ref={ref}
-      className={cn("px-4 py-2 rounded-s text-xs focus:outline-none focus:bg-blue-600", className)}
+      className={cn("px-4 h-8 w-14 py-2 rounded-s text-xs focus:outline-none focus:bg-blue-600", className)}
       {...props}
     >
       {children}

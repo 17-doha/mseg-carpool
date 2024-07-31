@@ -87,7 +87,6 @@ const Dashboard = () => {
     return (
         <Page>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
-                <h1>Dashboard</h1>
                 <DefaultButton text="Add Car" onClick={handleAddRide} />
             </div>
             <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>

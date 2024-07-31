@@ -4,11 +4,21 @@ import ExpandedRide from '../ui/ExpandedRide';
 import  {Ride, Driver}  from "../../lib/types";
 
 
-const RideCard = ({ ride }: { ride: Ride }) => {
+const RideCard = ({ ride, setRequested }: { ride: Ride; setRequested: () => void  }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
-    const bkColor = (ride.destination === 'Zamalek' || ride.origin === 'Zamalek') ? 'bg-amber-400' : (ride.destination === 'Smart Village' || ride.origin === 'Smart Village') ? 'bg-lime-500' : 'bg-red-500';
+    const bkColor = (ride.destination === 'Zamalek' || ride.origin === 'Zamalek') ? 'bg-[#5da549]' : (ride.destination === 'Smart Village' || ride.origin === 'Smart Village') ? '[#d6af2d]' : 'bg-[#b0594d]';
 
+    const handleCloseDialog = (isOpen: boolean) => {
+        setIsExpanded(isOpen);
+        console.log('Dialog state:', isExpanded); // Debug log
+        setIsExpanded(false);
+    };
+
+    const formattedDate = ride.departureDate.split('T')[0].split('-').reverse().join('-');
+    
+    const formattedTime = ride.departureDate.split('T')[1].split(':')[0] + ':' + ride.departureDate.split('T')[1].split(':')[1];
+    
     return (
         <div>
             <div>
@@ -21,8 +31,9 @@ const RideCard = ({ ride }: { ride: Ride }) => {
                 <div className=' px-2 pt-1'>
                     <div className="flex items-center mb-1">
                         <FiCalendar className="mr-1" />
-                        <span className="text-gray-600">{ride.departureDate}</span>
+                        <span className="text-gray-600">{formattedDate} ({formattedTime})</span>
                     </div>
+
                     <div className="flex items-center mb-1">
                         <FiUser className="mr-1" />
                         <span className="text-gray-600">{ride.driver.driverName}</span>
@@ -41,8 +52,8 @@ const RideCard = ({ ride }: { ride: Ride }) => {
                         <span className="text-gray-600">{ride.availableSeats} Available Seats</span>
                     </div>
                 </div>
-                {isExpanded && <ExpandedRide ride={ride} isOpen={isExpanded} setIsOpen={setIsExpanded} />}
             </div>
+            {isExpanded ? <ExpandedRide ride={ride} isOpen={isExpanded} setIsOpen={handleCloseDialog} setRequested={setRequested} /> : null}
         </div>
     );
 };

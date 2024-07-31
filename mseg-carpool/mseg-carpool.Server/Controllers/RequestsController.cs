@@ -54,5 +54,12 @@ namespace mseg_carpool.Server.Controllers
             //return CreatedAtAction(nameof(Get), new { id = request.Id }, request); // implement get
         }
 
+        // GET: api/<RequestsController>
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Request>>> GetRequests()
+        {
+            return await _context.Request.ToListAsync();
+        }
+
     }
 }

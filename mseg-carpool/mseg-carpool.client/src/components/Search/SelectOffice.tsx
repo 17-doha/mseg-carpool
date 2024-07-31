@@ -13,17 +13,16 @@ export function Office({ onOfficeChange }: OfficeProps) {
     onOfficeChange(value);
   };
 
-  //    const bkColor = (ride.destination === 'Zamalek' || ride.origin === 'Zamalek') ? 'bg-amber-400' : (ride.destination === 'Smart Village' || ride.origin === 'Smart Village') ? 'bg-lime-500' : 'bg-red-500';
   return (
     <div>
       <ToggleGroup type="single" onValueChange={handleOfficeChange}>
-        <ToggleGroupItem value="Zamalek" aria-label="Toggle bold" className="bg-amber-400">
+        <ToggleGroupItem value="Zamalek" aria-label="Toggle bold" className="bg-[#5da549] bg-[length:20px_10px]">
           Zamalek
         </ToggleGroupItem>
-        <ToggleGroupItem value="Smart Village" aria-label="Toggle italic" className="bg-lime-500">
+        <ToggleGroupItem value="Smart Village" aria-label="Toggle italic" className="bg-[#d6af2d] bg-[length:20px_100px]">
           Smart Village
         </ToggleGroupItem>
-        <ToggleGroupItem value="5th Settlement" aria-label="Toggle underline" className="bg-red-500">
+        <ToggleGroupItem value="5th Settlement" aria-label="Toggle underline" className="bg-[#b0594d] bg-[length:20px_10px]">
           5th Settlement
         </ToggleGroupItem>
       </ToggleGroup>
