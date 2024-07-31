@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { APIProvider, Map, MapMouseEvent, Marker } from '@vis.gl/react-google-maps';
 
 interface LatLng {
@@ -12,19 +12,18 @@ interface MapPickerProps {
   onLocationSelect: (location: LatLng) => void;
 }
 
-const MapPicker: React.FC<MapPickerProps> = ({defaultLocation, selectedLocation, onLocationSelect }) => {
-  console.log('MapPicker rendered with selectedLocation:', selectedLocation);
-  console.log('MapPicker rendered with defaultLocation:', defaultLocation);
+const MapPicker: React.FC<MapPickerProps> = ({ defaultLocation, selectedLocation, onLocationSelect }) => {
+  const [mapCenter, setMapCenter] = useState<LatLng>(defaultLocation);
+
+  useEffect(() => {
+    setMapCenter(defaultLocation);
+  }, [defaultLocation]);
 
   const handleMapClick = useCallback((e: MapMouseEvent) => {
-    console.log('Map clicked:', e);
     const lat = e.detail.latLng ? e.detail.latLng.lat : 0;
     const lng = e.detail.latLng ? e.detail.latLng.lng : 0;
-    console.log('Coordinates selected:', { lat, lng });
     onLocationSelect({ lat, lng });
   }, [onLocationSelect]);
-
-  const defaultCenter = { lat: defaultLocation.lat, lng: defaultLocation.lng };
 
   return (
     <div>
@@ -32,11 +31,11 @@ const MapPicker: React.FC<MapPickerProps> = ({defaultLocation, selectedLocation,
         <div style={{ height: '400px', width: '100%' }}>
           <Map
             defaultZoom={12}
-            defaultCenter={ defaultCenter }
+            center={mapCenter}
             onClick={handleMapClick}
             streetViewControl={false}
             mapTypeControl={false}
-            style={{ height: '100%', width: '100%' }} // Ensure the map takes up the full size of the container
+            style={{ height: '100%', width: '100%' }}
           >
             {selectedLocation && (
               <Marker position={selectedLocation} />
