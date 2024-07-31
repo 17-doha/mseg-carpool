@@ -76,7 +76,7 @@ const apiService = {
         return response;
     },
 
-    updateRide: (id: string, updatedRide: RideDto): Promise<AxiosResponse<Ride>> => {
+    updateRide: (id: number, updatedRide: RideDto): Promise<AxiosResponse<Ride>> => {
         return axios.put<Ride>(`${API_BASE_URL}/rides/${id}`, updatedRide);
     },
 
