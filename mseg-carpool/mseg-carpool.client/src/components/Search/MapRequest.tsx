@@ -24,9 +24,9 @@ const MapRequest: React.FC<MapRequestProps> = ({ onLocationSelect, origin, desti
 
     const assignCoords = (origin: string, destination: string, coordinates: string = '0,0') => {
         const officeLocations: { [key: string]: { lat: number, lng: number } } = {
-            'Zamalek': { lat: 30.0669, lng: 31.2241 },
-            '5th Settlement': { lat: 29.9634, lng: 31.2619 },
-            'Smart Village': { lat: 29.9594, lng: 31.2592 }
+            'Zamalek': { lat: 30.063562, lng: 31.216005},
+            '5th Settlement': { lat: 30.010270, lng: 31.407254},
+            'Smart Village': { lat: 30.071012, lng: 31.017022}
         };
 
         if (!coordinates) {

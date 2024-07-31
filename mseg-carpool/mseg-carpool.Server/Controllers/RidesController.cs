@@ -73,8 +73,8 @@ namespace mseg_carpool.Server.Controllers
                                           .Distinct();
             query = query.Where(r => !excludedRideIds.Contains(r.Id));
 
-            // Filter by DepartureTimeq //TODO ENABLE THIS FILTER
-            //query = query.Where(r => r.DepartureTime > DateTime.Now);
+            // Filter by DepartureTimeq
+            query = query.Where(r => r.DepartureTime > DateTime.Now);
             var afterDepartureTimeFilterCount = await query.CountAsync();
             Console.WriteLine($"Rides after DepartureTime filter: {afterDepartureTimeFilterCount}");
 

@@ -38,7 +38,9 @@ const App: React.FC = () => {
     }, [accounts]);
 
     if (isProfileComplete === null) {
-        return <div>Loading...</div>;
+        return <div className="loading-message">
+        <div className="spinner"></div>
+    </div>;
     }
 
     return (

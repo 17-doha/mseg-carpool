@@ -39,6 +39,7 @@ const CreateRideForm: React.FC = () => {
     const [feedbackMessage, setFeedbackMessage] = useState<string>('');
     const navigate = useNavigate();
     const [selectedLocation, setSelectedLocation] = useState<LatLng | null>(null);
+    const [defaultLocation, setDefaultLocation] = useState<LatLng>({ lat: 0, lng: 0 });
     const auth = useMsal();
     const azureID = auth.accounts[0].localAccountId;
 
@@ -56,6 +57,32 @@ const CreateRideForm: React.FC = () => {
             setSeats(savedFormData.seats || '');
         }
     }, []);
+
+
+    useEffect(() => {
+        const fetchUserCoordinates = async () => {
+            try {
+                const response = await fetch('http://localhost:5062/api/Users/' + azureID);
+                const data: RideDriver = await response.json();
+                console.log('User data:', data);
+                
+                const locationString = data.location;
+                const [lat, lng] = locationString.split(',');
+                const coordinates: LatLng = {
+                    lat: parseFloat(lat),
+                    lng: parseFloat(lng),
+                };
+                console.log('Coordinates:', coordinates);
+
+                setDefaultLocation(coordinates);
+                
+            } catch (error) {
+                console.error('Error fetching user:', error);
+            }
+        };
+
+        fetchUserCoordinates();
+    }, [azureID]);
 
     const handleRideTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
         setRideType(event.target.value);
@@ -216,9 +243,9 @@ const CreateRideForm: React.FC = () => {
                 )}
             </div>
             <div className="map-container">
-                <div className="map-placeholder">
-                    <MapPicker selectedLocation={selectedLocation} onLocationSelect={handleLocationSelect} />
-                </div>
+
+                <MapPicker defaultLocation={defaultLocation} selectedLocation={selectedLocation} onLocationSelect={handleLocationSelect} />
+
             </div>
         </div>
     );

@@ -49,9 +49,9 @@ const ExpandedRide = ({ ride, isOpen, setIsOpen, setRequested }:
         let url = '';
 
         const officeLocations: { [key: string]:  string } = {
-            'Zamalek' : '30.065, 31.214' ,
-            '5th Settlement' : '30.012, 31.465',
-            'Smart Village' : ' 29.979, 31.025 '
+            'Zamalek': '30.063562, 31.216005',
+            '5th Settlement':  '30.010270,  31.407254',
+            'Smart Village':  '30.071012,  31.017022'
         };
         const originCords = officeLocations[ride.origin] || ride.coordinates;
         const destinationCords = officeLocations[ride.destination] || ride.coordinates;
@@ -77,6 +77,11 @@ const ExpandedRide = ({ ride, isOpen, setIsOpen, setRequested }:
         setIsOpen(false);
     };
 
+    const formattedDate = ride.departureDate.split('T')[0].split('-').reverse().join('-');
+    
+    const formattedTime = ride.departureDate.split('T')[1].split(':')[0] + ':' + ride.departureDate.split('T')[1].split(':')[1];
+    
+
     return (
         <div>
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -100,6 +105,8 @@ const ExpandedRide = ({ ride, isOpen, setIsOpen, setRequested }:
                             <button className="button-class map-btn" onClick={handleMapClick}>
                                 <FontAwesomeIcon icon={faMapLocation} beatFade />
                             </button>
+                            <p><strong>Date:</strong> {formattedDate}</p>
+                            <p><strong>Time:</strong> {formattedTime}</p>
                             <h2 className="text-lg font-semibold ">Driver Info</h2>
                             <p><strong>Name:</strong> {ride.driver.driverName}</p>
                             <p><strong>Contact:</strong> {ride.driver.driverMobileNo}</p>

@@ -51,7 +51,7 @@ const Search = () => {
 
   async function fetchRides(filters: Filters) {
     //TODO: Update the URL to match the USERID
-    const baseUrl = `http://localhost:5062/api/Rides/?userId=${azureID}&pageSize=6&minimumSeatsAvailable=1`;
+    const baseUrl = `http://localhost:5062/api/Rides/?userId=${azureID}&pageSize=8&minimumSeatsAvailable=1`;
     const queryParams = buildQueryParams(filters);
     const url = `${baseUrl}&${queryParams}`;
     console.log('Fetching rides from:', url);
