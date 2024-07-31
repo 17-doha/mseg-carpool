@@ -89,7 +89,7 @@ const RideRow: React.FC<RideRowProps> = ({
                 departureTime: new Date(editedPickuptime),
             };
 
-            apiService.updateRide(azureID, updatedRide)
+            apiService.updateRide(id, updatedRide)
                 .then(response => {
                     console.log('Ride updated successfully:', response.data);
                     // Optionally, you can refresh the ride data here or set a success message

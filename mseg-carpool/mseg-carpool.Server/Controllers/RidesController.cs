@@ -270,14 +270,13 @@ namespace mseg_carpool.Server.Controllers
 
 
         [HttpPut("{id}")]
-
-        public IActionResult UpdateRide(string id, RideDTo updatedRide)
+        public IActionResult UpdateRide(int id, RideDTo updatedRide)
         {
             // Fetch the existing ride by its Id
             var ride = _context.Ride
                                 .Include(r => r.User)
                                 .Include(r => r.Requests)
-                                .FirstOrDefault(r => r.UserId == id);
+                                .FirstOrDefault(r => r.Id == id);
 
             if (ride == null)
             {
@@ -290,12 +289,12 @@ namespace mseg_carpool.Server.Controllers
             ride.AvailableSeats = updatedRide.AvailableSeats != 0 ? updatedRide.AvailableSeats : ride.AvailableSeats;
             ride.DepartureTime = updatedRide.DepartureTime != default ? updatedRide.DepartureTime : ride.DepartureTime;
 
-
             // Save the changes to the database
             _context.SaveChanges();
 
             return Ok(ride);
         }
+
 
         [HttpDelete("{id}")]
         public IActionResult DeleteRidet(int id)
