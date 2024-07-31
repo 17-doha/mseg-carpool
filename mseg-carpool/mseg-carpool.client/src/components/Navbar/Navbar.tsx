@@ -85,18 +85,7 @@ const Navbar: React.FC<NavbarProps> = ({ showNavs }) => {
                                 },
                                 onClick: () => navigate("/dashboard"),
                             },
-                            {
-                                key: "home",
-                                text: "Home",
-                                className: matchPath("/home", pathname) ? "open" : "",
-                                buttonStyles: {
-                                    root: {
-                                        paddingLeft: 10,
-                                        paddingRight: 10,
-                                    },
-                                },
-                                onClick: () => navigate("/home"),
-                            },
+                            
                             {
                                 key: "search",
                                 text: "Search",
