@@ -73,11 +73,12 @@ const Rides: React.FC = () => {
             setLoading(true); // Set loading to true before fetching data
             const currentTime = new Date().toISOString(); // Get the current time in ISO 8601 format
             try {
-                const [userRidesResponse, azureRidesResponse, userPointsResponse, userResponse] = await Promise.allSettled([
+                const [userRidesResponse, azureRidesResponse, userPointsResponse] = await Promise.allSettled([
                     apiService.getRidesByUserId(userId, currentTime),
                     apiService.getRideByAzureId(azureId, currentTime),
                     apiService.getUserPoints(azureId), // Fetch user points
-                    apiService.getUserById(azureId)
+                    apiService.getUserById(azureId),
+                    apiService.getRides(currentTime)
                 ]);
 
                 const extractRides = (response: any) => {
@@ -269,7 +270,7 @@ const Rides: React.FC = () => {
                 ) : (
                     <div className="table-container">
                         <table>
-                            <thead>
+                            <thead className="bg-gray-900">
                                         <tr>
                                             <th>Driver</th>
                                             <th>From</th>

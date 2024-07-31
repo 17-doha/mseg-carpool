@@ -323,6 +323,13 @@ namespace mseg_carpool.Server.Controllers
             // Define the GMT+3 time zone
             TimeZoneInfo gmtPlus3 = TimeZoneInfo.CreateCustomTimeZone("GMT+3", TimeSpan.FromHours(3), "GMT+3", "GMT+3");
             DateTime gmtPlus3Time = TimeZoneInfo.ConvertTimeFromUtc(currentTime, gmtPlus3);
+            // Define constant coordinates for specified locations
+            var coordinates = new Dictionary<string, (double lat, double lon)>
+    {
+        { "Zamalek office", (30.063766324057067, 31.21602628465705) },
+        { "5th settlement office", (30.010445176357045, 31.40715013068589) },
+        { "Smart village office", (30.071368788707005, 31.016812873014413) }
+    };
 
             // Fetch the rides with necessary includes
             var rides = _context.Ride
@@ -332,36 +339,68 @@ namespace mseg_carpool.Server.Controllers
                                 .ToList();
 
             var updatedRides = new List<Ride>();
+            int carbonFootprintToOriginInt = 0;
 
             foreach (var ride in rides)
             {
                 if (ride.DepartureTime < gmtPlus3Time)
-                {
-                    // Update driver points
-                    var driver = ride.User;
-                    if (driver != null)
-                    {
-                        driver.Points += 40;
-                        Console.WriteLine($"Driver {driver.Id} points updated to {driver.Points}");
-                    }
 
-                    // Update requesters points and set request status to "Completed"
-                    foreach (var request in ride.Requests)
+                {
+                    
+                    // Filter requests to only include those with status "Pending" or "Approved"
+                    var filteredRequests = ride.Requests.Where(req => req.status == "Pending" || req.status == "Approved").ToList();
+
+                    if (filteredRequests.Any())
                     {
-                        var requester = request.User;
-                        if (requester != null)
+                        if (ride.Origin == "Zamalek office"||ride.Origin == "5th settlement office" || ride.Origin == "Smart village office")
                         {
-                            requester.Points += 10;
-                            Console.WriteLine($"Requester {requester.Id} points updated to {requester.Points}");
+                            var originCoordinates = coordinates[ride.Origin];
+                            var rideCoordinates = GetCoordinatesFromRide(ride);
+                            var distanceToOrigin = CalculateDistance(rideCoordinates, originCoordinates);
+                            var carbonFootprintToOrigin = CalculateCarbonFootprint(distanceToOrigin);
+                            carbonFootprintToOriginInt = (int)Math.Round(4 * carbonFootprintToOrigin);
+                            Console.WriteLine($"Distance to Origin: {distanceToOrigin} km, Carbon Footprint: {carbonFootprintToOrigin} kg CO2");
+                        }
+                        if (ride.Destination == "Zamalek office"||ride.Destination == "5th settlement office" || ride.Destination == "Smart village office")
+                        {
+                            var destinationCoordinates = coordinates[ride.Destination];
+                            var rideCoordinates = GetCoordinatesFromRide(ride);
+                            var distanceToDestination = CalculateDistance(rideCoordinates, destinationCoordinates);
+                            var carbonFootprintToDestination = CalculateCarbonFootprint(distanceToDestination);
+                            carbonFootprintToOriginInt = (int)Math.Round(4 * carbonFootprintToDestination);
+                            Console.WriteLine($"Distance to Destination: {distanceToDestination} km, Carbon Footprint: {carbonFootprintToDestination} kg CO2");
+                        }
+                        // Update driver points only if there are filtered requests
+                        var driver = ride.User;
+                        if (driver != null)
+                        {
+                            driver.Points += carbonFootprintToOriginInt;
+                            Console.WriteLine($"Driver {driver.Id} points updated to {driver.Points}");
+                            _context.Entry(driver).State = EntityState.Modified; // Ensure driver entity is tracked
                         }
 
-                        // Update the request status to "Completed"
-                        request.status = "Completed";
-                        Console.WriteLine($"Request {request.Id} status updated to Completed");
-                    }
+                        
 
-                    // Add the ride to the list of updated rides
-                    updatedRides.Add(ride);
+                        // Update requesters points and set request status to "Completed"
+                        foreach (var request in filteredRequests)
+                        {
+                            var requester = request.User;
+                            if (requester != null)
+                            {
+                                requester.Points += carbonFootprintToOriginInt/4;
+                                Console.WriteLine($"Requester {requester.Id} points updated to {requester.Points}");
+                                _context.Entry(requester).State = EntityState.Modified; // Ensure requester entity is tracked
+                            }
+
+                            // Update the request status to "Completed"
+                            request.status = "Completed";
+                            _context.Entry(request).State = EntityState.Modified; // Ensure request entity is tracked
+                            Console.WriteLine($"Request {request.Id} status updated to Completed");
+                        }
+
+                        // Add the ride to the list of updated rides
+                        updatedRides.Add(ride);
+                    }
                 }
             }
 
@@ -369,7 +408,7 @@ namespace mseg_carpool.Server.Controllers
             try
             {
                 var saveResult = _context.SaveChanges();
-                Console.WriteLine($"{saveResult} records saved to the database");
+                Console.WriteLine($"{carbonFootprintToOriginInt} records saved to the database");
             }
             catch (Exception ex)
             {
@@ -379,6 +418,52 @@ namespace mseg_carpool.Server.Controllers
 
             return Ok(updatedRides);
         }
+
+        private double CalculateDistance((double lat, double lon) coord1, (double lat, double lon) coord2)
+        {
+            double R = 6371; // Radius of the earth in km
+            double dLat = ToRadians(coord2.lat - coord1.lat);
+            double dLon = ToRadians(coord2.lon - coord1.lon);
+            double a =
+                Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+                Math.Cos(ToRadians(coord1.lat)) * Math.Cos(ToRadians(coord2.lat)) *
+                Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
+            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+            double distance = R * c; // Distance in km
+            return distance;
+        }
+
+        // Method to convert degrees to radians
+        private double ToRadians(double deg)
+        {
+            return deg * (Math.PI / 180);
+        }
+
+        // Method to extract coordinates from a ride (assuming your Ride entity has this data)
+        private (double lat, double lon) GetCoordinatesFromRide(Ride ride)
+        {
+            var coordinateParts = ride.Coordinates.Split(',');
+            if (coordinateParts.Length != 2)
+            {
+                throw new ArgumentException("Invalid coordinates format");
+            }
+
+            if (!double.TryParse(coordinateParts[0], out double lat) || !double.TryParse(coordinateParts[1], out double lon))
+            {
+                throw new ArgumentException("Invalid coordinate values");
+            }
+
+            return (lat, lon);
+        }
+
+        // Method to calculate the carbon footprint based on distance
+        private double CalculateCarbonFootprint(double distance)
+        {
+            const double CO2EmissionFactor = 0.120; // Example value: 120g CO2/km or 0.120kg CO2/km
+            return distance * CO2EmissionFactor;
+        }
+
+
 
 
         [HttpDelete("cancel-request/{rideId}/{azureId}")]
@@ -473,17 +558,19 @@ namespace mseg_carpool.Server.Controllers
 
 
         // Get requests for rides where the user is the driver
+      
         [HttpGet("requests/{driverAzureId}")]
         public async Task<ActionResult<IEnumerable<Request>>> GetRequestsForRidesByDriver(string driverAzureId)
         {
             var requests = await _context.Request
                 .Include(r => r.Ride)  // Use lowercase 'ride' to match the property name
                 .Include(r => r.User)
-                .Where(r => r.Ride.UserId == driverAzureId)  // Use lowercase 'ride' to match the property name
+                .Where(r => r.Ride.UserId == driverAzureId && r.status == "Pending")  // Filter by status
                 .ToListAsync();
 
             return Ok(requests);
         }
+
 
         // Accept a request by ID
         [HttpPut("requests/{id}/accept")]

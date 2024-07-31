@@ -4,7 +4,7 @@ import { faUsers, faSave, faInfoCircle, faCrown, faEdit, faTrash, faMapMarkerAlt
 import * as Dialog from '@radix-ui/react-dialog';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import apiService from '../../views/Rides/apiService'; // Ensure the apiService is imported
-import { format } from "date-fns";
+import { format, addHours } from 'date-fns';
 import './RideRow.css';
 
 interface PickupPoint {
@@ -36,7 +36,20 @@ interface RideRowProps {
 }
 
 
-const officeLocations = ["Zamalek", "Smart Village", "5th Settlement"];
+const officeLocations = ["Zamalek office", "Smart village office", "5th settlement office"];
+type CoordinatesDictionary = {
+    [key: string]: string;
+};
+
+const coordinatesDictionary: CoordinatesDictionary = {
+    "Zamalek office": "30.063766324057067, 31.21602628465705",
+    "Smart village office": "30.071368788707005, 31.016812873014413",
+    "5th settlement office": "30.010445176357045, 31.40715013068589"
+};
+
+function getCoordinates(place: string): string {
+    return coordinatesDictionary[place] || "Coordinates not found";
+}
 
 const RideRow: React.FC<RideRowProps> = ({
     id,
@@ -131,6 +144,18 @@ const RideRow: React.FC<RideRowProps> = ({
                 .catch(error => console.error('Error deleting ride:', error));
         }
     };
+    function removeLastWord(input) {
+        if (!input || typeof input !== 'string') {
+            return input; // Return the input as-is if it's not a valid string
+        }
+
+        const lastSpaceIndex = input.lastIndexOf(' ');
+        if (lastSpaceIndex === -1) {
+            return input; // Return the input as-is if there's no space (i.e., only one word)
+        }
+
+        return input.substring(0, lastSpaceIndex);
+    }
 
 
     const handleMapClick = () => {
@@ -142,7 +167,7 @@ const RideRow: React.FC<RideRowProps> = ({
             const firstPickupPoint = pickupPoints[0];
 
             // Construct the route URL
-            url = `${baseUrl}${encodeURIComponent(origin)}/${firstPickupPoint.pickupPointLat},${firstPickupPoint.pickupPointLong}`;
+            url = `${baseUrl}${encodeURIComponent(getCoordinates(origin))}/${firstPickupPoint.pickupPointLat},${firstPickupPoint.pickupPointLong}`;
 
             // Add intermediate pickup points
             for (let i = 1; i < pickupPoints.length; i++) {
@@ -153,11 +178,11 @@ const RideRow: React.FC<RideRowProps> = ({
             // Add the final destination
             url += `/${encodeURIComponent(destination)}`;
         } else if (officeLocations.includes(origin)) {
-            url = `${baseUrl}${encodeURIComponent(origin)}/${coordinatesLat},${coordinatesLong}`;
+            url = `${baseUrl}${encodeURIComponent(getCoordinates(origin))}/${coordinatesLat},${coordinatesLong}`;
         } else if (officeLocations.includes(destination)) {
-            url = `${baseUrl}${coordinatesLat},${coordinatesLong}/${encodeURIComponent(destination)}`;
+            url = `${baseUrl}${coordinatesLat},${coordinatesLong}/${encodeURIComponent(getCoordinates(destination))}`;
         } else {
-            url = `${baseUrl}${encodeURIComponent(origin)}/${encodeURIComponent(destination)}`;
+            url = `${baseUrl}${encodeURIComponent(getCoordinates(origin))}/${encodeURIComponent(getCoordinates(destination))}`;
         }
 
         window.open(url, '_blank');
@@ -230,11 +255,11 @@ const RideRow: React.FC<RideRowProps> = ({
                         <input
                             type="text"
                             className="editing"
-                            value={format(new Date(editedPickuptime), "MMMM d, yyyy, h:mm a")}
+                            value={format(addHours(new Date(editedPickuptime), 3), "MMMM d, yyyy, h:mm a")}
                             onChange={(e) => setPickuptime(e.target.value)}
                         />
                     ) : (
-                        format(new Date(editedPickuptime), "MMMM d, yyyy, h:mm a")
+                        format(addHours(new Date(editedPickuptime), 3), "MMMM d, yyyy, h:mm a")
                     )}
                 </td>
                 <td>

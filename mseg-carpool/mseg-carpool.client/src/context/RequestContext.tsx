@@ -102,7 +102,7 @@ export const RequestProvider: React.FC = ({ children }) => {
     useEffect(() => {
         const fetchRequests = async () => {
             try {
-                const fetchedRequests = await getRequestsForDriver('user3');
+                const fetchedRequests = await getRequestsForDriver('dbbd9883-1213-455a-a626-dcd3389f1cab');
                 console.log('Fetched requests:', fetchedRequests);  // Log the fetched requests
                 if (fetchedRequests.$values) {
                     dispatch({ type: 'LOAD_REQUESTS', payload: fetchedRequests.$values });
