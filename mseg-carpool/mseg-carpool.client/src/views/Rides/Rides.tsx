@@ -59,6 +59,7 @@ const Rides: React.FC = () => {
     type Value = ValuePiece | [ValuePiece, ValuePiece];
     const [value, onChange] = useState<Value>(new Date());
     const [points, setPoints] = useState<number | null>(null); // State to store points
+    const [oldPoints, setOldPoints] = useState<number | null>(null); // State to store old points
     const [error, setError] = useState<string | null>(null); // State to store errors
     const [loading, setLoading] = useState(true); // State to store loading status
     const [hasUserRides, setHasUserRides] = useState(false);
@@ -261,8 +262,9 @@ const Rides: React.FC = () => {
             <div className="container-ride">
                 {loading ? (
                     <div className="loading-message">
-                        <p>Loading rides...</p>
+                        <div className="spinner"></div>
                     </div>
+
                 ) : rides.length === 0 ? (
                     <div className="no-rides-message">
                         <p>No rides found. Create one or request one.</p>
