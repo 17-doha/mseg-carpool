@@ -1,8 +1,8 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import './CreateRideForm.css';
 import Map from '../../components/Map';
-import apiService from '../../API/ApiServices'; // Import the shared API service
+import apiService from '../../API/ApiServices';
 import { useMsal } from "@azure/msal-react";
 
 interface RideDriver {
@@ -28,7 +28,7 @@ interface FormData {
 interface LatLng {
     lat: number;
     lng: number;
-  }
+}
 
 const CreateRideForm: React.FC = () => {
     const [rideType, setRideType] = useState<string>('toOffice');
@@ -36,15 +36,15 @@ const CreateRideForm: React.FC = () => {
     const [office, setOffice] = useState<string>('');
     const [dateTime, setDateTime] = useState<string>('');
     const [seats, setSeats] = useState<string>('');
-    const [feedbackMessage, setFeedbackMessage] = useState<string>(''); // State for feedback
-    const navigate = useNavigate(); // Initialize useNavigate
+    const [feedbackMessage, setFeedbackMessage] = useState<string>('');
+    const navigate = useNavigate();
     const [selectedLocation, setSelectedLocation] = useState<LatLng | null>(null);
     const auth = useMsal();
     const azureID = auth.accounts[0].localAccountId;
+
     const handleLocationSelect = (location: LatLng) => {
         setSelectedLocation(location);
-    }
-
+    };
 
     useEffect(() => {
         const savedFormData = JSON.parse(localStorage.getItem('rideFormData') || '{}');
@@ -105,13 +105,13 @@ const CreateRideForm: React.FC = () => {
                 destination: formData.destination,
                 availableSeats: formData.availableSeats,
                 departureTime: formData.departureTime,
-                coordinates: '30.0066, 30.9754', // Update this if you have coordinate data
+                coordinates: selectedLocation ? `${selectedLocation.lat},${selectedLocation.lng}` : '',
                 userId: azureID
             });
             setFeedbackMessage('Ride created successfully!');
-            alert('Ride created successfully!'); // Add alert here
+            alert('Ride created successfully!');
             console.log('Ride created successfully:', data);
-            navigate('/rides'); // Navigate to the rides page
+            navigate('/rides');
         } catch (error) {
             setFeedbackMessage('Error creating ride.');
             console.error('Error creating ride:', error);
@@ -119,33 +119,17 @@ const CreateRideForm: React.FC = () => {
         }
 
         console.log('Form Data:', formData);
-        fetch("api/rides/create", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(formData)
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log("Ride created:", data);
-                // Handle the response data here
-            })
-            .catch(error => {
-                console.error("Error creating ride:", error);
-                // Handle the error here
-            });
     };
 
     return (
         <div className="container-create">
             <div className="form-container">
                 <form className="form" onSubmit={handleSubmit}>
-                    <div className="radio-group">
+                   <div className="radio-group">
                         <label>
                             <input
-                                type="radio"
-                                value="toOffice"
+                               // type="radio"
+                               // value="toOffice"
                                 checked={rideType === 'toOffice'}
                                 onChange={handleRideTypeChange}
                             />
@@ -153,8 +137,8 @@ const CreateRideForm: React.FC = () => {
                         </label>
                         <label>
                             <input
-                                type="radio"
-                                value="fromOffice"
+                              //  type="radio"
+                               // value="fromOffice"
                                 checked={rideType === 'fromOffice'}
                                 onChange={handleRideTypeChange}
                             />
