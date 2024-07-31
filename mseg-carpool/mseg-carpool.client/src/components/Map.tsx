@@ -8,10 +8,11 @@ interface LatLng {
 
 interface MapPickerProps {
   selectedLocation: LatLng | null;
-  onLocationSelect: (location: LatLng) => void;
+    onLocationSelect: (location: LatLng) => void;
+    defaultLocation: LatLng;
 }
 
-const MapPicker: React.FC<MapPickerProps> = ({  selectedLocation, onLocationSelect }) => {
+const MapPicker: React.FC<MapPickerProps> = ({ defaultLocation,  selectedLocation, onLocationSelect }) => {
   console.log('MapPicker rendered with selectedLocation:', selectedLocation);
   console.log('MapPicker rendered with defaultLocation:', defaultLocation);
 

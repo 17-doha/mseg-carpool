@@ -36,15 +36,15 @@ interface RideRowProps {
 }
 
 
-const officeLocations = ["Zamalek office", "Smart village office", "5th settlement office"];
+const officeLocations = ["Zamalek", "Smart Village", "5th Settlement"];
 type CoordinatesDictionary = {
     [key: string]: string;
 };
 
 const coordinatesDictionary: CoordinatesDictionary = {
-    "Zamalek office": "30.063766324057067, 31.21602628465705",
-    "Smart village office": "30.071368788707005, 31.016812873014413",
-    "5th settlement office": "30.010445176357045, 31.40715013068589"
+    "Zamalek": "30.063766324057067, 31.21602628465705",
+    "Smart Village": "30.071368788707005, 31.016812873014413",
+    "5th Settlement": "30.010445176357045, 31.40715013068589"
 };
 
 function getCoordinates(place: string): string {
