@@ -3,6 +3,9 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    opacity: 0; /* Start with the table invisible */
+    transform: translateY(-100%); /* Start with the table off-screen to the top */
+    animation: slideInFromTop 0.5s ease-out forwards; /* Apply the animation */
 }
 
 th, td {
@@ -12,10 +15,30 @@ th, td {
     background-color: #f2f2f2;
 }
 
-
 td {
     background-color: #e0e0e0;
 }
+
+/* Hover effect for table rows */
+tr:hover td {
+    background-color: #d1d1d1; /* Change to your preferred hover color */
+    cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow effect */
+    transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transition */
+}
+
+/* Keyframes for the slide-in-from-top animation */
+@keyframes slideInFromTop {
+    to {
+        opacity: 1; /* Make the table fully visible */
+        transform: translateY(0); /* Move the table to its final position */
+    }
+}
+
+
+
+
+
 .crown-icon {
     margin-left: 5px; /* Adjust the spacing as needed */
     color: gold; /* Adjust the color as needed */
