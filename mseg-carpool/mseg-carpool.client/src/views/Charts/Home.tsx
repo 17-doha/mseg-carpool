@@ -51,23 +51,23 @@ const Home = () => {
         }));
     });
 
-    useEffect(() => {
-        // Fetch counts from the API
-        apiService.getCounts()
-            .then(response => {
-                const data = response.data;
-                setCounts({
-                    totalRides: data.totalRides,
-                    totalDrivers: data.totalDrivers,
-                    totalRequests: data.totalRequests,
-                    totalPassengers: data.totalPassengers
-                });
-                console.log(data.TotalRides);
-            })
-            .catch(error => {
-                console.error("Error fetching counts:", error);
-            });
-    }, []);
+    //useEffect(() => {
+    //    // Fetch counts from the API
+    //    apiService.getCounts()
+    //        .then(response => {
+    //            const data = response.data;
+    //            setCounts({
+    //                totalRides: data.totalRides,
+    //                totalDrivers: data.totalDrivers,
+    //                totalRequests: data.totalRequests,
+    //                totalPassengers: data.totalPassengers
+    //            });
+    //            console.log(data.TotalRides);
+    //        })
+    //        .catch(error => {
+    //            console.error("Error fetching counts:", error);
+    //        });
+    //}, []);
 
     return (
         <main className='main-container'>

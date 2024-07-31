@@ -77,7 +77,8 @@ const Rides: React.FC = () => {
                     apiService.getRidesByUserId(userId, currentTime),
                     apiService.getRideByAzureId(azureId, currentTime),
                     apiService.getUserPoints(azureId), // Fetch user points
-                    apiService.getUserById(azureId)
+                    apiService.getUserById(azureId),
+                    apiService.getRides(currentTime)
                 ]);
 
                 const extractRides = (response: any) => {
@@ -269,7 +270,7 @@ const Rides: React.FC = () => {
                 ) : (
                     <div className="table-container">
                         <table>
-                            <thead>
+                            <thead className="bg-gray-900">
                                         <tr>
                                             <th>Driver</th>
                                             <th>From</th>

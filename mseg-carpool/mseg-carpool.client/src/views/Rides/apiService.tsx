@@ -95,6 +95,14 @@ const apiService = {
 
     getUserById: (azureId: string): Promise<AxiosResponse<User>> => {
         return axios.get<User>(`${API_BASE_URL}/users/${azureId}`);
+    },
+
+    getRides: async (currentTime: string): Promise<AxiosResponse<ApiResponse<Ride[]>>> => {
+        const response = await axios.get<ApiResponse<Ride[]>>(
+            `${API_BASE_URL}/Rides/points`,
+            { params: { currentTime } }
+        );
+        return response;
     }
 };
 
