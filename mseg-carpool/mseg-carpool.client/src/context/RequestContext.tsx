@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import { getRequestsForDriver } from '../services/requestService';
-
+import { useMsal } from '@azure/msal-react';
 const STORAGE_KEY = "requests";
 
 interface Request {
@@ -98,11 +98,15 @@ const requestReducer = (state: RequestState, action: Action): RequestState => {
 //Testing with user1 from local DB
 export const RequestProvider: React.FC = ({ children }) => {
     const [state, dispatch] = useReducer(requestReducer, initialState);
+    const auth = useMsal();
+    const azureID = auth.accounts[0].localAccountId;
+
+
 
     useEffect(() => {
         const fetchRequests = async () => {
             try {
-                const fetchedRequests = await getRequestsForDriver('dbbd9883-1213-455a-a626-dcd3389f1cab');
+                const fetchedRequests = await getRequestsForDriver(azureID)
                 console.log('Fetched requests:', fetchedRequests);  // Log the fetched requests
                 if (fetchedRequests.$values) {
                     dispatch({ type: 'LOAD_REQUESTS', payload: fetchedRequests.$values });
