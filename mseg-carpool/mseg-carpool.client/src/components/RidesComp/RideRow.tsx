@@ -165,9 +165,16 @@ const RideRow: React.FC<RideRowProps> = ({
         if (pickupPoints && pickupPoints.length > 0) {
             // Use the first pickup point as the starting point
             const firstPickupPoint = pickupPoints[0];
+            console.log("Lat and long", coordinatesLat, "  ", coordinatesLong)
 
             // Construct the route URL
-            url = `${baseUrl}${encodeURIComponent(getCoordinates(origin))}/${firstPickupPoint.pickupPointLat},${firstPickupPoint.pickupPointLong}`;
+            if (!officeLocations.includes(origin)) {
+                url = `${baseUrl}${coordinatesLat},${coordinatesLong}/${firstPickupPoint.pickupPointLat},${firstPickupPoint.pickupPointLong}`;
+            }
+            else if (officeLocations.includes(origin)) {
+                url = `${baseUrl}${encodeURIComponent(getCoordinates(origin))}/${firstPickupPoint.pickupPointLat},${firstPickupPoint.pickupPointLong}`;
+            }
+            
 
             // Add intermediate pickup points
             for (let i = 1; i < pickupPoints.length; i++) {
@@ -176,7 +183,12 @@ const RideRow: React.FC<RideRowProps> = ({
             }
 
             // Add the final destination
-            url += `/${encodeURIComponent(destination)}`;
+            if (!officeLocations.includes(destination)) {
+                url += `/${coordinatesLat},${coordinatesLong}`;
+            }
+            else if (officeLocations.includes(destination)) { 
+                url += `/${encodeURIComponent(getCoordinates(destination))}`;
+            }
         } else if (officeLocations.includes(origin)) {
             url = `${baseUrl}${encodeURIComponent(getCoordinates(origin))}/${coordinatesLat},${coordinatesLong}`;
         } else if (officeLocations.includes(destination)) {
