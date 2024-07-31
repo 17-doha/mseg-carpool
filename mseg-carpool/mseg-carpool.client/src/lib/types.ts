@@ -1,5 +1,3 @@
-import internal from "stream";
-
 export interface Driver {
     driverID: string;
     driverName: string;
@@ -8,6 +6,7 @@ export interface Driver {
     carType: string;
     carPlate: string;
     carColor: string;
+    carModel: string;
     points: number;
   }
   
@@ -32,5 +31,5 @@ export interface Driver {
     CarType: string | null;
     CarColor: string | null;
     CarPlate: string | null;
-    CarMake: string | null;
+    CarModel: string | null;
   }

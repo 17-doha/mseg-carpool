@@ -6,6 +6,7 @@ import { Office } from './SelectOffice.tsx';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { DatePicker } from './DatePicker.tsx';
+import { set } from 'date-fns';
 // import { TimeSelect } from './TimeSelect.tsx';
 
 
@@ -35,6 +36,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ onFilterChange }) => {
     const [selectedTime, setSelectedTime] = useState('');
     const [origin, setOrigin] = useState<string>('');
     const [destination, setDestination] = useState<string>('');
+    const [resetDate, setResetDate] = useState<boolean>(false);
 
     const handleOriginChange = (event: ChangeEvent<HTMLInputElement>): void => {
         setOrigin(event.target.value);
@@ -45,8 +47,8 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ onFilterChange }) => {
     };
 
     const handleDateChange = (date: string): void => {
-        const formattedDate = new Date(date).toISOString().slice(0, 10);
-        setFormattedDate(formattedDate); 
+        setResetDate(false);
+        setFormattedDate(date); 
     };
 
     const handleTimeSelect = (time: string) => {
@@ -64,25 +66,9 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ onFilterChange }) => {
         setSelectedTime('');
         setOrigin('');
         setDestination('');
+        onFilterChange({ formattedDate: '', selectedTime: '', origin: '', destination: '' });
+        setResetDate(true);
     };
-
-    const timeOptions = [
-        "8:00 AM",
-        "9:00 AM",
-        "10:00 AM",
-        "11:00 AM",
-        "12:00 PM",
-        "1:00 PM",
-        "2:00 PM",
-        "3:00 PM",
-        "4:00 PM",
-        "5:00 PM",
-        "6:00 PM",
-        "7:00 PM",
-        "8:00 PM",
-        "9:00 PM",
-        "10:00 PM",
-    ];
 
     return (
         <div>
@@ -91,27 +77,12 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ onFilterChange }) => {
                 <DrawerContent className="p-4 bg-slate-200">
                     <DrawerHeader className="mb-4">
                         <DrawerTitle className="text-md font-semibold">Filters</DrawerTitle>
-                        {/* <DrawerDescription className="text-sm text-gray-500">Filter rides based on your preferences.</DrawerDescription> */}
                     </DrawerHeader>
                     <form onSubmit={handleSubmit} className="">
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Date:</label>
-                            <DatePicker onDateChange={handleDateChange} formattedDate={formattedDate} />
+                            <DatePicker onDateChange={handleDateChange} formattedDate={formattedDate} resetDate={resetDate} />
                         </div>
-                        {/* <div>
-                            <label className="block text-sm font-medium text-gray-700">Time</label>
-                            <select value={selectedTime} onChange={handleTimeChange} className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                <option value="">Select a time</option>
-                                {timeOptions.map((timeOption) => (
-                                    <option key={timeOption} value={timeOption}>
-                                        {timeOption}
-                                    </option>
-                                ))}
-                            </select>
-                        </div> */}
-                        {/* <div>
-                            {<TimeSelect onSelectTime={(selectedTime) => setSelectedTime(selectedTime)} />}
-                        </div> */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Going to:</label>
                             <InputWithLabel label="" value={destination} onChange={handleDestinationChange} />
@@ -126,9 +97,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ onFilterChange }) => {
                         <DrawerFooter className="">
                             <Button variant="default" type="submit">Submit</Button>
                             <Button variant="outline" onClick={handleClearFilters}>Clear</Button>
-                            {/* <DrawerClose>
-                                <Button variant="outline">Cancel</Button>
-                            </DrawerClose> */}
                         </DrawerFooter>
                     </form>
                 </DrawerContent>

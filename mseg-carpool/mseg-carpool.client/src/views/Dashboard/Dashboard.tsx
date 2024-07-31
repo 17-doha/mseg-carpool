@@ -104,7 +104,6 @@ const Dashboard = () => {
 
     return (
         <Page>
-          
             <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
                 <Card style={{ maxWidth: '400px', padding: '20px', border: '1px solid #ddd', borderRadius: '5px', backgroundColor: '#fff' }}>
                     <CardSection>

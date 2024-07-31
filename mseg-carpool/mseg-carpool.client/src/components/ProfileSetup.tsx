@@ -36,7 +36,7 @@ const ProfileSetup: React.FC<ProfileSetupProps> = () => {
         Location: '',
         MobileNumber: '',
         CarColor: null,
-        CarMake: null,
+        CarModel: null,
         CarPlate: null,
         CarType: null,
         Email: email,
@@ -44,8 +44,11 @@ const ProfileSetup: React.FC<ProfileSetupProps> = () => {
     }
     const [user, setUser] = useState<User>(initUser);
     const [selectedLocation, setSelectedLocation] = useState<LatLng | null>(null);
+    const [isLocationValid, setIsLocationValid] = useState(true);
+
 
      const handleLocationSelect = (location: LatLng) => {
+        setIsLocationValid(true);
         setSelectedLocation(location);
         setFormData({
             ...formData,
@@ -73,28 +76,33 @@ const ProfileSetup: React.FC<ProfileSetupProps> = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!user.Location) {
+            setIsLocationValid(false);
+          }
 
-        try {
-            const response = await fetch(`http://localhost:5062/api/Users`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(user)
-            });
+        if (user.Location) {
+            try {
+                const response = await fetch(`http://localhost:5062/api/Users`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(user)
+                });
 
-            if (response.ok) {
-                alert('Profile updated successfully!');
-                console.log('New User:', JSON.stringify(user));
-                window.location.reload(); // Reload to check profile completion again
-            } else {
-                const error = await response.text();
-                alert('Error: ' + error);
-                console.log('Failed New User:', JSON.stringify(user));
+                if (response.ok) {
+                    alert('Profile updated successfully!');
+                    console.log('New User:', JSON.stringify(user));
+                    window.location.reload(); // Reload to check profile completion again
+                } else {
+                    const error = await response.text();
+                    alert('Error: ' + error);
+                    console.log('Failed New User:', JSON.stringify(user));
 
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
             }
-        } catch (error) {
-            alert('Error: ' + error.message);
         }
     };
 
@@ -130,16 +138,10 @@ const ProfileSetup: React.FC<ProfileSetupProps> = () => {
                             />
                         </div>
                         <div >
-                            <label className="block text-sm font-medium text-gray-700">Default Location</label>
+                            <label className="block text-sm pb-4 font-medium text-gray-700">Default Location:</label>
                             <Map selectedLocation={selectedLocation} onLocationSelect={handleLocationSelect} />
-                            <input
-                                type="text"
-                                name="location"
-                                value={formData.location}
-                                onChange={handleChange}
-                                required
-                                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            />
+                            {!isLocationValid && <p style={{ color: 'red' }}>Location is required.</p>}
+                            
                         </div>
                         <button
                             type="submit"

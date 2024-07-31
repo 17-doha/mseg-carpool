@@ -6,19 +6,24 @@ import { Calendar } from '../ui/calendar.tsx';
 import { CalendarIcon } from 'lucide-react';
 import { cn } from '../../../src/lib/utils.ts';
 
-export function DatePicker({ onDateChange, formattedDate }: { onDateChange: (date: string) => void; formattedDate: string }) {
+export function DatePicker({ onDateChange, formattedDate, resetDate }: { onDateChange: (date: string) => void; formattedDate: string; resetDate: boolean }) {
     const [date, setDate] = React.useState<Date>();
 
     const handleDateChange = (selectedDate: Date | undefined): void => {
         if (selectedDate) {
-            const formatted = format(selectedDate, "yyyy/MM/dd");
-            onDateChange(formatted);
+            onDateChange(format(selectedDate, "yyyy-MM-dd"));
             setDate(selectedDate);
         } else {
             onDateChange('');
             setDate(undefined);
         }
     };
+
+    React.useEffect(() => {
+        if (resetDate) {
+            setDate(undefined);
+        }
+    }, [resetDate]);
 
     return (
         <div className="relative">

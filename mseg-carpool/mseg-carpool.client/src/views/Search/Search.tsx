@@ -5,6 +5,7 @@ import RideCard from "../../components/RidesComp/RideCard";
 import FilterSidebar from "../../components/Search/FilterSidebar";
 import { Ride, Driver } from "../../lib/types";
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { useMsal } from '@azure/msal-react';
 
 interface Filters {
   pageNumber: number;
@@ -26,6 +27,8 @@ const Search = () => {
     //TODO: Add option to filter with available seats
   });
   const [searchTerm, setSearchTerm] = useState('');
+  const auth = useMsal();
+  const azureID = auth.accounts[0].localAccountId;
 
   useEffect(() => {
     console.log('Fetching rides... because filtering');
@@ -48,7 +51,7 @@ const Search = () => {
 
   async function fetchRides(filters: Filters) {
     //TODO: Update the URL to match the USERID
-    const baseUrl = `http://localhost:5062/api/Rides/?userId=30&pageSize=6&minimumSeatsAvailable=1`;
+    const baseUrl = `http://localhost:5062/api/Rides/?userId=${azureID}&pageSize=6&minimumSeatsAvailable=1`;
     const queryParams = buildQueryParams(filters);
     const url = `${baseUrl}&${queryParams}`;
     console.log('Fetching rides from:', url);
@@ -77,21 +80,26 @@ const Search = () => {
     }));
   };
 
+  const reloadRides = () => {
+    setRides([]);
+    fetchRides(filters);
+  };
+
   const handleFilterChange = (newFilters: {
     formattedDate?: string;
     origin?: string;
     destination?: string;
     selectedTime?: string;
-  }) => {
+}) => {
     setFilters(prevFilters => ({
-      ...prevFilters,
-      filterDate: newFilters.formattedDate || prevFilters.filterDate,
-      origin: newFilters.origin || prevFilters.origin,
-      destination: newFilters.destination || prevFilters.destination,
-      selectedTime: newFilters.selectedTime || prevFilters.selectedTime,
-      pageNumber: 1, // Reset page number when filters change
+        ...prevFilters,
+        filterDate: newFilters.formattedDate || '',
+        origin: newFilters.origin || '',
+        destination: newFilters.destination || '',
+        selectedTime: newFilters.selectedTime || '',
+        pageNumber: 1, // Reset page number when filters change
     }));
-  };
+};
 
   const SearchedRides = rides.filter(ride =>
       ride.destination.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -121,7 +129,7 @@ const Search = () => {
         </div>
         <div className="rides-container">
           {SearchedRides.map((ride) => (
-            <RideCard key={ride.rideID} ride={ride} />
+            <RideCard key={ride.rideID} ride={ride} setRequested={reloadRides} />
           ))}
         </div>
       </InfiniteScroll>

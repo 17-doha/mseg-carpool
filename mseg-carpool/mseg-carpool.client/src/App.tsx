@@ -10,7 +10,7 @@ import ProfileSetup from './components/ProfileSetup';
 
 const App: React.FC = () => {
     const { instance, accounts } = useMsal();
-    const [isProfileComplete, setIsProfileComplete] = useState<boolean | null>(true);
+    const [isProfileComplete, setIsProfileComplete] = useState<boolean | null>(null);
 
     // set active account
     useEffect(() => {
