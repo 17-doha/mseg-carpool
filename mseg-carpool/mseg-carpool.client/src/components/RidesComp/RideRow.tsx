@@ -160,7 +160,7 @@ const RideRow: React.FC<RideRowProps> = ({
 
         console.log("coord", coordinatesLat + ", " + coordinatesLong);
 
-        if (pickupPoints && pickupPoints.length > 0) {
+        if (pickupPoints && pickupPoints.length > 0 && status === "Accepted") {
             // Use the first pickup point as the starting point
             const firstPickupPoint = pickupPoints[0];
             console.log("dest", destinationCords);

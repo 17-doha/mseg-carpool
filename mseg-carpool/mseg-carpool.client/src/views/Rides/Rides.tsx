@@ -278,7 +278,7 @@ const Rides: React.FC = () => {
                                             <th>From</th>
                                             <th>Destination</th>
                                             <th>Pickup Date & Time</th>
-                                            <th>Seats Left</th>
+                                            <th>Seats</th>
                                             {hasUserRides && <th>Status</th>}
                                             {!hasUserRides && <th></th>} {/* Only render this column if status column is present */}
                                         </tr>

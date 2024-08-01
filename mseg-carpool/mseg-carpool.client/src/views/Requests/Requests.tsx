@@ -64,7 +64,7 @@ function Requests() {
                 state.requests.map((req) => (
                     <div key={req.id} className="request-item">
                         <p>
-                            <strong>Request from {req?.users?.name}</strong>
+                            <strong>Request from {req?.user?.name}</strong>
                         </p>
                         <p>
                             Ride from {req?.ride?.origin} to {req?.ride?.destination} at {new Date(req?.ride?.departureTime).toLocaleString()}, you have {req?.ride?.availableSeats} seat(s) available.
