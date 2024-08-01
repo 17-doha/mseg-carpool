@@ -28,7 +28,7 @@ const MapPicker: React.FC<MapPickerProps> = ({ defaultLocation,  selectedLocatio
 
   return (
     <div>
-      <APIProvider apiKey="AIzaSyCuH_djHLBBi8yD7vtWkMByZR32Rn7w1fQ">
+          <APIProvider apiKey="AIzaSyBBUHvuvUsAZ4Bj2FbxGOR95pe2jcIg5Rs">
         <div style={{ height: '400px', width: '100%' }}>
           <Map
             defaultZoom={12}
