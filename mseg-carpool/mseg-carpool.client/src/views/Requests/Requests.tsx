@@ -1,6 +1,7 @@
 import React from "react";
-import { DefaultButton, PrimaryButton } from "@fluentui/react";
 import Page from "../../components/Page";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import { useRequestContext } from "../../context/RequestContext";
 import "./Requests.css";
 import { acceptRequest, deleteRequest } from "../../services/requestService";
@@ -37,9 +38,26 @@ function Requests() {
         }
     };
 
+    const handleMapClick = (req) => {
+        const baseUrl = 'https://www.google.com/maps/dir/';
+        const officeLocations = {
+            'Zamalek': '30.063562, 31.216005',
+            '5th Settlement': '30.010270, 31.407254',
+            'Smart Village': '30.071012, 31.017022'
+        };
+        console.log(req?.ride);
+        const originCords = officeLocations[req?.ride?.origin] || req?.ride?.coordinates;
+        const destinationCords = officeLocations[req?.ride?.destination] || req?.ride?.coordinates;
+
+        let url = `${baseUrl}${originCords}`;
+        url += `/${req?.coordinates}`;
+        url += `/${destinationCords}`;
+        window.open(url, '_blank');
+    };
+
     return (
         <Page className="requests-container">
-            <h1>Requests</h1>
+         
             {state.requests.length === 0 ? (
                 <p>No requests found.</p>
             ) : (
@@ -49,11 +67,14 @@ function Requests() {
                             <strong>Request from {req?.users?.name}</strong>
                         </p>
                         <p>
-                            Ride from {req?.ride?.origin} to {req?.ride?.destination} at {new Date(req?.ride?.departureTime).toLocaleString()}, you have {req?.ride?.availableSeats} seat available.
+                            Ride from {req?.ride?.origin} to {req?.ride?.destination} at {new Date(req?.ride?.departureTime).toLocaleString()}, you have {req?.ride?.availableSeats} seat(s) available.
                         </p>
                         <div className="actions">
-                            <PrimaryButton text="Accept" onClick={() => handleAccept(req.id)} />
-                            <DefaultButton text="Decline" onClick={() => handleDecline(req.id, req?.users?.name)} />
+                            <button className="button-search" onClick={() => handleAccept(req.id)}>Accept</button>
+                            <button className="button-search" onClick={() => handleDecline(req.id, req?.users?.name)}>Decline</button>
+                            <button className="map-btn-req" onClick={() => handleMapClick(req)}>
+                                <FontAwesomeIcon icon={faMapMarkerAlt} />
+                            </button>
                         </div>
                     </div>
                 ))

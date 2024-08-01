@@ -13,7 +13,14 @@
     margin: 10px 0;
     border-radius: 5px;
     background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
+
+    .request-item:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transform: translateY(-5px);
+    }
 
     .request-item p {
         margin: 5px 0;
@@ -31,5 +38,35 @@
     }
 
         .request-item .actions button {
-            min-width: 100px;
+            min-width: 80px;
+            padding: 8px 16px;
+            font-size: 14px;
         }
+
+.button-search {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px 0 rgba(0,0,0,0.24),0 8px 20px 0 rgba(0,0,0,0.19);
+}
+
+    .button-search:hover {
+        background-color: #0056b3;
+        box-shadow: 0 4px 6px 0 rgba(0,0,0,0.24),0 8px 20px 0 rgba(0,0,0,0.19);
+    }
+
+.map-btn-req {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 3em; /* Increased size for larger icon */
+    color: #0078d4;
+    padding: 0;
+}
+
+    .map-btn-req:hover {
+        color: #005a9e;
+    }
