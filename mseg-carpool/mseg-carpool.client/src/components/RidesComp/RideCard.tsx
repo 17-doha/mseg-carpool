@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FiCalendar, FiUser, FiMapPin, FiCheckCircle, FiMoreVertical } from 'react-icons/fi';
 import ExpandedRide from '../ui/ExpandedRide';
-import  {Ride, Driver}  from "../../lib/types";
+import  {Ride}  from "../../lib/types";
 
 
 const RideCard = ({ ride, setRequested }: { ride: Ride; setRequested: () => void  }) => {
@@ -16,7 +16,7 @@ const RideCard = ({ ride, setRequested }: { ride: Ride; setRequested: () => void
     };
     console.log(ride.coordinates);
 
-    const formattedDate = ride.departureDate.split('T')[0].split('-').reverse().join('-');
+    const formattedDate = ride.departureDate.toString().split('T')[0];
     
     return (
         <div>

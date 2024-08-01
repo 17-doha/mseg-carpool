@@ -117,6 +117,10 @@ namespace mseg_carpool.Server.Controllers
             var totalRidesBeforePagination = await query.CountAsync();
             Console.WriteLine($"Total rides before pagination: {totalRidesBeforePagination}");
 
+            // Define the GMT+3 time zone
+            TimeZoneInfo gmtPlus3 = TimeZoneInfo.CreateCustomTimeZone("GMT+3", TimeSpan.FromHours(3), "GMT+3", "GMT+3");
+            
+
             var rides = await query
                                 .OrderBy(r => r.DepartureTime)
                                 .Skip(skip)
@@ -126,10 +130,8 @@ namespace mseg_carpool.Server.Controllers
                                     RideID = r.Id,
                                     r.Origin,
                                     r.Destination,
-                                    departureDate = r.DepartureTime.Date,
-
-                                    departureTime = r.DepartureTime.Hour + ":" + r.DepartureTime.Minute.ToString("00") ,
-
+                                    departureDate = TimeZoneInfo.ConvertTimeFromUtc(r.DepartureTime, gmtPlus3).Date,
+                                    departureTime = TimeZoneInfo.ConvertTimeFromUtc(r.DepartureTime, gmtPlus3).ToString("HH:mm"),
                                     r.AvailableSeats,
                                     r.Coordinates,
                                     Driver = new

@@ -103,7 +103,10 @@ const Search = () => {
 
   const SearchedRides = rides.filter(ride =>
       ride.destination.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      ride.origin.toLowerCase().includes(searchTerm.toLowerCase()) 
+      ride.origin.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      ride.driver.driverName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ride.departureDate.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ride.departureTime.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
   return (
@@ -112,7 +115,7 @@ const Search = () => {
         dataLength={rides.length}
         next={fetchMoreRides}
         hasMore={hasMore}
-        loader={<p>Loading...</p>}
+        loader={<p></p>}
         endMessage={<p>No more rides available.</p>}
       >
         <div className="search-and-filter-container">

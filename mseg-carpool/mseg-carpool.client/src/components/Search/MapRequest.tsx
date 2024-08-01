@@ -6,25 +6,25 @@ interface MapRequestProps {
     origin: string;
     destination: string;
     coordinates: string;
+    onDurationChange: (duration: string) => void;
 }
 
 const center = { lat: 30.0669, lng: 31.2241 };
 
-const MapRequest: React.FC<MapRequestProps> = ({ onLocationSelect, origin, destination, coordinates }) => {
+const MapRequest: React.FC<MapRequestProps> = ({ onLocationSelect, origin, destination, coordinates, onDurationChange }) => {
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: "AIzaSyBBUHvuvUsAZ4Bj2FbxGOR95pe2jcIg5Rs"
     });
 
     const [map, setMap] = useState<google.maps.Map | null>(null);
-    const [zoom, setZoom] = useState(6);
     const [directions, setDirections] = useState<google.maps.DirectionsResult | null>(null);
     const [directionsRequested, setDirectionsRequested] = useState(false);
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(null);
+    const [duration, setDuration] = useState<string | null>(null);
 
     const assignCoords = (origin: string, destination: string, coordinates: string) => {
         const officeLocations: { [key: string]: { lat: number, lng: number } } = {
-
             'Zamalek': { lat: 30.063766324057067, lng: 31.21602628465705 },
             '5th Settlement': { lat: 30.010270, lng: 31.407254},
             'Smart Village': { lat: 30.071012, lng: 31.017022}
@@ -66,11 +66,15 @@ const MapRequest: React.FC<MapRequestProps> = ({ onLocationSelect, origin, desti
     const directionsCallback = useCallback((result: google.maps.DirectionsResult | null, status: google.maps.DirectionsStatus) => {
         if (result !== null && status === 'OK') {
             setDirections(result);
+            const route = result.routes[0];
+            const leg = route.legs[0];
+            setDuration(leg.duration.text);
+            onDurationChange(leg.duration.text); // Call the callback with the duration
         } else {
             console.error(`Directions request failed due to ${status}`);
         }
         setDirectionsRequested(false);
-    }, []);
+    }, [onDurationChange]);
 
     useEffect(() => {
         if (isLoaded && !directionsRequested) {
@@ -101,7 +105,7 @@ const MapRequest: React.FC<MapRequestProps> = ({ onLocationSelect, origin, desti
             <GoogleMap
                 mapContainerStyle={{ height: "400px", width: "100%" }}
                 center={center}
-                zoom={zoom}
+                zoom={10}
                 onLoad={onLoad}
                 onUnmount={onUnmount}
                 onClick={handleMapClick}

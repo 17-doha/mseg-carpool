@@ -50,8 +50,6 @@ namespace mseg_carpool.Server.Controllers
             await _context.SaveChangesAsync();
 
             return Ok();
-
-            //return CreatedAtAction(nameof(Get), new { id = request.Id }, request); // implement get
         }
 
         // GET: api/<RequestsController>
