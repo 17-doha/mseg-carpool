@@ -18,8 +18,6 @@ const RideCard = ({ ride, setRequested }: { ride: Ride; setRequested: () => void
 
     const formattedDate = ride.departureDate.split('T')[0].split('-').reverse().join('-');
     
-    //const formattedTime = ride.departureTime.split('T')[1].split(':')[0] + ':' + ride.departureTime.split('T')[1].split(':')[1];
-    
     return (
         <div>
             <div>

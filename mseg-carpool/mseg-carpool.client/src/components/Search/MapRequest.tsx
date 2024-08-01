@@ -22,8 +22,9 @@ const MapRequest: React.FC<MapRequestProps> = ({ onLocationSelect, origin, desti
     const [directionsRequested, setDirectionsRequested] = useState(false);
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(null);
 
-    const assignCoords = (origin: string, destination: string, coordinates: string = '0,0') => {
+    const assignCoords = (origin: string, destination: string, coordinates: string) => {
         const officeLocations: { [key: string]: { lat: number, lng: number } } = {
+
             'Zamalek': { lat: 30.063766324057067, lng: 31.21602628465705 },
             '5th Settlement': { lat: 30.010270, lng: 31.407254},
             'Smart Village': { lat: 30.071012, lng: 31.017022}
