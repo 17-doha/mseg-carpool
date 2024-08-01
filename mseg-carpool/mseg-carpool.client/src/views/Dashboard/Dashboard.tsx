@@ -154,9 +154,9 @@ const Dashboard = () => {
                     </CardSection>
                     <CardSection>
                         {isEditing ? (
-                            <PrimaryButton text="Save" onClick={handleSave} />
+                            <PrimaryButton text="Save" onClick={handleSave} className="button-search" />
                         ) : (
-                            <PrimaryButton text="Edit" onClick={handleEdit} />
+                            <PrimaryButton text="Edit" onClick={handleEdit} className="button-search" />
                         )}
                     </CardSection>
                     {errorMessage && (
@@ -216,9 +216,9 @@ const Dashboard = () => {
                     </CardSection>
                     <CardSection>
                         {isEditing ? (
-                            <PrimaryButton text="Save" onClick={handleSave} />
+                            <PrimaryButton text="Save" onClick={handleSave} className="button-search" />
                         ) : (
-                            <PrimaryButton text="Edit" onClick={handleEdit} />
+                            <PrimaryButton text="Edit" onClick={handleEdit} className="button-search" />
                         )}
                     </CardSection>
                 </Card>
