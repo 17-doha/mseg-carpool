@@ -99,13 +99,15 @@ const requestReducer = (state: RequestState, action: Action): RequestState => {
 export const RequestProvider: React.FC = ({ children }) => {
     const [state, dispatch] = useReducer(requestReducer, initialState);
     const auth = useMsal();
+    if (auth.accounts[0]) {
     const azureID = auth.accounts[0].localAccountId;
-
+    } 
 
 
     useEffect(() => {
         const fetchRequests = async () => {
-            try {
+             if(auth.accounts[0]) {
+             try {
                 const fetchedRequests = await getRequestsForDriver(azureID)
                 console.log('Fetched requests:', fetchedRequests);  // Log the fetched requests
                 if (fetchedRequests.$values) {
@@ -116,6 +118,7 @@ export const RequestProvider: React.FC = ({ children }) => {
             } catch (error) {
                 console.error('Error fetching requests:', error);
             }
+        }
         };
 
         fetchRequests();

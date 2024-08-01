@@ -9,8 +9,7 @@ interface LatLng {
 interface MapPickerProps {
   defaultLocation: LatLng;
   selectedLocation: LatLng | null;
-    onLocationSelect: (location: LatLng) => void;
-    defaultLocation: LatLng;
+  onLocationSelect: (location: LatLng) => void;
 }
 
 

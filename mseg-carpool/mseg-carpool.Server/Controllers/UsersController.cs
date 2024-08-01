@@ -13,7 +13,7 @@ namespace mseg_carpool.Server.Controllers
     [Route("api/[controller]")]
     [EnableCors("AllowAll")] // Apply CORS policy to this controller
     // Uncomment when authentication is implemented in frontend
-    // [Authorize]
+    //[Authorize]
     public class UsersController : ControllerBase
     {
        

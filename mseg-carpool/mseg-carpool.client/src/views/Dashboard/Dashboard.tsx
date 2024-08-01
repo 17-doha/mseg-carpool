@@ -3,7 +3,6 @@ import { Card, CardSection } from "@fluentui/react-cards";
 import { Persona, PersonaSize, Text, PrimaryButton, DefaultButton } from "@fluentui/react";
 import { useMsal } from "@azure/msal-react";
 import Page from "../../components/Page";
-import RideCard from "./RideCard";
 import apiService from '../../API/ApiServices';
 
 
@@ -105,7 +104,7 @@ const Dashboard = () => {
     return (
         <Page>
             <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <Card style={{ maxWidth: '400px', padding: '20px', border: '1px solid #ddd', borderRadius: '5px', backgroundColor: '#fff' }}>
+                <Card style={{ maxWidth: '450px',padding: '20px', border: '1px solid #ddd', borderRadius: '5px', backgroundColor: '#fff' }}>
                     <CardSection>
                         <Persona
                             {...{
@@ -118,7 +117,7 @@ const Dashboard = () => {
                     </CardSection>
                     <CardSection style={{ marginBottom: '10px' }}>
                         {isEditing ? (
-                            <div style={{ marginBottom: '10px' }}>
+                            <div style={{ marginBottom: '10px' } }>
                                 <label>Name</label>
                                 <input
                                     type="text"
@@ -135,20 +134,11 @@ const Dashboard = () => {
                                     onChange={handleChange}
                                     style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
                                 />
-                                <label>Location</label>
-                                <input
-                                    type="text"
-                                    name="location"
-                                    value={profile.location}
-                                    onChange={handleChange}
-                                    style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
-                                />
                             </div>
                         ) : (
                             <>
                                 <Text variant="large">Name: {profile.name}</Text>
                                 <Text variant="large">Phone Number: {profile.phoneNumber || "Not provided"}</Text>
-                                <Text variant="large">Location: {profile.location || "Not provided"}</Text>
                             </>
                         )}
                     </CardSection>
