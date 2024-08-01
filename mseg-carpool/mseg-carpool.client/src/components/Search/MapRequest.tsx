@@ -13,7 +13,7 @@ const center = { lat: 30.0669, lng: 31.2241 };
 const MapRequest: React.FC<MapRequestProps> = ({ onLocationSelect, origin, destination, coordinates }) => {
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
-        googleMapsApiKey: "AIzaSyCuH_djHLBBi8yD7vtWkMByZR32Rn7w1fQ"
+        googleMapsApiKey: "AIzaSyBBUHvuvUsAZ4Bj2FbxGOR95pe2jcIg5Rs"
     });
 
     const [map, setMap] = useState<google.maps.Map | null>(null);
@@ -22,9 +22,9 @@ const MapRequest: React.FC<MapRequestProps> = ({ onLocationSelect, origin, desti
     const [directionsRequested, setDirectionsRequested] = useState(false);
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(null);
 
-    const assignCoords = (origin: string, destination: string, coordinates: string = '0,0') => {
+    const assignCoords = (origin: string, destination: string, coordinates: string) => {
         const officeLocations: { [key: string]: { lat: number, lng: number } } = {
-            'Zamalek': { lat: 30.063562, lng: 31.216005},
+            'Zamalek': { lat: 30.063562,  lng: 31.216005},
             '5th Settlement': { lat: 30.010270, lng: 31.407254},
             'Smart Village': { lat: 30.071012, lng: 31.017022}
         };

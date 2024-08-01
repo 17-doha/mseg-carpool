@@ -17,8 +17,6 @@ const RideCard = ({ ride, setRequested }: { ride: Ride; setRequested: () => void
 
     const formattedDate = ride.departureDate.split('T')[0].split('-').reverse().join('-');
     
-    const formattedTime = ride.departureDate.split('T')[1].split(':')[0] + ':' + ride.departureDate.split('T')[1].split(':')[1];
-    
     return (
         <div>
             <div>
@@ -31,7 +29,7 @@ const RideCard = ({ ride, setRequested }: { ride: Ride; setRequested: () => void
                 <div className=' px-2 pt-1'>
                     <div className="flex items-center mb-1">
                         <FiCalendar className="mr-1" />
-                        <span className="text-gray-600">{formattedDate} ({formattedTime})</span>
+                        <span className="text-gray-600">{formattedDate} ({ride.departureTime})</span>
                     </div>
 
                     <div className="flex items-center mb-1">

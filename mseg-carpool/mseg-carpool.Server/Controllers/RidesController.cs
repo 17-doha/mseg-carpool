@@ -127,8 +127,9 @@ namespace mseg_carpool.Server.Controllers
                                     r.Origin,
                                     r.Destination,
                                     departureDate = r.DepartureTime.Date,
-                                    departureTime = r.DepartureTime.Hour,
+                                    departureTime = r.DepartureTime.Hour + ":" + r.DepartureTime.Minute.ToString("00") ,
                                     r.AvailableSeats,
+                                    r.Coordinates,
                                     Driver = new
                                     {
                                         DriverID = r.User.Id,
