@@ -127,7 +127,9 @@ namespace mseg_carpool.Server.Controllers
                                     r.Origin,
                                     r.Destination,
                                     departureDate = r.DepartureTime.Date,
+
                                     departureTime = r.DepartureTime.Hour + ":" + r.DepartureTime.Minute.ToString("00") ,
+
                                     r.AvailableSeats,
                                     r.Coordinates,
                                     Driver = new
@@ -359,7 +361,7 @@ namespace mseg_carpool.Server.Controllers
 
                     if (filteredRequests.Any())
                     {
-                        if (ride.Origin == "Zamalek office"||ride.Origin == "5th settlement office" || ride.Origin == "Smart village office")
+                        if (ride.Origin == "Zamalek"||ride.Origin == "5th Settlement" || ride.Origin == "Smart Village")
                         {
                             var originCoordinates = coordinates[ride.Origin];
                             var rideCoordinates = GetCoordinatesFromRide(ride);
@@ -368,7 +370,7 @@ namespace mseg_carpool.Server.Controllers
                             carbonFootprintToOriginInt = (int)Math.Round(4 * carbonFootprintToOrigin);
                             Console.WriteLine($"Distance to Origin: {distanceToOrigin} km, Carbon Footprint: {carbonFootprintToOrigin} kg CO2");
                         }
-                        if (ride.Destination == "Zamalek office"||ride.Destination == "5th settlement office" || ride.Destination == "Smart village office")
+                        if (ride.Destination == "Zamalek"||ride.Destination == "5th Settlement" || ride.Destination == "Smart Village")
                         {
                             var destinationCoordinates = coordinates[ride.Destination];
                             var rideCoordinates = GetCoordinatesFromRide(ride);

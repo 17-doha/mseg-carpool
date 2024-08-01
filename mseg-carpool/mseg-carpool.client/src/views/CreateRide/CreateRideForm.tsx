@@ -187,9 +187,9 @@ const CreateRideForm: React.FC = () => {
                                 <label>To Office</label>
                                 <select value={office} onChange={handleOfficeChange}>
                                     <option value="">Select Office</option>
-                                    <option value="Smart village office">Smart village office</option>
-                                    <option value="Zamalek office">Zamalek office</option>
-                                    <option value="5th settlement office">5th settlement office</option>
+                                    <option value="Smart Village">Smart village office</option>
+                                    <option value="Zamalek">Zamalek office</option>
+                                    <option value="5th Settlement">5th settlement office</option>
                                 </select>
                             </div>
                         </div>
@@ -200,9 +200,9 @@ const CreateRideForm: React.FC = () => {
                                 <label>From Office</label>
                                 <select value={office} onChange={handleOfficeChange}>
                                     <option value="">Select Office</option>
-                                    <option value="Smart village office">Smart village office</option>
-                                    <option value="Zamalek office">Zamalek office</option>
-                                    <option value="5th settlement office">5th settlement office</option>
+                                    <option value="Smart Village">Smart village office</option>
+                                    <option value="Zamalek">Zamalek office</option>
+                                    <option value="5th Settlement">5th settlement office</option>
                                 </select>
                             </div>
                             <div className="form-group">

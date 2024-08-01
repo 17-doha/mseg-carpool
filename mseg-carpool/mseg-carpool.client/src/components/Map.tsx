@@ -9,8 +9,10 @@ interface LatLng {
 interface MapPickerProps {
   defaultLocation: LatLng;
   selectedLocation: LatLng | null;
-  onLocationSelect: (location: LatLng) => void;
+    onLocationSelect: (location: LatLng) => void;
+    defaultLocation: LatLng;
 }
+
 
 const MapPicker: React.FC<MapPickerProps> = ({ defaultLocation, selectedLocation, onLocationSelect }) => {
   const [mapCenter, setMapCenter] = useState<LatLng>(defaultLocation);
@@ -18,6 +20,7 @@ const MapPicker: React.FC<MapPickerProps> = ({ defaultLocation, selectedLocation
   useEffect(() => {
     setMapCenter(defaultLocation);
   }, [defaultLocation]);
+
 
   const handleMapClick = useCallback((e: MapMouseEvent) => {
     const lat = e.detail.latLng ? e.detail.latLng.lat : 0;
@@ -27,7 +30,9 @@ const MapPicker: React.FC<MapPickerProps> = ({ defaultLocation, selectedLocation
 
   return (
     <div>
+
       <APIProvider apiKey="AIzaSyBBUHvuvUsAZ4Bj2FbxGOR95pe2jcIg5Rs">
+
         <div style={{ height: '400px', width: '100%' }}>
           <Map
             defaultZoom={12}

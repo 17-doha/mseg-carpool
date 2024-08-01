@@ -14,6 +14,7 @@ const RideCard = ({ ride, setRequested }: { ride: Ride; setRequested: () => void
         console.log('Dialog state:', isExpanded); // Debug log
         setIsExpanded(false);
     };
+    console.log(ride.coordinates);
 
     const formattedDate = ride.departureDate.split('T')[0].split('-').reverse().join('-');
     

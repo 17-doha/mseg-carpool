@@ -79,8 +79,6 @@ const ExpandedRide = ({ ride, isOpen, setIsOpen, setRequested }:
 
     const formattedDate = ride.departureDate.split('T')[0].split('-').reverse().join('-');
     
-    const formattedTime = ride.departureDate.split('T')[1].split(':')[0] + ':' + ride.departureDate.split('T')[1].split(':')[1];
-    
 
     return (
         <div>
@@ -106,7 +104,7 @@ const ExpandedRide = ({ ride, isOpen, setIsOpen, setRequested }:
                                 <FontAwesomeIcon icon={faMapLocation} beatFade />
                             </button>
                             <p><strong>Date:</strong> {formattedDate}</p>
-                            <p><strong>Time:</strong> {formattedTime}</p>
+                            <p><strong>Time:</strong> {ride.departureTime}</p>
                             <h2 className="text-lg font-semibold ">Driver Info</h2>
                             <p><strong>Name:</strong> {ride.driver.driverName}</p>
                             <p><strong>Contact:</strong> {ride.driver.driverMobileNo}</p>
