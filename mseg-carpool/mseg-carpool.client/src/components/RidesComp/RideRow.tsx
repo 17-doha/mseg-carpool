@@ -150,20 +150,26 @@ const RideRow: React.FC<RideRowProps> = ({
     const handleMapClick = () => {
         const baseUrl = 'https://www.google.com/maps/dir/';
         let url = '';
+        const officeLocations: { [key: string]: string } = {
+            'Zamalek': '30.063562, 31.216005',
+            '5th Settlement': '30.010270,  31.407254',
+            'Smart Village': '30.071012,  31.017022'
+        };
+        const originCords = officeLocations[origin] || coordinatesLong + ", " + coordinatesLat ;
+        const destinationCords = officeLocations[destination] || coordinatesLong + ", " +coordinatesLat;
+
+        console.log("coord", coordinatesLat + ", " + coordinatesLong);
 
         if (pickupPoints && pickupPoints.length > 0) {
             // Use the first pickup point as the starting point
             const firstPickupPoint = pickupPoints[0];
-            console.log("Lat and long", coordinatesLat, "  ", coordinatesLong)
+            console.log("dest", destinationCords);
 
             // Construct the route URL
-            if (!officeLocations.includes(origin)) {
-                url = `${baseUrl}${coordinatesLat},${coordinatesLong}/${firstPickupPoint.pickupPointLat},${firstPickupPoint.pickupPointLong}`;
-            }
-            else if (officeLocations.includes(origin)) {
-                url = `${baseUrl}${encodeURIComponent(getCoordinates(origin))}/${firstPickupPoint.pickupPointLat},${firstPickupPoint.pickupPointLong}`;
-            }
-            
+
+            url = `${baseUrl}${originCords}/${firstPickupPoint.pickupPointLat},${firstPickupPoint.pickupPointLong}`;
+
+
 
             // Add intermediate pickup points
             for (let i = 1; i < pickupPoints.length; i++) {
@@ -171,19 +177,11 @@ const RideRow: React.FC<RideRowProps> = ({
                 url += `/${point.pickupPointLat},${point.pickupPointLong}`;
             }
 
-            // Add the final destination
-            if (!officeLocations.includes(destination)) {
-                url += `/${coordinatesLat},${coordinatesLong}`;
-            }
-            else if (officeLocations.includes(destination)) { 
-                url += `/${encodeURIComponent(getCoordinates(destination))}`;
-            }
-        } else if (officeLocations.includes(origin)) {
-            url = `${baseUrl}${encodeURIComponent(getCoordinates(origin))}/${coordinatesLat},${coordinatesLong}`;
-        } else if (officeLocations.includes(destination)) {
-            url = `${baseUrl}${coordinatesLat},${coordinatesLong}/${encodeURIComponent(getCoordinates(destination))}`;
+
+            url += `/${destinationCords}`;
+
         } else {
-            url = `${baseUrl}${encodeURIComponent(getCoordinates(origin))}/${encodeURIComponent(getCoordinates(destination))}`;
+            url = `${baseUrl}${originCords}/${destinationCords}`;
         }
 
         window.open(url, '_blank');
