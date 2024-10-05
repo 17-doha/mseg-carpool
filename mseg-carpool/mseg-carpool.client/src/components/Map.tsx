@@ -30,7 +30,7 @@ const MapPicker: React.FC<MapPickerProps> = ({ defaultLocation, selectedLocation
   return (
     <div>
 
-      <APIProvider apiKey="AIzaSyBBUHvuvUsAZ4Bj2FbxGOR95pe2jcIg5Rs">
+      <APIProvider apiKey=""> //add key
 
         <div style={{ height: '400px', width: '100%' }}>
           <Map
